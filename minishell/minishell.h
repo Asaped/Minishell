@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:07:08 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/14 19:23:44 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:31:09 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define C		"\033[36m"
 # define W		"\033[37m"
 
-typedef struct	s_venv
+typedef struct s_venv
 {
 	char			*name;
 	char			*value;

@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 19:02:23 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/14 19:23:40 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:30:51 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,5 @@
 int	main(void)
 {
 	init_data();
-
 	return (0);
 }

@@ -6,13 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 19:21:08 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/14 19:23:38 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:30:41 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_data()
+void	init_data(void)
 {
 	init_venv();
 }
