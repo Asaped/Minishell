@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:07:08 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/14 19:31:09 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:46:08 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <string.h>
 # include <stdlib.h>
 # include "libft/libft.h"
+# include "gnl/get_next_line.h"
 
 # define RST	"\033[0m"
 # define R		"\033[31m"
