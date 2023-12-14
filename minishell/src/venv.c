@@ -6,11 +6,11 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:06:51 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/14 20:14:07 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/14 20:48:49 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/minishell.h"
 
 extern char	**environ;
 

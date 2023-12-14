@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/14 18:42:11 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/14 19:23:36 by cedmulle         ###   ########.fr       */
+/*   Created: 2023/12/14 20:45:01 by cedmulle          #+#    #+#             */
+/*   Updated: 2023/12/14 20:45:49 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	error_exit(const char *err_message)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	printf(R "Error: " RST);
-	printf("%s\n", err_message);
-	exit(1);
+	size_t	i;
+
+	i = 0;
+	while (s1[i] == s2[i] && s1[i])
+		i++;
+	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

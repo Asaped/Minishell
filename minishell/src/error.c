@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   safer.c                                            :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/14 19:22:10 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/14 19:23:30 by cedmulle         ###   ########.fr       */
+/*   Created: 2023/12/14 18:42:11 by cedmulle          #+#    #+#             */
+/*   Updated: 2023/12/14 20:48:25 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../inc/minishell.h"
 
-/* -------------------------------------------------------------------------- */
-/* Permet d'allouer de la memoire avec malloc en une ligne dans le programme  */
-/* -------------------------------------------------------------------------- */
-void	*safe_malloc(size_t bytes)
+void	error_exit(const char *err_message)
 {
-	void	*ret;
-
-	ret = malloc(bytes);
-	if (ret == NULL)
-		error_exit("Malloc error.");
-	return (ret);
+	printf(R "Error: " RST);
+	printf("%s\n", err_message);
+	exit(1);
 }
