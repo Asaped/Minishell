@@ -1,26 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   safer.c                                            :+:      :+:    :+:   */
+/*   main_processing.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/14 19:22:10 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/15 16:37:22 by cedmulle         ###   ########.fr       */
+/*   Created: 2023/12/15 11:25:01 by cedmulle          #+#    #+#             */
+/*   Updated: 2023/12/15 18:26:46 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-/* -------------------------------------------------------------------------- */
-/* Permet d'allouer de la memoire avec malloc en une ligne dans le programme  */
-/* -------------------------------------------------------------------------- */
-void	*safe_malloc(size_t bytes)
+void	processing(t_data *data)
 {
-	void	*ret;
-
-	ret = malloc(bytes);
-	if (ret == NULL)
-		error_exit("Malloc error.");
-	return (ret);
+	// Etape 1: Tokenisation
+	if (!init_tokens(data))
+		return (error_back("Check syntax."));
+	// Etape 2: Construction de AST
+	// Etape 3: Check syntax
+	// Etape 4: Execution
+	// Etape 5: Post-traitement
 }

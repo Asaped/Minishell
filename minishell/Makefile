@@ -6,7 +6,7 @@
 #    By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 20:46:48 by cedmulle          #+#    #+#              #
-#    Updated: 2023/12/14 21:14:58 by cedmulle         ###   ########.fr        #
+#    Updated: 2023/12/15 11:08:00 by cedmulle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ LF_LIB		= libft.a
 # ------ COMPILATION ------ #
 CC			= gcc
 CFLAGS		= -Wall -Werror -Wextra -I$(INCDIR)
-LDFLAGS		= -L./lib -lgnl -lft
+LDFLAGS		= -L./lib -lgnl -lft -lreadline
 RM			= rm -f
 
 # ---------------------------------------------------------------------------- #

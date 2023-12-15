@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:06:51 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/14 20:48:49 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/15 16:39:53 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,28 +49,39 @@ static void	add_venv(t_venv **head, char *name, char *value)
 
 	new_env = (t_venv *)malloc(sizeof(t_venv));
 	if (!new_env)
-		error_exit("Allocation mémoire échouée");
+	{
+		free_env(*head);
+		error_exit("Allocation mémoire échouée new_env");
+	}
 	new_env->name = ft_strdup(name);
 	new_env->value = ft_strdup(value);
-	if (ft_strcmp(new_env->name, "SHLVL"))
+	if (!new_env->name || !new_env->value)
+	{
+		free_env(*head);
+		error_exit("Allocation mémoire échouée new_env value/name");
+	}
+	if (ft_strcmp(new_env->name, "SHLVL") == 0)
 		increment_ascii(new_env->value);
 	new_env->next = *head;
 	*head = new_env;
 }
 
-void	init_venv(void)
+void	init_venv(t_venv **env_list)
 {
-	t_venv	*env_list;
 	char	**split_result;
+	char	**tab_env;
 
-	env_list = NULL;
-	while (*environ != NULL)
+	tab_env = environ;
+	while (*tab_env != NULL)
 	{
-		split_result = ft_split(*environ, '=');
-		if (split_result != NULL && split_result[0] != NULL
-			&& split_result[1] != NULL)
-			add_venv(&env_list, split_result[0], split_result[1]);
+		split_result = ft_split(*tab_env, '=');
+		if (split_result != NULL && split_result[0] != NULL)
+		{
+			if (split_result[1] == NULL)
+				split_result[1] = ft_strdup("");
+			add_venv(env_list, split_result[0], split_result[1]);
+		}
 		free_tab(split_result);
-		environ++;
+		tab_env++;
 	}
 }

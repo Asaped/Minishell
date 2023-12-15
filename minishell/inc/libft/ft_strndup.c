@@ -1,26 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   safer.c                                            :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/14 19:22:10 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/15 16:37:22 by cedmulle         ###   ########.fr       */
+/*   Created: 2023/12/14 18:45:27 by cedmulle          #+#    #+#             */
+/*   Updated: 2023/12/15 12:23:15 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "libft.h"
 
-/* -------------------------------------------------------------------------- */
-/* Permet d'allouer de la memoire avec malloc en une ligne dans le programme  */
-/* -------------------------------------------------------------------------- */
-void	*safe_malloc(size_t bytes)
+char	*ft_strndup(const char *s1, size_t n)
 {
-	void	*ret;
+	char	*dest;
+	size_t	i;
 
-	ret = malloc(bytes);
-	if (ret == NULL)
-		error_exit("Malloc error.");
-	return (ret);
+	dest = (char *)malloc(sizeof(char) * (n + 1));
+	if (!dest)
+		return (NULL);
+	i = 0;
+	while (s1[i] && i < n)
+	{
+		dest[i] = s1[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }
