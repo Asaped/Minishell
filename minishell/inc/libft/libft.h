@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 19:18:03 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/15 12:23:12 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/16 17:17:49 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,9 @@ char	*ft_strdup(const char *s1);
 char	*ft_strndup(const char *s1, size_t n);
 size_t	ft_strlen(const char *s);
 int		ft_strcmp(const char *s1, const char *s2);
+int		ft_isescape(char c);
+int		ft_isquote(char c);
+int		ft_isoperator(char c);
+int		is_valid_word(char c);
 
 #endif

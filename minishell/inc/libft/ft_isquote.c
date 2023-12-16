@@ -1,24 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_processing.c                                  :+:      :+:    :+:   */
+/*   ft_isquote.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/15 11:25:01 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/16 18:51:18 by cedmulle         ###   ########.fr       */
+/*   Created: 2023/12/16 11:08:24 by cedmulle          #+#    #+#             */
+/*   Updated: 2023/12/16 15:15:54 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "libft.h"
 
-void	processing(t_data *data)
+int	ft_isquote(char c)
 {
-	// Etape 1: Tokenisation
-	if (!init_tokens(data))
-		return (error_back("Parsing tokens impossible."));
-	// Etape 2: Construction de AST
-	// Etape 3: Check syntax
-	// Etape 4: Execution
-	// Etape 5: Post-traitement
+	if (c == '\'')
+		return (1);
+	if (c == '\"')
+		return (2);
+	return (0);
 }

@@ -1,24 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_processing.c                                  :+:      :+:    :+:   */
+/*   ft_isoperator.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/15 11:25:01 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/16 18:51:18 by cedmulle         ###   ########.fr       */
+/*   Created: 2023/12/16 17:15:03 by cedmulle          #+#    #+#             */
+/*   Updated: 2023/12/16 17:16:13 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "libft.h"
 
-void	processing(t_data *data)
+int	ft_isoperator(char c)
 {
-	// Etape 1: Tokenisation
-	if (!init_tokens(data))
-		return (error_back("Parsing tokens impossible."));
-	// Etape 2: Construction de AST
-	// Etape 3: Check syntax
-	// Etape 4: Execution
-	// Etape 5: Post-traitement
+	if (c == ' ' || c == '=' || c == '|')
+		return (1);
+	return (0);
 }

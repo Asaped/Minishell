@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:07:08 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/15 18:10:24 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/16 19:15:20 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,43 +40,38 @@
 
 typedef enum e_type_token
 {
-	WORD,
-	CMD,
-	ARG,
-	VENV,
-	QUOTE1,
-	QUOTE2,
-	PIPE,
-	ASSIGN,
-	REDIR_IN,
-	REDIR_OUT,
-	REDIR_APPEND,
-	REDIR_HEREDOC,
-	ERROR,
-	END
+	WORD,//				tout
+	SPACE,
+	PIPE,//				|
+	ASSIGN,//			=
+	REDIR_IN,//			<
+	REDIR_OUT,//		>
+	REDIR_APD,//		>>
+	REDIR_HDC,//		<<
 }	t_type_token;
 
 typedef struct s_token
 {
 	t_type_token	type;
 	char			*value;
+	int				len;
 	struct s_token	*next;
+	struct s_token	*prev;
 }					t_token;
 
 typedef struct s_tools
 {
 	char	*input;
-	char	quote_char;
 	bool	in_quote;
 	int		len;
 }			t_tools;
-
 
 typedef struct s_venv
 {
 	char			*name;
 	char			*value;
 	struct s_venv	*next;
+	struct s_venv	*prev;
 }				t_venv;
 
 typedef struct s_data
@@ -107,6 +102,17 @@ void	*safe_malloc(size_t bytes);
 void	processing(t_data *data);
 /* Tokenization */
 int		init_tokens(t_data *data);
-int		normalize_quotes(t_data *data);
+/* Formatting utils */
+int		formats_and_checks(t_data *data);
+/* Token utils */
+void	add_token(t_token **tokens, t_token *new_token);
+t_token	*create_token(t_type_token type, char *value, int len);
+void	init_token_tools(t_tools *tools, t_data *data);
+/* Parse extractor */
+void	extract_in_quotes(char **input, char limit, t_token **tok);
+void	extract_s_redir(char **input, char redir, t_token **tok);
+void	extract_d_redir(char **input, char redir, t_token **tok);
+void	extract_operator(char **input, char oper, t_token **tok);
+void	extract_words(char **input, t_token **tok);
 
 #endif

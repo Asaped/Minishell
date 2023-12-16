@@ -6,42 +6,20 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 17:06:51 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/15 16:39:53 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/16 18:08:36 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+/*
+	Toutes les variables d'environnements sont stockées dans **environ
+	Ces fonction recupere toutes les variables d'environnements et les stocke
+	dans une liste chainée (t_venv) bidirectionnelle.
+	La liste entiere sera stockée dans la structure t_data
+*/
 
 extern char	**environ;
 
-static void	increment_ascii(char *nbr_str)
-{
-	int		length;
-	int		i;
-	char	current_c;
-	int		carry;
-
-	length = ft_strlen(nbr_str);
-	carry = 1;
-	i = length;
-	while (--i >= 0)
-	{
-		current_c = nbr_str[i];
-		if (current_c >= '0' && current_c <= '9')
-		{
-			if (carry)
-			{
-				if (current_c == '9')
-					nbr_str[i] = '0';
-				else
-				{
-					nbr_str[i] = current_c + 1;
-					carry = 0;
-				}
-			}
-		}
-	}
-}
 
 static void	add_venv(t_venv **head, char *name, char *value)
 {
@@ -60,8 +38,6 @@ static void	add_venv(t_venv **head, char *name, char *value)
 		free_env(*head);
 		error_exit("Allocation mémoire échouée new_env value/name");
 	}
-	if (ft_strcmp(new_env->name, "SHLVL") == 0)
-		increment_ascii(new_env->value);
 	new_env->next = *head;
 	*head = new_env;
 }
