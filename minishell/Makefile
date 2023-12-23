@@ -103,5 +103,10 @@ re:			fclean all
 norme:
 			@python3 -m norminette -R CheckDefine $(SRC) $(INCDIR)libft $(INCDIR)minishell.h $(LF_SRC)
 
+leaks: re
+			@echo "\n\n$(C)-- Check des leaks --$(RST)"
+			@echo "$(Y)Les leaks seront vérifiés a la sortie du programme$(RST)"
+			@echo "$(Y)Les leaks de readline() sont ignorés.$(RST)"
+			leaks --exclude=readline --atExit -- ./$(NAME)
 
 .PHONY:		all clean fclean re norme leaks
