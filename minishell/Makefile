@@ -6,7 +6,7 @@
 #    By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 20:46:48 by cedmulle          #+#    #+#              #
-#    Updated: 2023/12/23 13:30:51 by cedmulle         ###   ########.fr        #
+#    Updated: 2023/12/23 14:07:47 by cedmulle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,7 +101,7 @@ re:			fclean all
 
 # Extras --------------------------------------------------------------------- #
 norme:
-			@python3 -m norminette -R CheckDefine $(SRC) $(INCDIR) $(LF_SRC)
+			@python3 -m norminette -R CheckDefine $(SRC) $(INCDIR)libft $(INCDIR)minishell.h $(LF_SRC)
 
 
 .PHONY:		all clean fclean re norme leaks
