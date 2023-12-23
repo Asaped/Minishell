@@ -5,11 +5,28 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/14 17:51:36 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/14 19:19:53 by cedmulle         ###   ########.fr       */
+/*   Created: 2023/10/28 08:56:33 by cedmulle          #+#    #+#             */
+/*   Updated: 2023/11/06 21:00:15 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/* ************************************************************************** */
+/*   Fonctionnement : Divise une chaîne de caractères en mots en utilisant    */
+/*   le caractère 'c' comme séparateur.                                       */
+/*                                                                            */
+/*   Paramètres :                                                             */
+/*      - s : La chaîne de caractères à diviser                               */
+/*      - c : Le caractère de séparation                                      */
+/*                                                                            */
+/*   Retour :                                                                 */
+/*      - Un tableau de chaînes de caractères contenant les mots extraits de  */
+/*        's'. Le tableau est terminé par un pointeur NULL.                   */
+/*      - NULL en cas d'échec (allocation mémoire ou paramètre invalide).     */
+/*                                                                            */
+/*   Si échec :                                                               */
+/*      - La fonction renvoie NULL si l'allocation mémoire échoue ou si 's'   */
+/*        est NULL.                                                           */
+/* *****************************************************************   by.XVI */
 #include "libft.h"
 
 static int	count_words(const char *str, char c)
@@ -59,7 +76,7 @@ static void	*ft_free(char **strs, size_t size)
 	return (NULL);
 }
 
-char	**ft_split(char *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	size_t	i;
 	size_t	k;

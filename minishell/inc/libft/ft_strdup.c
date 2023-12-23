@@ -5,11 +5,22 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/14 18:45:27 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/14 19:19:00 by cedmulle         ###   ########.fr       */
+/*   Created: 2023/10/01 10:37:33 by cedmulle          #+#    #+#             */
+/*   Updated: 2023/10/23 17:45:17 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/* ************************************************************************** */
+/*   Fonctionnement : Duplique une chaîne de caractères 's1' dans une         */
+/*   nouvelle allocation mémoire.                                             */
+/*                                                                            */
+/*   Paramètre :                                                              */
+/*      - s1 : La chaîne de caractères à dupliquer                            */
+/*                                                                            */
+/*   Retour :                                                                 */
+/*      - Un pointeur vers la nouvelle chaîne de caractères dupliquée.        */
+/*      - NULL en cas d'échec d'allocation mémoire.                           */
+/* *****************************************************************   by.XVI */
 #include "libft.h"
 
 char	*ft_strdup(const char *s1)

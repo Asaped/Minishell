@@ -6,13 +6,14 @@
 #    By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 20:46:48 by cedmulle          #+#    #+#              #
-#    Updated: 2023/12/15 11:08:00 by cedmulle         ###   ########.fr        #
+#    Updated: 2023/12/23 13:30:51 by cedmulle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # ---------------------------------------------------------------------------- #
 #                                 Variables                                    #
 # ---------------------------------------------------------------------------- #
+
 # ------ EXECUTABLES ------ #
 NAME		= minishell
 # ------ DIRECTORIES ------ #
@@ -20,13 +21,8 @@ SRCDIR		= src/
 INCDIR		= inc/
 OBJDIR		= obj/
 # ----- SOURCES FILES ----- #
-SRC			= $(wildcard $(SRCDIR)*.c)
+SRC			= $(wildcard $(SRCDIR)**/*.c)
 OBJ			= $(patsubst $(SRCDIR)%.c,$(OBJDIR)%.o,$(SRC))
-# ---------- GNL ---------- #
-GL_DIR		= $(INCDIR)gnl/
-GL_SRC		= $(wildcard $(GL_DIR)*.c)
-GL_OBJ		= $(patsubst $(GL_DIR)%.c,$(OBJDIR)%.o,$(GL_SRC))
-GL_LIB		= libgnl.a
 # --------- LIBFT --------- #
 LF_DIR		= $(INCDIR)libft/
 LF_SRC		= $(wildcard $(LF_DIR)*.c)
@@ -35,18 +31,42 @@ LF_LIB		= libft.a
 # ------ COMPILATION ------ #
 CC			= gcc
 CFLAGS		= -Wall -Werror -Wextra -I$(INCDIR)
-LDFLAGS		= -L./lib -lgnl -lft -lreadline
+LDFLAGS		= -L./lib -lft -I./inc/readline -L./inc/readline -lreadline -lhistory -lncurses
 RM			= rm -f
+# --------- COLORS -------- #
+RST			= \033[0m
+R			= \033[1;31m
+G			= \033[1;32m
+Y			= \033[1;33m
+B			= \033[1;34m
+M			= \033[1;35m
+C			= \033[1;36m
+W			= \033[1;37m
 
 # ---------------------------------------------------------------------------- #
 #                                 Fonctions                                    #
 # ---------------------------------------------------------------------------- #
 # Règle générale ------------------------------------------------------------- #
-all:		$(NAME)
+all:		load $(LOAD) $(NAME)
 
-$(NAME):	$(OBJ) $(LF_LIB) $(GL_LIB)
+$(NAME):	$(OBJ) $(LF_LIB)
 				@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LDFLAGS)
-				@echo "\033[1;36m\"$(NAME)\" compiled\t\t√\033[0m"
+				@clear
+# unicode ici
+				@echo "                                                                          $(RST)"
+				@echo "                                                                          $(RST)"
+				@echo "    $(G)███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗        $(RST)"
+				@echo "    $(G)████╗ ████║██║████╗  ██║██║██╔════╝██║  ██║██╔════╝██║     ██║        $(RST)"
+				@echo "    $(G)██╔████╔██║██║██╔██╗ ██║██║███████╗███████║█████╗  ██║     ██║        $(RST)"
+				@echo "    $(G)██║╚██╔╝██║██║██║╚██╗██║██║╚════██║██╔══██║██╔══╝  ██║     ██║        $(RST)"
+				@echo "    $(G)██║ ╚═╝ ██║██║██║ ╚████║██║███████║██║  ██║███████╗███████╗███████╗   $(RST)"
+				@echo "    $(G)╚═╝     ╚═╝╚═╝╚═╝  ╚═══╝╚═╝╚══════╝╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝   $(RST)"
+				@echo "                                                  $(G)BY MOTURKI & CEDMULLE   $(RST)"
+				@echo "                                                                          $(RST)"
+				@echo "    $(Y)Usage : ./minishell\n\n                                                   $(RST)"
+
+load:
+				@echo "$(B)Loading...$(RST)"
 
 # Création de la libft ------------------------------------------------------- #
 $(LF_LIB):	$(LF_OBJ)
@@ -54,22 +74,9 @@ $(LF_LIB):	$(LF_OBJ)
 				@ranlib $(LF_LIB)
 				@mkdir -p ./lib/
 				@mv $(LF_LIB) ./lib/
-				@echo "\033[1;36m\"$(LF_LIB)\" compiled\t\t√\033[0m"
-
-# Création de la gnl --------------------------------------------------------- #
-$(GL_LIB):	$(GL_OBJ)
-				@ar rcs $(GL_LIB) $(GL_OBJ)
-				@ranlib $(GL_LIB)
-				@mkdir -p ./lib/
-				@mv $(GL_LIB) ./lib/
-				@echo "\033[1;36m\"$(GL_LIB)\" compiled\t\t√\033[0m"
 
 # Création des objets -------------------------------------------------------- #
 $(OBJDIR)%.o:	$(SRCDIR)%.c
-				@mkdir -p $(@D)
-				@$(CC) $(CFLAGS) -c $< -o $@
-
-$(OBJDIR)%.o:	$(GL_DIR)%.c
 				@mkdir -p $(@D)
 				@$(CC) $(CFLAGS) -c $< -o $@
 
@@ -80,26 +87,21 @@ $(OBJDIR)%.o:	$(LF_DIR)%.c
 # Suppression des fichiers objets -------------------------------------------- #
 clean:
 				@$(RM) -r $(OBJDIR)
-				@echo "\033[1;31mObject files deleted\t\t√\033[0m"
+				@echo "$(R)Object files deleted\t\t√$(RST)"
 
 # Suppression de l'éxécutable + clean ---------------------------------------- #
 fclean:		clean
 				@$(RM) $(NAME)
 				@$(RM) -r ./lib
-				@echo "\033[1;31m\"$(NAME)\" deleted\t\t√\033[0m"
-				@echo "\033[1;31m\"$(LF_LIB)\" deleted\t\t√\033[0m"
-				@echo "\033[1;31m\"$(GL_LIB)\" deleted\t\t√\033[0m"
+				@echo "$(R)\"$(NAME)\" deleted\t\t√$(RST)"
+				@echo "$(R)\"$(LF_LIB)\" deleted\t\t√$(RST)"
 
 # Suppression de l'éxécutable + clean + recompile ---------------------------- #
 re:			fclean all
 
-run:		re
-				@./$(NAME)
-
+# Extras --------------------------------------------------------------------- #
 norme:
-			@python3 -m norminette -R CheckDefine $(SRC) $(INCDIR) $(GL_SRC) $(LF_SRC)
+			@python3 -m norminette -R CheckDefine $(SRC) $(INCDIR) $(LF_SRC)
 
-leaks:
-			@valgrind --leak-check=full --show-leak-kinds=all ./$(NAME)
 
 .PHONY:		all clean fclean re norme leaks
