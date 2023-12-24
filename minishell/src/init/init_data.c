@@ -5,51 +5,52 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/17 12:04:02 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 10:47:02 by cedmulle         ###   ########.fr       */
+/*   Created: 2023/12/24 12:34:54 by cedmulle          #+#    #+#             */
+/*   Updated: 2023/12/24 14:26:19 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	update_shlvl(t_data *data, char **env)
+static void	increment_shlvl(t_data *data)
 {
-	int		i;
-	char	*result;
+	char	*tmp;
+	int		swap;
 
-	i = ft_atoi(venv_value(env, "SHLVL"));
-	i++;
-	result = ft_itoa(i);
-	i = venv_index(data->env, "SHLVL");
-	venv_set(data, "SHLVL", result);
-	free_ptr(result);
+	tmp = venv_value(data->env, "SHLVL");
+	if (!tmp)
+		tmp = ft_strdup("1");
+	swap = ft_atoi(tmp) + 1;
+	tmp = ft_itoa(swap);
+	venv_set(data, "SHLVL", tmp);
+	free(tmp);
 	return ;
 }
 
-static bool	init_venv(t_data *data, char **env)
+static bool	init_env(t_data *data, char **env)
 {
-	int	i;
+	int		i;
 
-	i = -1;
-	data->env = ft_calloc(venv_count(env) + 1, sizeof * data->env);
+	data->env = ft_calloc(env_var_count(env) + 1, sizeof * data->env);
 	if (!data->env)
 		return (false);
+	i = -1;
 	while (env[++i])
 	{
 		data->env[i] = ft_strdup(env[i]);
 		if (!data->env[i])
 			return (false);
 	}
-	update_shlvl(data, env);
+	increment_shlvl(data);
 	return (true);
 }
 
 static bool	init_wds(t_data *data)
 {
-	char	str[PATH_MAX];
+	char	buff[PATH_MAX];
 	char	*wd;
 
-	wd = getcwd(str, PATH_MAX);
+	wd = getcwd(buff, PATH_MAX);
 	data->wdir = ft_strdup(wd);
 	if (!data->wdir)
 		return (false);
@@ -65,6 +66,26 @@ static bool	init_wds(t_data *data)
 		if (!data->old_wdir)
 			return (false);
 	}
+	return (true);
+}
+
+bool	init_data(t_data *data, char **env)
+{
+	if (!init_env(data, env))
+	{
+		errmsg_cmd("Fatal", NULL, "Could not initialize environment", 1);
+		return (false);
+	}
+	if (!init_wds(data))
+	{
+		errmsg_cmd("Fatal", NULL, "Could'nt initialize working directories", 1);
+		return (false);
+	}
+	data->token = NULL;
+	data->user_input = NULL;
+	data->cmd = NULL;
+	data->pid = -1;
+	g_exit_status = 0;
 	return (true);
 }
 
@@ -84,24 +105,4 @@ void	init_io(t_cmd *cmd)
 		cmd->io_fds->stdin_copy = -1;
 		cmd->io_fds->stdout_copy = -1;
 	}
-}
-
-bool	init_data(t_data *data, char **env)
-{
-	if (!init_venv(data, env))
-	{
-		errmsg_cmd("Fatal", NULL, "Environnement non accessible.", 1);
-		return (false);
-	}
-	if (!init_wds(data))
-	{
-		errmsg_cmd("Fatal", NULL, "Working directory non accessible.", 1);
-		return (false);
-	}
-	data->token = NULL;
-	data->user_input = NULL;
-	data->cmd = NULL;
-	data->pid = -1;
-	g_exit_status = 0;
-	return (true);
 }

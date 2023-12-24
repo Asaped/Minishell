@@ -78,7 +78,7 @@
 
 /* This is global so other parts of the code can check whether the last
    command was a text modification command. */
-int _rl_vi_last_command = 'i';	/* default `.' puts you in insert mode */
+int _rl_vi_last_cmd = 'i';	/* default `.' puts you in insert mode */
 
 _rl_vimotion_cxt *_rl_vimvcxt = 0;
 
@@ -178,7 +178,7 @@ _rl_vi_initialize_line (void)
 void
 _rl_vi_reset_last (void)
 {
-  _rl_vi_last_command = 'i';
+  _rl_vi_last_cmd = 'i';
   _rl_vi_last_repeat = 1;
   _rl_vi_last_arg_sign = 1;
   _rl_vi_last_motion = 0;
@@ -187,7 +187,7 @@ _rl_vi_reset_last (void)
 void
 _rl_vi_set_last (int key, int repeat, int sign)
 {
-  _rl_vi_last_command = key;
+  _rl_vi_last_cmd = key;
   _rl_vi_last_repeat = repeat;
   _rl_vi_last_arg_sign = sign;
 }
@@ -240,7 +240,7 @@ _rl_vi_stuff_insert (int count)
 }
 
 /* Bound to `.'.  Called from command mode, so we know that we have to
-   redo a text modification command.  The default for _rl_vi_last_command
+   redo a text modification command.  The default for _rl_vi_last_cmd
    puts you back into insert mode. */
 int
 rl_vi_redo (int count, int c)
@@ -257,14 +257,14 @@ rl_vi_redo (int count, int c)
   _rl_vi_redoing = 1;
   /* If we're redoing an insert with `i', stuff in the inserted text
      and do not go into insertion mode. */
-  if (_rl_vi_last_command == 'i' && vi_insert_buffer && *vi_insert_buffer)
+  if (_rl_vi_last_cmd == 'i' && vi_insert_buffer && *vi_insert_buffer)
     {
       _rl_vi_stuff_insert (count);
       /* And back up point over the last character inserted. */
       if (rl_point > 0)
 	_rl_vi_backup ();
     }
-  else if (_rl_vi_last_command == 'R' && vi_insert_buffer && *vi_insert_buffer)
+  else if (_rl_vi_last_cmd == 'R' && vi_insert_buffer && *vi_insert_buffer)
     {
       _rl_vi_replace_insert (count);
       /* And back up point over the last character inserted. */
@@ -273,7 +273,7 @@ rl_vi_redo (int count, int c)
     }
   /* Ditto for redoing an insert with `I', but move to the beginning of the
      line like the `I' command does. */
-  else if (_rl_vi_last_command == 'I' && vi_insert_buffer && *vi_insert_buffer)
+  else if (_rl_vi_last_cmd == 'I' && vi_insert_buffer && *vi_insert_buffer)
     {
       rl_beg_of_line (1, 'I');
       _rl_vi_stuff_insert (count);
@@ -282,7 +282,7 @@ rl_vi_redo (int count, int c)
     }
   /* Ditto for redoing an insert with `a', but move forward a character first
      like the `a' command does. */
-  else if (_rl_vi_last_command == 'a' && vi_insert_buffer && *vi_insert_buffer)
+  else if (_rl_vi_last_cmd == 'a' && vi_insert_buffer && *vi_insert_buffer)
     {
       _rl_vi_append_forward ('a');
       _rl_vi_stuff_insert (count);
@@ -291,20 +291,20 @@ rl_vi_redo (int count, int c)
     }
   /* Ditto for redoing an insert with `A', but move to the end of the line
      like the `A' command does. */
-  else if (_rl_vi_last_command == 'A' && vi_insert_buffer && *vi_insert_buffer)
+  else if (_rl_vi_last_cmd == 'A' && vi_insert_buffer && *vi_insert_buffer)
     {
       rl_end_of_line (1, 'A');
       _rl_vi_stuff_insert (count);
       if (rl_point > 0)
 	_rl_vi_backup ();
     }
-  else if (_rl_vi_last_command == '.' && _rl_keymap == vi_movement_keymap)
+  else if (_rl_vi_last_cmd == '.' && _rl_keymap == vi_movement_keymap)
     {
       rl_ding ();
       r = 0;
     }
   else
-    r = _rl_dispatch (_rl_vi_last_command, _rl_keymap);
+    r = _rl_dispatch (_rl_vi_last_cmd, _rl_keymap);
 
   _rl_vi_redoing = 0;
 

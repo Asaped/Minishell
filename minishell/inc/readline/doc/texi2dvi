@@ -1309,9 +1309,9 @@ uncomment_iftex=\
 }'
 
 
-# insert_commands - Insert $textra commands at the beginning of the file. 
+# insert_cmds - Insert $textra commands at the beginning of the file. 
 # Recommended to be used for @finalout, @smallbook, etc.
-insert_commands ()
+insert_cmds ()
 {
   if test -n "$textra"; then
     # _xtr.  The file with the user's extra commands.
@@ -1468,7 +1468,7 @@ compile ()
   run_makeinfo
 
   # --command, --texinfo
-  insert_commands
+  insert_cmds
 
   # Run until a fixed point is reached.
   run_tex_suite

@@ -230,7 +230,7 @@ rl_callback_read_char (void)
 	  eof = _rl_arg_callback (_rl_argcxt);
 	  if (eof == 0 && (RL_ISSTATE (RL_STATE_NUMERICARG) == 0) && RL_ISSTATE (RL_STATE_INPUTPENDING))
 	    rl_callback_read_char ();
-	  /* XXX - this should handle _rl_last_command_was_kill better */
+	  /* XXX - this should handle _rl_last_cmd_was_kill better */
 	  else if (RL_ISSTATE (RL_STATE_NUMERICARG) == 0)
 	    _rl_internal_char_cleanup ();
 

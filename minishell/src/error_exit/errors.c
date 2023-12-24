@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/17 12:18:38 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/22 19:45:07 by cedmulle         ###   ########.fr       */
+/*   Created: 2023/12/24 12:33:52 by cedmulle          #+#    #+#             */
+/*   Updated: 2023/12/24 13:31:34 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static char	*safe_join(char *str, char *add)
+char	*join_strs(char *str, char *add)
 {
 	char	*tmp;
 
@@ -26,7 +26,7 @@ static char	*safe_join(char *str, char *add)
 	return (str);
 }
 
-static bool	add_quotes(char *cmd)
+static bool	add_detail_quotes(char *cmd)
 {
 	if (ft_strncmp(cmd, "export", 7) == 0
 		|| ft_strncmp(cmd, "unset", 6) == 0)
@@ -37,43 +37,43 @@ static bool	add_quotes(char *cmd)
 int	errmsg_cmd(char *cmd, char *detail, char *err_msg, int err_nb)
 {
 	char	*msg;
-	bool	put_quotes;
+	bool	detail_quotes;
 
-	put_quotes = add_quotes(cmd);
+	detail_quotes = add_detail_quotes(cmd);
 	msg = ft_strdup("minishell: ");
-	if (cmd)
+	if (cmd != NULL)
 	{
-		msg = safe_join(msg, cmd);
-		msg = safe_join(msg, ": ");
+		msg = join_strs(msg, cmd);
+		msg = join_strs(msg, ": ");
 	}
-	if (detail)
+	if (detail != NULL)
 	{
-		if (put_quotes)
-			msg = safe_join(msg, "'");
-		msg = safe_join(msg, detail);
-		if (put_quotes)
-			msg = safe_join(msg, "'");
-		msg = safe_join(msg, ": ");
+		if (detail_quotes)
+			msg = join_strs(msg, "`");
+		msg = join_strs(msg, detail);
+		if (detail_quotes)
+			msg = join_strs(msg, "'");
+		msg = join_strs(msg, ": ");
 	}
-	msg = safe_join(msg, err_msg);
+	msg = join_strs(msg, err_msg);
 	ft_putendl_fd(msg, STDERR_FILENO);
 	free_ptr(msg);
 	return (err_nb);
 }
 
-void	errmsg(char *err_msg, char *detail, int quotes)
+void	errmsg(char *errmsg, char *detail, int quotes)
 {
-	char	*result;
+	char	*msg;
 
-	result = ft_strdup("minishell: ");
-	result = safe_join(result, err_msg);
+	msg = ft_strdup("minishell: ");
+	msg = join_strs(msg, errmsg);
 	if (quotes)
-		result = safe_join(result, " '");
+		msg = join_strs(msg, " `");
 	else
-		result = safe_join(result, ": ");
-	result = safe_join(result, detail);
+		msg = join_strs(msg, ": ");
+	msg = join_strs(msg, detail);
 	if (quotes)
-		result = safe_join(result, "'");
-	ft_putendl_fd(result, STDERR_FILENO);
-	free_ptr(result);
+		msg = join_strs(msg, "'");
+	ft_putendl_fd(msg, STDERR_FILENO);
+	free_ptr(msg);
 }

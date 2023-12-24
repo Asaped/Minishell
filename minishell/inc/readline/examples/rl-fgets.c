@@ -30,7 +30,7 @@ Best Regards,
        command-line editing, file-name completion, history, etc.
   
     -- A list of commands for command-name completion can be configured by
-       setting the environment-variable FGETS_COMMAND_FILE to a file containing
+       setting the environment-variable FGETs_cmd_FILE to a file containing
        the list of commands to be used.
   
     -- Command-line editing with readline() works best when the prompt string
@@ -92,11 +92,11 @@ Best Regards,
       else
         setenv LD_LIBRARY_PATH "${dir1}:${dir2}:${dir3}"
       endif
-      setenv FGETS_COMMAND_FILE "${dir2}/foo.commands"
+      setenv FGETs_cmd_FILE "${dir2}/foo.commands"
       setenv FGETS_PROMPT       "foo> "
       exec "foo" $*
   
-  Copyright (C)©2003-2004 Harold Levy.
+  Copyright (C)ï¿½2003-2004 Harold Levy.
   
   This code links to the GNU readline library, and as such is bound by the
   terms of the GNU General Public License as published by the Free Software
@@ -182,8 +182,8 @@ my_fgets_dump (
   printf ( "\n" ) ;
   s = getenv ( "FGETS_PROMPT" ) ;
   printf ( "FGETS_PROMPT       = %s\n", s ? s : "" ) ;
-  s = getenv ( "FGETS_COMMAND_FILE" ) ;
-  printf ( "FGETS_COMMAND_FILE = %s\n", s ? s : "" ) ;
+  s = getenv ( "FGETs_cmd_FILE" ) ;
+  printf ( "FGETs_cmd_FILE = %s\n", s ? s : "" ) ;
   printf ( "debug flag         = %d\n", my_fgets_debug_flag ) ;
   printf ( "#commands          = %d\n", my_fgets_number_of_names ) ;
   if ( my_fgets_debug_flag ) {
@@ -223,10 +223,10 @@ my_fgets_lookup (
     fgets_t _fgets ;
     int i ;
     char buf1[256], buf2[256] ;
-    fname = getenv ( "FGETS_COMMAND_FILE" ) ;
+    fname = getenv ( "FGETs_cmd_FILE" ) ;
     if ( ! fname ) {
       if ( my_fgets_debug_flag ) {
-        printf ( "libfgets:  empty or unset FGETS_COMMAND_FILE\n" ) ;
+        printf ( "libfgets:  empty or unset FGETs_cmd_FILE\n" ) ;
       }
       return NULL ;
     }

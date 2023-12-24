@@ -94,11 +94,11 @@
 #define COMMAND_ARGS COMMAND
 #endif
 
-#ifndef ALT_COMMAND
-#define ALT_COMMAND "/bin/sh"
+#ifndef ALt_cmd
+#define ALt_cmd "/bin/sh"
 #endif
-#ifndef ALT_COMMAND_ARGS
-#define ALT_COMMAND_ARGS ALT_COMMAND
+#ifndef ALt_cmd_ARGS
+#define ALt_cmd_ARGS ALt_cmd
 #endif
 
 #ifndef HAVE_MEMMOVE
@@ -514,11 +514,11 @@ main(int argc, char** argv)
       /* now start the shell */
       {
 	static char* command_args[] = { COMMAND_ARGS, NULL };
-	static char* alt_command_args[] = { ALT_COMMAND_ARGS, NULL };
+	static char* alt_cmd_args[] = { ALt_cmd_ARGS, NULL };
 	if (argc <= 1)
 	  {
 	    execvp (COMMAND, command_args);
-	    execvp (ALT_COMMAND, alt_command_args);
+	    execvp (ALt_cmd, alt_cmd_args);
 	  }
 	else
 	  execvp (argv[arg_base], &argv[arg_base]);

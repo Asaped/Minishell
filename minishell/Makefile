@@ -6,7 +6,7 @@
 #    By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 20:46:48 by cedmulle          #+#    #+#              #
-#    Updated: 2023/12/24 10:54:58 by cedmulle         ###   ########.fr        #
+#    Updated: 2023/12/24 12:21:02 by cedmulle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -102,11 +102,5 @@ re:			fclean all
 # Extras --------------------------------------------------------------------- #
 norme:
 			@python3 -m norminette -R CheckDefine $(SRC) $(INCDIR)libft $(INCDIR)minishell.h $(LF_SRC)
-
-leaks: re
-			@echo "\n\n$(C)-- Check des leaks --$(RST)"
-			@echo "$(Y)Les leaks seront vérifiés a la sortie du programme$(RST)"
-			@echo "$(Y)Les leaks de readline() sont ignorés.$(RST)"
-			@leaks --atExit --exclude=readline  -- ./$(NAME) 2>/dev/null
 
 .PHONY:		all clean fclean re norme leaks
