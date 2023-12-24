@@ -6,34 +6,19 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 11:50:07 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/23 13:58:53 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/24 10:20:36 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static char	*create_prompt(void)
-{
-	char	*result;
-	char	*tmp;
-	char	buff[PATH_MAX];
-
-	result = "[\033[1;31mMinishell\033[0m] ";
-	tmp = getcwd(buff, PATH_MAX);
-	result = ft_strjoin(result, B);
-	result = ft_strjoin(result, tmp);
-	result = ft_strjoin(result, RST);
-	result = ft_strjoin(result, " \033[1;33m$>\033[0m ");
-	return (result);
-}
-
 void	main_minishell(t_data *data)
 {
 	while (1)
 	{
+		print_data(data);
 		signals_on();
-		create_prompt();
-		data->user_input = readline(create_prompt());
+		data->user_input = readline(create_prompt(data));
 		signals_off();
 		if (parser(data) == TRUE)
 			g_exit_status = execution(data);

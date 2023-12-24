@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 10:38:56 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/23 13:58:16 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/24 10:07:06 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,8 @@ void	main_minishell(t_data *data);
 /* init_data.c */
 bool	init_data(t_data *data, char **env);
 void	init_io(t_cmd *cmd);
+/* prompt.c */
+char	*create_prompt(t_data *data);
 /* signals.c */
 void	reset_signal(int signal_nb);
 void	skip_sigquit(void);
