@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 14:47:28 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/22 19:07:58 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/24 11:14:48 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,5 @@ int	builtin_env(t_data *data, char **args)
 		return (EXIT_FAILURE);
 	while (data->env[i])
 		ft_putendl_fd(data->env[i++], STDOUT_FILENO);
-	return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
 }
