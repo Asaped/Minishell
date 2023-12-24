@@ -1,35 +1,52 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signals.c                                          :+:      :+:    :+:   */
+/*   signals_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/17 18:51:11 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 10:28:14 by cedmulle         ###   ########.fr       */
+/*   Created: 2023/12/24 10:25:03 by cedmulle          #+#    #+#             */
+/*   Updated: 2023/12/24 10:26:27 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	msh_sigint(void)
+void	handle_sigint(int sig)
 {
-	struct sigaction	action;
-
-	action.sa_handler = &handle_sigint;
-	sigaction(SIGINT, &action, NULL);
+	(void)sig;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
 }
 
-void	msh_sigquit(void)
+void	nothing(int v)
+{
+	(void)v;
+	ft_putstr_fd("Quit: 3\n", 1);
+	rl_redisplay();
+}
+
+void	backslash_n(int v)
+{
+	(void)v;
+	write(1, "\n", 1);
+	rl_redisplay();
+}
+
+void	sigquit_update(void)
 {
 	struct sigaction	action;
 
-	action.sa_handler = SIG_IGN;
+	action.sa_handler = &nothing;
 	sigaction(SIGQUIT, &action, NULL);
 }
 
-void	signals_on(void)
+void	sigint_update(void)
 {
-	msh_sigint();
-	msh_sigquit();
+	struct sigaction	action;
+
+	action.sa_handler = &backslash_n;
+	sigaction(SIGINT, &action, NULL);
 }

@@ -6,11 +6,25 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 12:04:02 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/22 19:54:15 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/24 10:47:02 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+static void	update_shlvl(t_data *data, char **env)
+{
+	int		i;
+	char	*result;
+
+	i = ft_atoi(venv_value(env, "SHLVL"));
+	i++;
+	result = ft_itoa(i);
+	i = venv_index(data->env, "SHLVL");
+	venv_set(data, "SHLVL", result);
+	free_ptr(result);
+	return ;
+}
 
 static bool	init_venv(t_data *data, char **env)
 {
@@ -26,6 +40,7 @@ static bool	init_venv(t_data *data, char **env)
 		if (!data->env[i])
 			return (false);
 	}
+	update_shlvl(data, env);
 	return (true);
 }
 

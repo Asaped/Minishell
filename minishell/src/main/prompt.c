@@ -6,11 +6,27 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 08:57:26 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 10:12:28 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/24 10:35:52 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+static char	*get_shlvl(char **env)
+{
+	char	*result;
+	char	*tmp;
+
+	result = ft_strjoin(" (", M);
+	tmp = ft_strdup(venv_value(env, "SHLVL"));
+	if (!tmp)
+		tmp = ft_strdup("1");
+	result = ft_strjoin(result, tmp);
+	free_ptr(tmp);
+	result = ft_strjoin(result, RST);
+	result = ft_strjoin(result, ") ");
+	return (result);
+}
 
 static char	*get_user(char **env)
 {
@@ -24,6 +40,7 @@ static char	*get_user(char **env)
 	tmp = ft_strjoin(RST, "] ");
 	result = ft_strjoin(result, tmp);
 	free_ptr(tmp);
+	result = ft_strjoin(result, get_shlvl(env));
 	return (result);
 }
 

@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 10:38:56 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 10:07:06 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/24 10:28:11 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,10 +141,15 @@ void	init_io(t_cmd *cmd);
 /* prompt.c */
 char	*create_prompt(t_data *data);
 /* signals.c */
-void	reset_signal(int signal_nb);
-void	skip_sigquit(void);
+void	msh_sigint(void);
+void	msh_sigquit(void);
 void	signals_on(void);
-void	signals_off(void);
+/* signal_utils.c */
+void	handle_sigint(int sig);
+void	nothing(int v);
+void	backslash_n(int v);
+void	sigquit_update(void);
+void	sigint_update(void);
 /* errors.c */
 int		errmsg_cmd(char *cmd, char *detail, char *err_msg, int err_nb);
 void	errmsg(char *err_msg, char *detail, int quotes);
