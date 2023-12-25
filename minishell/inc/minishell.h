@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:20:11 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 15:05:30 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/25 15:03:23 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,12 @@
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+# include <sys/ioctl.h>
 # include "readline/readline.h"
 # include "readline/history.h"
 /* ---------------------------- PERSO LIBS ---------------------------------- */
 # include "libft/libft.h"
+# include "gnl/get_next_line.h"
 
 /* ------------------------------ COLORS ------------------------------------ */
 # define RST	"\033[0m"
@@ -200,8 +202,8 @@ int		builtin_unset(t_data *data, char **args);
 int		builtin_cd(t_data *data, char **args);
 int		builtin_exit(t_data *data, char **args);
 void	ignore_sigquit(void);
-void	set_signals_interactive(void);
-void	set_signals_noninteractive(void);
+void	signals_on(void);
+void	signals_off(void);
 int		execute(t_data *data);
 int		execute_command(t_data *data, t_cmd *cmd);
 int		execute_builtin(t_data *data, t_cmd *cmd);
@@ -215,5 +217,6 @@ bool	check_if_of(t_io_fds *io);
 bool	redirect_io(t_io_fds *io);
 bool	restore_io(t_io_fds *io);
 bool	get_heredoc(t_data *data, t_io_fds *io);
+char	*get_prompt(t_data *data);
 
 #endif

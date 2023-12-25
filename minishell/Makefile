@@ -6,7 +6,7 @@
 #    By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 20:46:48 by cedmulle          #+#    #+#              #
-#    Updated: 2023/12/24 12:21:02 by cedmulle         ###   ########.fr        #
+#    Updated: 2023/12/25 14:15:27 by cedmulle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,10 +28,15 @@ LF_DIR		= $(INCDIR)libft/
 LF_SRC		= $(wildcard $(LF_DIR)*.c)
 LF_OBJ		= $(patsubst $(LF_DIR)%.c,$(OBJDIR)%.o,$(LF_SRC))
 LF_LIB		= libft.a
+# ---------- GNL ---------- #
+GL_DIR		= $(INCDIR)gnl/
+GL_SRC		= $(wildcard $(GL_DIR)*.c)
+GL_OBJ		= $(patsubst $(GL_DIR)%.c,$(OBJDIR)%.o,$(GL_SRC))
+GL_LIB		= libgnl.a
 # ------ COMPILATION ------ #
 CC			= gcc
 CFLAGS		= -Wall -Werror -Wextra -I$(INCDIR)
-LDFLAGS		= -L./lib -lft -I./inc/readline -L./inc/readline -lreadline -lhistory -lncurses
+LDFLAGS		= -L./lib -lft -lgnl -I./inc/readline -L./inc/readline -lreadline -lhistory -lncurses
 RM			= rm -f
 # --------- COLORS -------- #
 RST			= \033[0m
@@ -49,7 +54,7 @@ W			= \033[1;37m
 # Règle générale ------------------------------------------------------------- #
 all:		load $(LOAD) $(NAME)
 
-$(NAME):	$(OBJ) $(LF_LIB)
+$(NAME):	$(OBJ) $(LF_LIB) $(GL_LIB)
 				@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LDFLAGS)
 				@clear
 # unicode ici
@@ -75,12 +80,23 @@ $(LF_LIB):	$(LF_OBJ)
 				@mkdir -p ./lib/
 				@mv $(LF_LIB) ./lib/
 
+# Création de la libft ------------------------------------------------------- #
+$(GL_LIB):	$(GL_OBJ)
+				@ar rcs $(GL_LIB) $(GL_OBJ)
+				@ranlib $(GL_LIB)
+				@mkdir -p ./lib/
+				@mv $(GL_LIB) ./lib/
+
 # Création des objets -------------------------------------------------------- #
 $(OBJDIR)%.o:	$(SRCDIR)%.c
 				@mkdir -p $(@D)
 				@$(CC) $(CFLAGS) -c $< -o $@
 
 $(OBJDIR)%.o:	$(LF_DIR)%.c
+				@mkdir -p $(@D)
+				@$(CC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)%.o:	$(GL_DIR)%.c
 				@mkdir -p $(@D)
 				@$(CC) $(CFLAGS) -c $< -o $@
 
@@ -95,12 +111,13 @@ fclean:		clean
 				@$(RM) -r ./lib
 				@echo "$(R)\"$(NAME)\" deleted\t\t√$(RST)"
 				@echo "$(R)\"$(LF_LIB)\" deleted\t\t√$(RST)"
+				@echo "$(R)\"$(GL_LIB)\" deleted\t\t√$(RST)"
 
 # Suppression de l'éxécutable + clean + recompile ---------------------------- #
 re:			fclean all
 
 # Extras --------------------------------------------------------------------- #
 norme:
-			@python3 -m norminette -R CheckDefine $(SRC) $(INCDIR)libft $(INCDIR)minishell.h $(LF_SRC)
+			@python3 -m norminette -R CheckDefine $(SRC) $(INCDIR)gnl $(INCDIR)libft $(INCDIR)minishell.h $(LF_SRC)
 
 .PHONY:		all clean fclean re norme leaks

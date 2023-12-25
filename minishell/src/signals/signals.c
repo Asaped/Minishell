@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 13:03:42 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:57:16 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/25 14:27:55 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	signal_reset_prompt(int sig)
 	rl_redisplay();
 }
 
-void	set_signals_interactive(void)
+void	signals_on(void)
 {
 	struct sigaction	act;
 
@@ -37,7 +37,7 @@ void	signal_print_newline(int signal)
 	rl_on_new_line();
 }
 
-void	set_signals_noninteractive(void)
+void	signals_off(void)
 {
 	struct sigaction	act;
 

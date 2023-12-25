@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:59:57 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:39:16 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/25 14:27:55 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,9 @@ bool	fill_heredoc(t_data *data, t_io_fds *io, int fd)
 	line = NULL;
 	while (1)
 	{
-		set_signals_interactive();
+		signals_on();
 		line = readline(">");
-		set_signals_noninteractive();
+		signals_off();
 		if (!evaluate_heredoc_line(data, &line, io, &ret))
 			break ;
 		ft_putendl_fd(line, fd);

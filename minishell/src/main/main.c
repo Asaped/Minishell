@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:48:02 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 15:06:27 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/25 15:15:40 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,20 @@
 
 void	minishell(t_data *data)
 {
+	char	*prompt;
+
 	while (1)
 	{
-		set_signals_interactive();
-		data->user_input = readline(PROMPT);
-		set_signals_noninteractive();
+		signals_on();
+		prompt = get_prompt(data);
+		printf("%s\n", prompt);
+		data->user_input = readline(Y "$> " RST);
+		signals_off();
 		if (parse_user_input(data) == true)
 			g_exit_status = execute(data);
 		else
 			g_exit_status = 1;
+		free_ptr(prompt);
 		free_data(data, false);
 	}
 }
