@@ -6,13 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:32:25 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:48:17 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 08:44:53 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	env_var_count(char **env)
+int	venv_count(char **env)
 {
 	int	i;
 

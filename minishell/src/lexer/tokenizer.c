@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:47:38 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 12:47:50 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:11:40 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	tokenization(t_data *data, char *str)
 		else if (status == SQ)
 			errmsg("unexpected EOF while looking for matching", "\'", true);
 		errmsg("syntax error", "unexpected end of file", false);
-		return (1);
+		return (FAILURE);
 	}
-	return (0);
+	return (SUCCESS);
 }

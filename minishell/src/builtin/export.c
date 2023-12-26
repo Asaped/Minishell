@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:29:02 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 15:11:23 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 08:38:24 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ static char	**get_key_value_pair(char *arg)
 
 int	builtin_export(t_data *data, char **args)
 {
-	int		i;
 	char	**tmp;
+	int		i;
 	int		ret;
 
 	ret = EXIT_SUCCESS;

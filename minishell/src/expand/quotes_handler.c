@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 15:10:32 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 15:10:42 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 08:54:34 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,11 @@ bool	has_quote(char *str)
 {
 	int	i;
 
-	i = 0;
-	while (str[i])
+	i = -1;
+	while (str[++i])
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 			return (true);
-		i++;
 	}
 	return (false);
 }

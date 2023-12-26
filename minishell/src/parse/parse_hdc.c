@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 13:00:21 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 15:09:19 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:28:57 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 bool	get_heredoc(t_data *data, t_io_fds *io)
 {
 	int		tmp_fd;
-	bool	ret;
+	bool	res;
 
-	ret = true;
+	res = true;
 	tmp_fd = open(io->infile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	ret = fill_heredoc(data, io, tmp_fd);
+	res = fill_heredoc(data, io, tmp_fd);
 	close(tmp_fd);
-	return (ret);
+	return (res);
 }
 
 static char	*get_heredoc_name(void)

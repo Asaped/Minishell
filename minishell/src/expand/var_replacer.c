@@ -6,22 +6,22 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:41:49 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:41:42 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:03:31 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static int	erase_var(t_token **token_node, char *str, int index)
+static int	venv_clear(t_token **token_node, char *str, int index)
 {
 	int		i;
-	int		j;
+	int		k;
 	int		len;
 	char	*new_str;
 
 	i = 0;
-	j = 0;
-	len = ft_strlen(str) - var_len(str + index);
+	k = 0;
+	len = ft_strlen(str) - venv_len(str + index);
 	new_str = (char *)malloc(sizeof(char) * len + 1);
 	if (!new_str)
 		return (1);
@@ -29,31 +29,30 @@ static int	erase_var(t_token **token_node, char *str, int index)
 	{
 		if (str[i] == '$' && i == index)
 		{
-			i = i + var_len(str + index) + 1;
+			i = i + venv_len(str + index) + 1;
 			if (str[i] == '\0')
 				break ;
 		}
-		new_str[j++] = str[i++];
+		new_str[k++] = str[i++];
 	}
-	new_str[j] = '\0';
+	new_str[k] = '\0';
 	free_ptr((*token_node)->str);
 	(*token_node)->str = new_str;
 	return (0);
 }
 
-static char	*erase_and_replace(t_token **token_node, char *str,
-			char *var_value, int index)
+static char	*erase_replace(t_token **tokens, char *str, char *var_value, int i)
 {
 	char	*newstr;
 	int		newstr_size;
 
-	newstr_size = (ft_strlen(str) - var_len(str + index)
+	newstr_size = (ft_strlen(str) - venv_len(str + i)
 			+ ft_strlen(var_value));
-	newstr = get_new_token_string(str, var_value, newstr_size, index);
-	if (token_node && *token_node)
+	newstr = get_new_token_string(str, var_value, newstr_size, i);
+	if (tokens && *tokens)
 	{
-		free_ptr((*token_node)->str);
-		(*token_node)->str = newstr;
+		free_ptr((*tokens)->str);
+		(*tokens)->str = newstr;
 	}
 	return (newstr);
 }
@@ -62,23 +61,22 @@ int	var_replacer(t_token **token_node, char *var_value, int index)
 {
 	if (var_value == NULL)
 	{
-		if (erase_var(token_node, (*token_node)->str, index) == 1)
+		if (venv_clear(token_node, (*token_node)->str, index) == FAILURE)
 		{
 			free_ptr(var_value);
-			return (1);
+			return (FAILURE);
 		}
 	}
 	else
 	{
-		if (erase_and_replace(token_node, (*token_node)->str, \
-		var_value, index) == NULL)
+		if (!erase_replace(token_node, (*token_node)->str, var_value, index))
 		{
 			free_ptr(var_value);
-			return (1);
+			return (FAILURE);
 		}
 	}
 	free_ptr(var_value);
-	return (0);
+	return (SUCCESS);
 }
 
 char	*replace_str_heredoc(char *str, char *var_value, int index)
@@ -91,7 +89,7 @@ char	*replace_str_heredoc(char *str, char *var_value, int index)
 	else
 	{
 		tmp = str;
-		str = erase_and_replace(NULL, str, var_value, index);
+		str = erase_replace(NULL, str, var_value, index);
 		free_ptr(tmp);
 	}
 	free_ptr(var_value);

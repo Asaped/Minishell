@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:38:17 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:52:01 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:32:21 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_exit_status;
 
-static int	get_children(t_data *data)
+static int	get_child(t_data *data)
 {
 	pid_t	wpid;
 	int		status;
@@ -39,7 +39,7 @@ static int	get_children(t_data *data)
 	return (status);
 }
 
-static int	create_children(t_data *data)
+static int	create_child(t_data *data)
 {
 	t_cmd	*cmd;
 
@@ -53,10 +53,10 @@ static int	create_children(t_data *data)
 			execute_command(data, cmd);
 		cmd = cmd->next;
 	}
-	return (get_children(data));
+	return (get_child(data));
 }
 
-static int	prep_for_exec(t_data *data)
+static int	exec_prep(t_data *data)
 {
 	if (!data || !data->cmd)
 		return (EXIT_SUCCESS);
@@ -76,17 +76,17 @@ int	execute(t_data *data)
 {
 	int	ret;
 
-	ret = prep_for_exec(data);
+	ret = exec_prep(data);
 	if (ret != CMD_NOT_FOUND)
 		return (ret);
 	if (!data->cmd->pipe_output && !data->cmd->prev
 		&& check_if_of(data->cmd->io_fds))
 	{
-		redirect_io(data->cmd->io_fds);
+		io_redirecter(data->cmd->io_fds);
 		ret = execute_builtin(data, data->cmd);
-		restore_io(data->cmd->io_fds);
+		io_restorer(data->cmd->io_fds);
 	}
 	if (ret != CMD_NOT_FOUND)
 		return (ret);
-	return (create_children(data));
+	return (create_child(data));
 }

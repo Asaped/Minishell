@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:33:10 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:47:09 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:32:21 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	close_fds(t_cmd *cmds, bool close_backups)
 		if (cmds->io_fds->fd_out != -1)
 			close(cmds->io_fds->fd_out);
 		if (close_backups)
-			restore_io(cmds->io_fds);
+			io_restorer(cmds->io_fds);
 	}
 	close_pipe_fds(cmds, NULL);
 }
@@ -53,7 +53,7 @@ void	free_io(t_io_fds *io)
 {
 	if (!io)
 		return ;
-	restore_io(io);
+	io_restorer(io);
 	if (io->hdc_delimiter)
 	{
 		unlink(io->infile);

@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:20:11 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/25 15:03:23 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:32:21 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@
 # define CMD_NOT_EXECUTABLE 126
 # define SUCCESS 0
 # define FAILURE 1
+# define ERROR 2
 # define PROMPT "[" R "Minishell" RST "] " Y " $> " RST
 
 /* -------------------------- GLOBAL_VARIABLE ------------------------------- */
@@ -153,7 +154,7 @@ t_token	*insert_token(t_token **head, t_token *to_del, t_token *insert);
 int		var_expander(t_data *data, t_token **token_lst);
 char	*var_recover(t_token *token, char *str, t_data *data);
 char	*var_identifier(char *str);
-int		var_len(char *str);
+int		venv_len(char *str);
 bool	is_valid_char(char c);
 int		var_replacer(t_token **token_node, char *var_value, int index);
 void	var_copy_val(char *new_str, char *var_value, int *j);
@@ -171,10 +172,10 @@ int		add_args_def(t_token **token_node, t_cmd *last_cmd);
 int		create_args_def(t_token **token_node, t_cmd *last_cmd);
 int		add_args_echo(t_token **token_node, t_cmd *last_cmd);
 int		create_args_echo(t_token **token_node, t_cmd *last_cmd);
-char	*var_joiner(t_token **token_node);
+char	*venv_joiner(t_token **token_node);
 int		args_counter(t_token *temp);
 char	**tab_duplicate(int len, char **tab, t_cmd *last, t_token *tmp);
-void	var_remover_empty(t_token **tokens);
+void	venv_remove_empty(t_token **tokens);
 t_cmd	*cmd_creator(bool value);
 void	cmd_adder(t_cmd **alst, t_cmd *new_node);
 t_cmd	*last_cmd(t_cmd *cmd);
@@ -188,15 +189,15 @@ void	parse_append(t_cmd **last_cmd, t_token **token_lst);
 void	parse_heredoc(t_data *data, t_cmd **last_cmd, t_token **token_lst);
 bool	fill_heredoc(t_data *data, t_io_fds *io, int fd);
 void	parse_pipe(t_cmd **cmd, t_token **token_lst);
-int		env_var_count(char **env);
+int		venv_count(char **env);
 int		venv_index(char **env, char *var);
 char	*venv_value(char **env, char *var);
 bool	is_valid_venv_key(char *var);
 bool	venv_set(t_data *data, char *key, char *value);
 bool	venv_delete(t_data *data, int idx);
 int		builtin_env(t_data *data, char **args);
-int		builtin_pwd(t_data *data, char **args);
-int		builtin_echo(t_data *data, char **args);
+int		builtin_pwd(t_data *data);
+int		builtin_echo(char **args);
 int		builtin_export(t_data *data, char **args);
 int		builtin_unset(t_data *data, char **args);
 int		builtin_cd(t_data *data, char **args);
@@ -214,8 +215,8 @@ bool	create_pipes(t_data *data);
 bool	set_pipe_fds(t_cmd *cmds, t_cmd *curr_cmd);
 void	close_pipe_fds(t_cmd *cmds, t_cmd *skip_cmd);
 bool	check_if_of(t_io_fds *io);
-bool	redirect_io(t_io_fds *io);
-bool	restore_io(t_io_fds *io);
+bool	io_redirecter(t_io_fds *io);
+bool	io_restorer(t_io_fds *io);
 bool	get_heredoc(t_data *data, t_io_fds *io);
 char	*get_prompt(t_data *data);
 

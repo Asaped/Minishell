@@ -6,13 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 13:02:53 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:52:01 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:32:21 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-bool	restore_io(t_io_fds *io)
+bool	io_restorer(t_io_fds *io)
 {
 	int	ret;
 
@@ -36,7 +36,7 @@ bool	restore_io(t_io_fds *io)
 	return (ret);
 }
 
-bool	redirect_io(t_io_fds *io)
+bool	io_redirecter(t_io_fds *io)
 {
 	int	ret;
 

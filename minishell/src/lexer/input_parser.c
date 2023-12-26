@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:45:17 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:50:38 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:08:30 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@ static bool	input_is_space(char *input)
 {
 	int	i;
 
-	i = 0;
-	while (input[i])
+	i = -1;
+	while (input[++i])
 	{
 		if (!ft_isspace(input[i]))
 			return (false);
-		i++;
 	}
 	return (true);
 }
@@ -30,7 +29,7 @@ bool	parse_user_input(t_data *data)
 {
 	if (data->user_input == NULL)
 		builtin_exit(data, NULL);
-	else if (ft_strcmp(data->user_input, "\0") == 0)
+	else if (ft_strcmp(data->user_input, "\0") == SUCCESS)
 		return (false);
 	else if (input_is_space(data->user_input))
 		return (true);

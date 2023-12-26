@@ -6,13 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:22:49 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:50:25 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 08:26:38 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	update_wds(t_data *data, char *wd)
+static void	update_current_dir(t_data *data, char *wd)
 {
 	venv_set(data, "OLDPWD", venv_value(data->env, "PWD"));
 	venv_set(data, "PWD", wd);
@@ -29,7 +29,7 @@ static void	update_wds(t_data *data, char *wd)
 	free_ptr(wd);
 }
 
-static bool	chdir_errno_mod(char *path)
+static bool	chdir_error(char *path)
 {
 	if (errno == ESTALE)
 		errno = ENOENT;
@@ -44,8 +44,8 @@ static bool	change_dir(t_data *data, char *path)
 	char	cwd[PATH_MAX];
 
 	ret = NULL;
-	if (chdir(path) != 0)
-		return (chdir_errno_mod(path));
+	if (chdir(path) != SUCCESS)
+		return (chdir_error(path));
 	ret = getcwd(cwd, PATH_MAX);
 	if (!ret)
 	{
@@ -58,7 +58,7 @@ static bool	change_dir(t_data *data, char *path)
 	}
 	else
 		ret = ft_strdup(cwd);
-	update_wds(data, ret);
+	update_current_dir(data, ret);
 	return (true);
 }
 
@@ -67,7 +67,7 @@ int	builtin_cd(t_data *data, char **args)
 	char	*path;
 
 	if (!args || !args[1] || ft_isspace(args[1][0]) || args[1][0] == '\0'
-		|| ft_strncmp(args[1], "--", 3) == 0)
+		|| ft_strncmp(args[1], "--", 3) == SUCCESS)
 	{
 		path = venv_value(data->env, "HOME");
 		if (!path || *path == '\0' || ft_isspace(*path))
@@ -76,7 +76,7 @@ int	builtin_cd(t_data *data, char **args)
 	}
 	if (args[2])
 		return (errmsg_cmd("cd", NULL, "too many arguments", EXIT_FAILURE));
-	if (ft_strncmp(args[1], "-", 2) == 0)
+	if (ft_strncmp(args[1], "-", 2) == SUCCESS)
 	{
 		path = venv_value(data->env, "OLDPWD");
 		if (!path)

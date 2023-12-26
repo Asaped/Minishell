@@ -6,13 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:59:34 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 15:09:33 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:24:23 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	open_outfile_append(t_io_fds *io, char *file, char *var_filename)
+static void	open_of_append(t_io_fds *io, char *file, char *var_filename)
 {
 	if (!remove_old_file_ref(io, false))
 		return ;
@@ -35,7 +35,7 @@ void	parse_append(t_cmd **last, t_token **token_lst)
 	temp = *token_lst;
 	cmd = last_cmd(*last);
 	init_io(cmd);
-	open_outfile_append(cmd->io_fds, temp->next->str, temp->next->str_copy);
+	open_of_append(cmd->io_fds, temp->next->str, temp->next->str_copy);
 	if (temp->next->next)
 		temp = temp->next->next;
 	else

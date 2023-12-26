@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:36:44 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 15:11:01 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 08:50:20 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,24 @@ int	execute_builtin(t_data *data, t_cmd *cmd)
 	int	ret;
 
 	ret = CMD_NOT_FOUND;
-	if (ft_strncmp(cmd->command, "cd", 3) == 0)
+	if (ft_strncmp(cmd->command, "cd", 3) == SUCCESS)
 		ret = builtin_cd(data, cmd->args);
-	else if (ft_strncmp(cmd->command, "echo", 5) == 0)
-		ret = builtin_echo(data, cmd->args);
-	else if (ft_strncmp(cmd->command, "env", 4) == 0)
+	else if (ft_strncmp(cmd->command, "echo", 5) == SUCCESS)
+		ret = builtin_echo(cmd->args);
+	else if (ft_strncmp(cmd->command, "env", 4) == SUCCESS)
 		ret = builtin_env(data, cmd->args);
-	else if (ft_strncmp(cmd->command, "export", 7) == 0)
+	else if (ft_strncmp(cmd->command, "export", 7) == SUCCESS)
 		ret = builtin_export(data, cmd->args);
-	else if (ft_strncmp(cmd->command, "pwd", 4) == 0)
-		ret = builtin_pwd(data, cmd->args);
-	else if (ft_strncmp(cmd->command, "unset", 6) == 0)
+	else if (ft_strncmp(cmd->command, "pwd", 4) == SUCCESS)
+		ret = builtin_pwd(data);
+	else if (ft_strncmp(cmd->command, "unset", 6) == SUCCESS)
 		ret = builtin_unset(data, cmd->args);
-	else if (ft_strncmp(cmd->command, "exit", 5) == 0)
+	else if (ft_strncmp(cmd->command, "exit", 5) == SUCCESS)
 		ret = builtin_exit(data, cmd->args);
 	return (ret);
 }
 
-static int	execute_sys_bin(t_data *data, t_cmd *cmd)
+static int	execute_system(t_data *data, t_cmd *cmd)
 {
 	if (!cmd->command || cmd->command[0] == '\0')
 		return (CMD_NOT_FOUND);
@@ -48,7 +48,7 @@ static int	execute_sys_bin(t_data *data, t_cmd *cmd)
 	return (EXIT_FAILURE);
 }
 
-static int	execute_local_bin(t_data *data, t_cmd *cmd)
+static int	execute_local(t_data *data, t_cmd *cmd)
 {
 	int	ret;
 
@@ -70,18 +70,18 @@ int	execute_command(t_data *data, t_cmd *cmd)
 	if (!check_if_of(cmd->io_fds))
 		exit_shell(data, EXIT_FAILURE);
 	set_pipe_fds(data->cmd, cmd);
-	redirect_io(cmd->io_fds);
+	io_redirecter(cmd->io_fds);
 	close_fds(data->cmd, false);
 	if (ft_strchr(cmd->command, '/') == NULL)
 	{
 		ret = execute_builtin(data, cmd);
 		if (ret != CMD_NOT_FOUND)
 			exit_shell(data, ret);
-		ret = execute_sys_bin(data, cmd);
+		ret = execute_system(data, cmd);
 		if (ret != CMD_NOT_FOUND)
 			exit_shell(data, ret);
 	}
-	ret = execute_local_bin(data, cmd);
+	ret = execute_local(data, cmd);
 	exit_shell(data, ret);
 	return (ret);
 }

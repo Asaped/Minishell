@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:43:01 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:41:42 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 08:58:14 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static bool	is_next_char_a_sep(char c)
 		return (false);
 }
 
-static bool	var_between_quotes(char *str, int i)
+static bool	venv_inquotes(char *str, int i)
 {
 	if (i > 0)
 	{
@@ -60,7 +60,7 @@ int	var_expander(t_data *data, t_token **token_lst)
 				update_status(&temp, temp->str[i]);
 				if (temp->str[i] == '$'
 					&& is_next_char_a_sep(temp->str[i + 1]) == false
-					&& var_between_quotes(temp->str, i) == false
+					&& venv_inquotes(temp->str, i) == false
 					&& (temp->status == DEFAULT || temp->status == DQ))
 					var_replacer(&temp,
 						var_recover(temp, temp->str + i, data), i);
@@ -70,7 +70,7 @@ int	var_expander(t_data *data, t_token **token_lst)
 		}
 		temp = temp->next;
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 char	*var_expand_hdc(t_data *data, char *str)
@@ -82,7 +82,7 @@ char	*var_expand_hdc(t_data *data, char *str)
 	{
 		if (str[i] == '$'
 			&& is_next_char_a_sep(str[i + 1]) == false
-			&& var_between_quotes(str, i) == false)
+			&& venv_inquotes(str, i) == false)
 			str = replace_str_heredoc(str, var_recover(NULL, str + i, data), i);
 		else
 			i++;

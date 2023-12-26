@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:48:02 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/25 15:15:40 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:13:06 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	minishell(t_data *data)
 		if (parse_user_input(data) == true)
 			g_exit_status = execute(data);
 		else
-			g_exit_status = 1;
+			g_exit_status = FAILURE;
 		free_ptr(prompt);
 		free_data(data, false);
 	}
@@ -43,5 +43,5 @@ int	main(int argc, char **argv, char **env)
 		exit_shell(NULL, EXIT_FAILURE);
 	minishell(&data);
 	exit_shell(&data, g_exit_status);
-	return (0);
+	return (SUCCESS);
 }

@@ -6,13 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:58:33 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:45:55 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:22:24 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-char	*var_joiner(t_token **token_node)
+char	*venv_joiner(t_token **token_node)
 {
 	t_token	*temp;
 	char	*str;
@@ -61,7 +61,7 @@ char	**tab_duplicate(int len, char **tab, t_cmd *last, t_token *tmp)
 	while (tmp->type == WORD || tmp->type == VAR)
 	{
 		if (tmp->join == true)
-			tab[i] = var_joiner(&tmp);
+			tab[i] = venv_joiner(&tmp);
 		else
 			tab[i] = ft_strdup(tmp->str);
 		i++;
@@ -71,7 +71,7 @@ char	**tab_duplicate(int len, char **tab, t_cmd *last, t_token *tmp)
 	return (tab);
 }
 
-void	var_remover_empty(t_token **tokens)
+void	venv_remove_empty(t_token **tokens)
 {
 	t_token	*temp;
 

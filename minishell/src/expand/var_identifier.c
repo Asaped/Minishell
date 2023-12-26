@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:39:43 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:41:03 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 08:59:46 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	is_valid_char(char c)
 		return (true);
 }
 
-int	var_len(char *str)
+int	venv_len(char *str)
 {
 	int		i;
 	int		count;
@@ -61,7 +61,7 @@ char	*var_identifier(char *str)
 		}
 		i++;
 	}
-	len = var_len(str);
+	len = venv_len(str);
 	var = ft_substr(str, start, len);
 	if (!var)
 		return (NULL);

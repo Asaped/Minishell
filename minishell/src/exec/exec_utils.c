@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:37:34 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:51:23 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 08:53:26 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,12 @@ int	check_cmd_not_found(t_data *data, t_cmd *cmd)
 		&& venv_index(data->env, "PATH") != -1)
 		return (errmsg_cmd(cmd->command, NULL, "command not found",
 				CMD_NOT_FOUND));
-	if (access(cmd->command, F_OK) != 0)
+	if (access(cmd->command, F_OK) != SUCCESS)
 		return (errmsg_cmd(cmd->command, NULL, strerror(errno), CMD_NOT_FOUND));
 	else if (cmd_is_dir(cmd->command))
 		return (errmsg_cmd(cmd->command, NULL, "Is a directory",
 				CMD_NOT_EXECUTABLE));
-	else if (access(cmd->command, F_OK | X_OK) != 0)
+	else if (access(cmd->command, F_OK | X_OK) != SUCCESS)
 		return (errmsg_cmd(cmd->command, NULL, strerror(errno),
 				CMD_NOT_EXECUTABLE));
 	return (EXIT_SUCCESS);

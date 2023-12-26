@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 13:01:51 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 15:08:57 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:31:30 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 char	*get_rel_path(char *file_to_open)
 {
 	char	*path;
-	char	*ret;
+	char	*res;
 
 	if (file_to_open[0] == '/')
 		return (ft_strdup(file_to_open));
 	path = ft_strdup("./");
-	ret = ft_strjoin(path, file_to_open);
-	printf("PARSING - Get_rel_path function return : %s\n", ret);
-	return (ret);
+	res = ft_strjoin(path, file_to_open);
+	printf("PARSING - Get_rel_path function return : %s\n", res);
+	return (res);
 }
 
 static void	open_outfile_trunc(t_io_fds *io, char *file, char *var_filename)

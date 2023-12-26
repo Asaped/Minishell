@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:34:54 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/25 15:25:08 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:08:05 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ static void	increment_shlvl(t_data *data)
 	return ;
 }
 
-static bool	init_env(t_data *data, char **env)
+static bool	init_venv(t_data *data, char **env)
 {
 	int		i;
 
-	data->env = ft_calloc(env_var_count(env) + 1, sizeof * data->env);
+	data->env = ft_calloc(venv_count(env) + 1, sizeof * data->env);
 	if (!data->env)
 		return (false);
 	i = -1;
@@ -71,9 +71,9 @@ static bool	init_wds(t_data *data)
 
 bool	init_data(t_data *data, char **env)
 {
-	if (!init_env(data, env))
+	if (!init_venv(data, env))
 	{
-		errmsg_cmd("Fatal", NULL, "Could not initialize environment", 1);
+		errmsg_cmd("Fatal", NULL, "Could not initialize environment", FAILURE);
 		return (false);
 	}
 	if (!init_wds(data))
@@ -85,7 +85,7 @@ bool	init_data(t_data *data, char **env)
 	data->user_input = NULL;
 	data->cmd = NULL;
 	data->pid = -1;
-	g_exit_status = 0;
+	g_exit_status = SUCCESS;
 	return (true);
 }
 

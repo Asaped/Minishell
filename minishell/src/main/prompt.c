@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:29:29 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/25 15:41:32 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:15:52 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@ char	*get_prompt(t_data *data)
 
 	user = venv_value(data->env, "USER");
 	if (!user)
-		user = "Tony Montana";
+		user = "Minishell";
 	lvl = venv_value(data->env, "SHLVL");
 	if (!lvl)
-		lvl = "69";
+		lvl = "42";
 	path = venv_value(data->env, "PWD");
 	if (!path)
-		path = "/say/hello/to/my/little/friend";
+		path = "I/dont/know/where/I/am/";
 	return (get_prompt_result(user, lvl, path));
 }

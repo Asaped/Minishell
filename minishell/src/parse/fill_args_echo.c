@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:59:06 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:45:55 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:22:24 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	create_args_echo(t_token **token_node, t_cmd *last_cmd)
 	t_token	*temp;
 	int		i;
 
-	var_remover_empty(token_node);
+	venv_remove_empty(token_node);
 	temp = *token_node;
 	nb_args = args_counter(temp);
 	last_cmd->args = malloc(sizeof(char *) * (nb_args + 2));
@@ -30,7 +30,7 @@ int	create_args_echo(t_token **token_node, t_cmd *last_cmd)
 	while (temp->type == WORD || temp->type == VAR)
 	{
 		if (temp->join == true)
-			last_cmd->args[i] = var_joiner(&temp);
+			last_cmd->args[i] = venv_joiner(&temp);
 		else
 			last_cmd->args[i] = ft_strdup(temp->str);
 		i++;
@@ -48,7 +48,7 @@ int	add_args_echo(t_token **token_node, t_cmd *last_cmd)
 	char	**new_tab;
 	t_token	*temp;
 
-	var_remover_empty(token_node);
+	venv_remove_empty(token_node);
 	temp = *token_node;
 	nb_args = args_counter(temp);
 	len = 0;

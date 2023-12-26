@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:28:06 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 15:12:29 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 08:37:07 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static bool	check_out_of_range(int neg, unsigned long long num, bool *error)
 	return (*error);
 }
 
-static int	ft_atoi_long(const char *str, bool *error)
+static int	ft_atol(const char *str, bool *error)
 {
 	unsigned long long	num;
 	int					neg;
@@ -69,11 +69,11 @@ static int	get_exit_code(char *arg, bool *error)
 			*error = true;
 		i++;
 	}
-	i = ft_atoi_long(arg, error);
+	i = ft_atol(arg, error);
 	return (i % 256);
 }
 
-static bool	is_quiet_mode(t_data *data)
+static bool	is_quiet(t_data *data)
 {
 	t_cmd	*cmd;
 
@@ -91,10 +91,10 @@ int	builtin_exit(t_data *data, char **args)
 	bool	error;
 	bool	quiet;
 
-	quiet = is_quiet_mode(data);
+	quiet = is_quiet(data);
 	error = false;
 	if (!quiet)
-		ft_putendl_fd("exit", 2);
+		ft_putendl_fd("exit", ERROR);
 	if (!args || !args[1])
 		exit_code = g_exit_status;
 	else
@@ -102,10 +102,10 @@ int	builtin_exit(t_data *data, char **args)
 		exit_code = get_exit_code(args[1], &error);
 		if (error)
 			exit_code = errmsg_cmd("exit", args[1], "numeric argument required",
-					2);
+					ERROR);
 		else if (args[2])
-			return (errmsg_cmd("exit", NULL, "too many arguments", 1));
+			return (errmsg_cmd("exit", NULL, "too many arguments", FAILURE));
 	}
 	exit_shell(data, exit_code);
-	return (2);
+	return (ERROR);
 }

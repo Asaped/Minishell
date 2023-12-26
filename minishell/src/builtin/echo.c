@@ -6,34 +6,33 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:25:10 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:49:55 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 08:31:44 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static bool	is_n_flag(char *arg)
+static bool	has_flag(char *arg)
 {
 	int		i;
-	bool	n_flag;
+	bool	flag_n;
 
-	n_flag = false;
-	i = 0;
-	if (arg[i] != '-')
-		return (n_flag);
-	i++;
+	flag_n = false;
+	i = -1;
+	if (arg[++i] != '-')
+		return (flag_n);
 	while (arg[i] && arg[i] == 'n')
 		i++;
 	if (arg[i] == '\0')
-		n_flag = true;
-	return (n_flag);
+		flag_n = true;
+	return (flag_n);
 }
 
-static void	echo_print_args(char **args, bool n_flag, int i)
+static void	print_args_echo(char **args, bool flag_n, int i)
 {
 	if (!args[i])
 	{
-		if (!n_flag)
+		if (!flag_n)
 			ft_putchar_fd('\n', STDOUT_FILENO);
 		return ;
 	}
@@ -42,25 +41,24 @@ static void	echo_print_args(char **args, bool n_flag, int i)
 		ft_putstr_fd(args[i], STDOUT_FILENO);
 		if (args[i + 1])
 			ft_putchar_fd(' ', STDOUT_FILENO);
-		else if (!args[i + 1] && !n_flag)
+		else if (!args[i + 1] && !flag_n)
 			ft_putchar_fd('\n', STDOUT_FILENO);
 		i++;
 	}
 }
 
-int	builtin_echo(t_data *data, char **args)
+int	builtin_echo(char **args)
 {
 	int		i;
-	bool	n_flag;
+	bool	flag_n;
 
-	(void)data;
-	n_flag = false;
+	flag_n = false;
 	i = 1;
-	while (args[i] && is_n_flag(args[i]))
+	while (args[i] && has_flag(args[i]))
 	{
-		n_flag = true;
+		flag_n = true;
 		i++;
 	}
-	echo_print_args(args, n_flag, i);
+	print_args_echo(args, flag_n, i);
 	return (EXIT_SUCCESS);
 }

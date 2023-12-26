@@ -6,13 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:57:20 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:46:38 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:25:18 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	prep_no_arg_commands(t_data *data)
+static void	prepno_arg_cmds(t_data *data)
 {
 	t_cmd	*cmd;
 
@@ -58,5 +58,5 @@ void	create_commands(t_data *data, t_token *token)
 		else if (temp->type == END)
 			break ;
 	}
-	prep_no_arg_commands(data);
+	prepno_arg_cmds(data);
 }

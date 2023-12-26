@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:58:07 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:44:31 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:19:53 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,27 +52,26 @@ int	create_args_def(t_token **token_node, t_cmd *last_cmd)
 	return (SUCCESS);
 }
 
-static char	**copy_default_in_new_tab(
-	int len, char **new_tab, t_cmd *last_cmd, t_token **tk_node)
+static char	**copy_def_tab(int len, char **tab, t_cmd *last_cmd, t_token **tks)
 {
 	int		i;
 	t_token	*temp;
 
 	i = 0;
-	temp = *tk_node;
+	temp = *tks;
 	while (i < len)
 	{
-		new_tab[i] = last_cmd->args[i];
+		tab[i] = last_cmd->args[i];
 		i++;
 	}
 	while (temp->type == WORD || temp->type == VAR)
 	{
-		new_tab[i] = ft_strdup(temp->str);
+		tab[i] = ft_strdup(temp->str);
 		i++;
 		temp = temp->next;
 	}
-	new_tab[i] = NULL;
-	return (new_tab);
+	tab[i] = NULL;
+	return (tab);
 }
 
 int	add_args_def(t_token **token_node, t_cmd *last_cmd)
@@ -95,7 +94,7 @@ int	add_args_def(t_token **token_node, t_cmd *last_cmd)
 	new_tab = malloc(sizeof(char *) * (i + len + 1));
 	if (!new_tab)
 		return (FAILURE);
-	new_tab = copy_default_in_new_tab(len, new_tab, last_cmd, token_node);
+	new_tab = copy_def_tab(len, new_tab, last_cmd, token_node);
 	free(last_cmd->args);
 	last_cmd->args = new_tab;
 	*token_node = temp;

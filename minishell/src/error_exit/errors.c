@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:33:52 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:31:34 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 08:46:42 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ char	*join_strs(char *str, char *add)
 
 static bool	add_detail_quotes(char *cmd)
 {
-	if (ft_strncmp(cmd, "export", 7) == 0
-		|| ft_strncmp(cmd, "unset", 6) == 0)
+	if (ft_strncmp(cmd, "export", 7) == SUCCESS
+		|| ft_strncmp(cmd, "unset", 6) == SUCCESS)
 		return (true);
 	return (false);
 }

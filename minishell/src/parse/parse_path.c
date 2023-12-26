@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:39:08 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:51:43 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:30:35 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*find_valid_cmd_path(char *cmd, char **paths)
 				"an unexpected error occured", EXIT_FAILURE);
 			return (NULL);
 		}
-		if (access(cmd_path, F_OK | X_OK) == 0)
+		if (access(cmd_path, F_OK | X_OK) == SUCCESS)
 			return (cmd_path);
 		free_ptr(cmd_path);
 		i++;

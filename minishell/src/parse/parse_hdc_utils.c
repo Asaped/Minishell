@@ -6,13 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:59:57 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/25 14:27:55 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 09:27:16 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static char	*make_str_from_tab(char **tab)
+static char	*tab_to_str(char **tab)
 {
 	char	*str;
 	char	*tmp;
@@ -59,22 +59,21 @@ static char	*get_expanded_var_line(t_data *data, char *line)
 		}
 		i++;
 	}
-	return (make_str_from_tab(words));
+	return (tab_to_str(words));
 }
 
-static bool	evaluate_heredoc_line(t_data *data, char **line,
-									t_io_fds *io, bool *ret)
+static bool	check_hdc_line(t_data *data, char **line, t_io_fds *io, bool *res)
 {
 	if (*line == NULL)
 	{
 		errmsg_cmd("warning", "here-document delimited by end-of-file: wanted",
 			io->hdc_delimiter, true);
-		*ret = true;
+		*res = true;
 		return (false);
 	}
-	if (ft_strcmp(*line, io->hdc_delimiter) == 0)
+	if (ft_strcmp(*line, io->hdc_delimiter) == SUCCESS)
 	{
-		*ret = true;
+		*res = true;
 		return (false);
 	}
 	if (io->hdc_quotes == false && ft_strchr(*line, '$'))
@@ -83,7 +82,7 @@ static bool	evaluate_heredoc_line(t_data *data, char **line,
 		if (!(*line))
 		{
 			free_ptr(*line);
-			*ret = false;
+			*res = false;
 			return (false);
 		}
 	}
@@ -102,7 +101,7 @@ bool	fill_heredoc(t_data *data, t_io_fds *io, int fd)
 		signals_on();
 		line = readline(">");
 		signals_off();
-		if (!evaluate_heredoc_line(data, &line, io, &ret))
+		if (!check_hdc_line(data, &line, io, &ret))
 			break ;
 		ft_putendl_fd(line, fd);
 		free_ptr(line);

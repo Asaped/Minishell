@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:27:05 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:49:34 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/26 08:32:41 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	builtin_env(t_data *data, char **args)
 	int	i;
 
 	if (args && args[1])
-		return (errmsg_cmd("env", NULL, "too many arguments", 2));
+		return (errmsg_cmd("env", NULL, "too many arguments", ERROR));
 	i = 0;
 	if (!data->env)
 		return (EXIT_FAILURE);
