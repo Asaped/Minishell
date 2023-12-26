@@ -94,7 +94,7 @@ _rl_copy_to_kill_ring (char *text, int append)
   int slot;
 
   /* First, find the slot to work with. */
-  if (_rl_last_cmd_was_kill == 0 || rl_kill_ring == 0)
+  if (_rl_last_command_was_kill == 0 || rl_kill_ring == 0)
     {
       /* Get a new slot.  */
       if (rl_kill_ring == 0)
@@ -128,7 +128,7 @@ _rl_copy_to_kill_ring (char *text, int append)
     slot = rl_kill_ring_length - 1;
 
   /* If the last command was a kill, prepend or append. */
-  if (_rl_last_cmd_was_kill && rl_kill_ring[slot] && rl_editing_mode != vi_mode)
+  if (_rl_last_command_was_kill && rl_kill_ring[slot] && rl_editing_mode != vi_mode)
     {
       old = rl_kill_ring[slot];
       new = (char *)xmalloc (1 + strlen (old) + strlen (text));
@@ -167,7 +167,7 @@ rl_kill_text (int from, int to)
   /* Is there anything to kill? */
   if (from == to)
     {
-      _rl_last_cmd_was_kill++;
+      _rl_last_command_was_kill++;
       return 0;
     }
 
@@ -178,7 +178,7 @@ rl_kill_text (int from, int to)
 
   _rl_copy_to_kill_ring (text, from < to);
 
-  _rl_last_cmd_was_kill++;
+  _rl_last_command_was_kill++;
   return 0;
 }
 
@@ -433,7 +433,7 @@ region_kill_internal (int delete)
     }
 
   _rl_fix_point (1);
-  _rl_last_cmd_was_kill++;
+  _rl_last_command_was_kill++;
   return 0;
 }
 

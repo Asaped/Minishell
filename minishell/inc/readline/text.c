@@ -1114,7 +1114,7 @@ rl_newline (int count, int key)
   if (rl_editing_mode == vi_mode)
     {
       _rl_vi_done_inserting ();
-      if (_rl_vi_textmod_command (_rl_vi_last_cmd) == 0)	/* XXX */
+      if (_rl_vi_textmod_command (_rl_vi_last_command) == 0)	/* XXX */
 	_rl_vi_reset_last ();
     }
 #endif /* VI_MODE */

@@ -130,7 +130,7 @@ int rl_insert_mode = RL_IM_DEFAULT;
 int rl_dispatching;
 
 /* Non-zero if the previous command was a kill command. */
-int _rl_last_cmd_was_kill = 0;
+int _rl_last_command_was_kill = 0;
 
 /* The current value of the numeric argument specified by the user. */
 int rl_numeric_arg = 1;
@@ -574,7 +574,7 @@ readline_internal_charloop (void)
   while (rl_done == 0)
     {
 #endif
-      lk = _rl_last_cmd_was_kill;
+      lk = _rl_last_command_was_kill;
 
 #if defined (HAVE_POSIX_SIGSETJMP)
       code = sigsetjmp (_rl_top_level, 0);
@@ -694,11 +694,11 @@ readline_internal_charloop (void)
 	  RL_CHECK_SIGNALS ();
 	}
 
-      /* If there was no change in _rl_last_cmd_was_kill, then no kill
+      /* If there was no change in _rl_last_command_was_kill, then no kill
 	 has taken place.  Note that if input is pending we are reading
 	 a prefix command, so nothing has changed yet. */
-      if (rl_pending_input == 0 && lk == _rl_last_cmd_was_kill)
-	_rl_last_cmd_was_kill = 0;
+      if (rl_pending_input == 0 && lk == _rl_last_command_was_kill)
+	_rl_last_command_was_kill = 0;
 
       _rl_internal_char_cleanup ();
 

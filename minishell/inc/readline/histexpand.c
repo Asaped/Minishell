@@ -907,7 +907,7 @@ int
 history_expand (char *hstring, char **output)
 {
   register int j;
-  int i, r, l, passc, cc, modified, eindex, only_printing, DQ, SQ, flag;
+  int i, r, l, passc, cc, modified, eindex, only_printing, dquote, squote, flag;
   char *string;
 
   /* The output string, and its length. */
@@ -970,17 +970,17 @@ history_expand (char *hstring, char **output)
 
       /* `!' followed by one of the characters in history_no_expand_chars
 	 is NOT an expansion. */
-      DQ = history_quoting_state == '"';
-      SQ = history_quoting_state == '\'';
+      dquote = history_quoting_state == '"';
+      squote = history_quoting_state == '\'';
 
       /* If the calling application tells us we are already reading a
 	 single-quoted string, consume the rest of the string right now
 	 and then go on. */
       i = 0;
-      if (SQ && history_quotes_inhibit_expansion)
+      if (squote && history_quotes_inhibit_expansion)
 	{
 	  hist_string_extract_single_quoted (string, &i, 0);
-	  SQ = 0;
+	  squote = 0;
 	  if (string[i])
 	    i++;
 	}
@@ -1006,7 +1006,7 @@ history_expand (char *hstring, char **output)
 	     history expansion performed on it.
 	     Skip the rest of the line and break out of the loop. */
 	  if (history_comment_char && string[i] == history_comment_char &&
-	      DQ == 0 &&
+	      dquote == 0 &&
 	      (i == 0 || member (string[i - 1], history_word_delimiters)))
 	    {
 	      while (string[i])
@@ -1017,12 +1017,12 @@ history_expand (char *hstring, char **output)
 	    {
 	      if (cc == 0 || member (cc, history_no_expand_chars))
 		continue;
-	      /* DQ won't be set unless history_quotes_inhibit_expansion
+	      /* DQUOTE won't be set unless history_quotes_inhibit_expansion
 		 is set.  The idea here is to treat double-quoted strings the
 		 same as the word outside double quotes; in effect making the
-		 double quote part of history_no_expand_chars when DQ is
+		 double quote part of history_no_expand_chars when DQUOTE is
 		 set. */
-	      else if (DQ && cc == '"')
+	      else if (dquote && cc == '"')
 		continue;
 	      /* If the calling application has set
 		 history_inhibit_expansion_function to a function that checks
@@ -1037,7 +1037,7 @@ history_expand (char *hstring, char **output)
 	    }
 	  /* Shell-like quoting: allow backslashes to quote double quotes
 	     inside a double-quoted string. */
-	  else if (DQ && string[i] == '\\' && cc == '"')
+	  else if (dquote && string[i] == '\\' && cc == '"')
 	    i++;
 	  /* More shell-like quoting:  if we're paying attention to single
 	     quotes and letting them quote the history expansion character,
@@ -1045,9 +1045,9 @@ history_expand (char *hstring, char **output)
 	     quotes are not special inside double-quoted strings. */
 	  else if (history_quotes_inhibit_expansion && string[i] == '"')
 	    {
-	      DQ = 1 - DQ;
+	      dquote = 1 - dquote;
 	    }
-	  else if (DQ == 0 && history_quotes_inhibit_expansion && string[i] == '\'')
+	  else if (dquote == 0 && history_quotes_inhibit_expansion && string[i] == '\'')
 	    {
 	      /* If this is bash, single quotes inhibit history expansion. */
 	      flag = (i > 0 && string[i - 1] == '$');
@@ -1073,19 +1073,19 @@ history_expand (char *hstring, char **output)
     }
 
   /* Extract and perform the substitution. */
-  DQ = history_quoting_state == '"';
-  SQ = history_quoting_state == '\'';
+  dquote = history_quoting_state == '"';
+  squote = history_quoting_state == '\'';
 
   /* If the calling application tells us we are already reading a
      single-quoted string, consume the rest of the string right now
      and then go on. */
   i = j = 0;
-  if (SQ && history_quotes_inhibit_expansion)
+  if (squote && history_quotes_inhibit_expansion)
     {
       int c;
 
       hist_string_extract_single_quoted (string, &i, 0);
-      SQ = 0;
+      squote = 0;
       for (c = 0; c < i; c++)
 	ADD_CHAR (string[c]);      
       if (string[i])
@@ -1147,7 +1147,7 @@ history_expand (char *hstring, char **output)
 	  break;
 
 	case '"':
-	  DQ = 1 - DQ;
+	  dquote = 1 - dquote;
 	  ADD_CHAR (tchar);
 	  break;
 	  
@@ -1156,12 +1156,12 @@ history_expand (char *hstring, char **output)
 	    /* If history_quotes_inhibit_expansion is set, single quotes
 	       inhibit history expansion, otherwise they are treated like
 	       double quotes. */
-	    if (SQ)
+	    if (squote)
 	      {
-	        SQ = 0;
+	        squote = 0;
 	        ADD_CHAR (tchar);
 	      }
-	    else if (DQ == 0 && history_quotes_inhibit_expansion)
+	    else if (dquote == 0 && history_quotes_inhibit_expansion)
 	      {
 		int quote, slen;
 
@@ -1176,9 +1176,9 @@ history_expand (char *hstring, char **output)
 		ADD_STRING (temp);
 		xfree (temp);
 	      }
-	    else if (DQ == 0 && SQ == 0 && history_quotes_inhibit_expansion == 0)
+	    else if (dquote == 0 && squote == 0 && history_quotes_inhibit_expansion == 0)
 	      {
-	        SQ = 1;
+	        squote = 1;
 	        ADD_CHAR (string[i]);
 	      }
 	    else
@@ -1187,7 +1187,7 @@ history_expand (char *hstring, char **output)
 	  }
 
 	case -2:		/* history_comment_char */
-	  if ((DQ == 0 || history_quotes_inhibit_expansion == 0) &&
+	  if ((dquote == 0 || history_quotes_inhibit_expansion == 0) &&
 	      (i == 0 || member (string[i - 1], history_word_delimiters)))
 	    {
 	      temp = (char *)xmalloc (l - i + 1);
@@ -1207,7 +1207,7 @@ history_expand (char *hstring, char **output)
 	     characters in history_no_expand_chars, then it is not a
 	     candidate for expansion of any kind. */
 	  if (cc == 0 || member (cc, history_no_expand_chars) ||
-			 (DQ && cc == '"'))
+			 (dquote && cc == '"'))
 	    {
 	      ADD_CHAR (string[i]);
 	      break;
@@ -1256,7 +1256,7 @@ history_expand (char *hstring, char **output)
 	      break;
 	    }
 #endif
-	  qc = SQ ? '\'' : (DQ ? '"' : 0);
+	  qc = squote ? '\'' : (dquote ? '"' : 0);
 	  r = history_expand_internal (string, i, qc, &eindex, &temp, result);
 	  if (r < 0)
 	    {

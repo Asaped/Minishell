@@ -564,7 +564,7 @@ extern unsigned char _rl_parsing_conditionalized_out;
 extern Keymap _rl_keymap;
 extern FILE *_rl_in_stream;
 extern FILE *_rl_out_stream;
-extern int _rl_last_cmd_was_kill;
+extern int _rl_last_command_was_kill;
 extern int _rl_eof_char;
 extern procenv_t _rl_top_level;
 extern _rl_keyseq_cxt *_rl_kscxt;
@@ -620,7 +620,7 @@ extern int _rl_doing_an_undo;
 extern int _rl_undo_group_level;
 
 /* vi_mode.c */
-extern int _rl_vi_last_cmd;
+extern int _rl_vi_last_command;
 extern int _rl_vi_redoing;
 extern _rl_vimotion_cxt *_rl_vimvcxt;
 

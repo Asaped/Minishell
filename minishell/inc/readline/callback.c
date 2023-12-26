@@ -115,7 +115,10 @@ rl_callback_handler_install (const char *prompt, rl_vcpfunc_t *linefunc)
 #define CALLBACK_READ_RETURN() \
   do { \
     if (rl_persistent_signal_handlers == 0) \
-      rl_clear_signals (); \
+      { \
+        rl_clear_signals (); \
+        if (_rl_caught_signal) _rl_signal_handler (_rl_caught_signal); \
+      } \
     return; \
   } while (0)
 #else
@@ -230,7 +233,7 @@ rl_callback_read_char (void)
 	  eof = _rl_arg_callback (_rl_argcxt);
 	  if (eof == 0 && (RL_ISSTATE (RL_STATE_NUMERICARG) == 0) && RL_ISSTATE (RL_STATE_INPUTPENDING))
 	    rl_callback_read_char ();
-	  /* XXX - this should handle _rl_last_cmd_was_kill better */
+	  /* XXX - this should handle _rl_last_command_was_kill better */
 	  else if (RL_ISSTATE (RL_STATE_NUMERICARG) == 0)
 	    _rl_internal_char_cleanup ();
 
