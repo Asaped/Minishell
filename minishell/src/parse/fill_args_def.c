@@ -6,13 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:58:07 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:19:53 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/27 14:27:01 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	count_arguments(t_token *temp)
+static int	count_arguments(t_token *temp)
 {
 	int	i;
 

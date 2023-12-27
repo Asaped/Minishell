@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:32:25 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 08:44:53 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/27 14:10:22 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*venv_value(char **env, char *var)
 	return (NULL);
 }
 
-bool	is_valid_venv_key(char *var)
+bool	venv_valid_key(char *var)
 {
 	int	i;
 

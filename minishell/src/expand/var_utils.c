@@ -6,13 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:42:33 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:06:26 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/27 14:19:48 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	venv_copy_val(char *new_str, char *venv_val, int *pos)
+static void	venv_copy_val(char *new_str, char *venv_val, int *pos)
 {
 	int	k;
 
