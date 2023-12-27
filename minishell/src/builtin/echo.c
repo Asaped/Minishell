@@ -6,18 +6,18 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:25:10 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/27 12:20:01 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/27 14:55:34 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static bool has_flag(char *arg)
+static bool	has_flag(char *arg)
 {
-    if (ft_strcmp(arg, "-n") == SUCCESS)
-        return (true);
-    else
-        return (false);
+	if (ft_strcmp(arg, "-n") == SUCCESS)
+		return (true);
+	else
+		return (false);
 }
 
 static void	print_args_echo(char **args, bool flag_n, int i)
