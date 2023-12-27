@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:20:11 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/27 14:34:07 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/27 14:38:22 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,10 +226,10 @@ void	close_pipe_fds(t_cmd *cmds, t_cmd *skip_cmd);
 bool	create_pipes(t_data *data);
 bool	set_pipe_fds(t_cmd *cmds, t_cmd *curr_cmd);
 /* signals */
-void	signal_reset_prompt(int sig)
-void	signals_on(void)
-void	signal_print_newline(int signal)
-void	signals_off(void)
-void	ignore_sigquit(void)
+void	signal_reset_prompt(int sig);
+void	signals_on(void);
+void	signal_print_newline(int signal);
+void	signals_off(void);
+void	ignore_sigquit(void);
 
 #endif
