@@ -37,8 +37,6 @@ Minishell est un exemple complexe d'application de shell qui démontre la capaci
 
 ---
 
-<br>
-
 # En détail
 
 ## Index
