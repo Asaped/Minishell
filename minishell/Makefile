@@ -6,7 +6,7 @@
 #    By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 20:46:48 by cedmulle          #+#    #+#              #
-#    Updated: 2023/12/28 08:48:16 by cedmulle         ###   ########.fr        #
+#    Updated: 2023/12/28 08:53:41 by cedmulle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,7 +57,6 @@ all:		load configure $(LOAD) $(NAME)
 $(NAME):	$(OBJ) $(LF_LIB) $(GL_LIB)
 				@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LDFLAGS)
 				@clear
-# unicode ici
 				@echo "                                                                          $(RST)"
 				@echo "                                                                          $(RST)"
 				@echo "    $(G)███╗   ███╗██╗███╗   ██╗██╗███████╗██╗  ██╗███████╗██╗     ██╗        $(RST)"
