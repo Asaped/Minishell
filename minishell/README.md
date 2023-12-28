@@ -30,8 +30,10 @@ Libère les ressources allouées et termine correctement le shell.
 Minishell est un exemple complexe d'application de shell qui démontre la capacité de traiter les entrées de l'utilisateur, d'exécuter des commandes, et de gérer des fonctionnalités avancées telles que les redirections et les pipes. Ce processus comprend de nombreuses étapes allant de l'initialisation à la fermeture propre, chacune jouant un rôle crucial dans le fonctionnement global du shell.
 
 <br>
-<br>
-<br>
+
+---
+
+<img src="../git_utils/msh_plan.png" alt="minishell_plan" style="width: 100%">
 
 ---
 
