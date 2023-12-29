@@ -6,12 +6,14 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:39:43 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 08:59:46 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:00:51 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Vérifie si un caractère est valide pour une clé de venv.
+// Un caractère valide est alphanumérique ou un '_'.
 bool	is_valid_char(char c)
 {
 	if (ft_isalnum(c) == 0 && c != '_')
@@ -20,6 +22,9 @@ bool	is_valid_char(char c)
 		return (true);
 }
 
+// Calcule la longueur de la clé de venv dans une chaîne.
+// Commence après le caractère '$' et s'arrête a char non valid ou '\0'.
+// Les caractères valides sont définis par la fonction 'is_valid_char'.
 int	venv_len(char *str)
 {
 	int		i;
@@ -42,6 +47,9 @@ int	venv_len(char *str)
 	return (count);
 }
 
+// Identifie la clé de la variable d'environnement dans une chaîne.
+// Utilise 'venv_len' pour déterminer la longueur de la clé.
+// Extrait la clé et la concatène avec '=' pour retourner la paire clé=valeur.
 char	*var_identifier(char *str)
 {
 	char	*var;

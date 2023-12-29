@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:36:44 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 08:50:20 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 12:40:59 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Fonction principale d'execution des builtins
 int	execute_builtin(t_data *data, t_cmd *cmd)
 {
 	int	ret;
@@ -34,6 +35,7 @@ int	execute_builtin(t_data *data, t_cmd *cmd)
 	return (ret);
 }
 
+// Execute les commandes systemes (ls, cat, grep...etc) via execve
 static int	execute_system(t_data *data, t_cmd *cmd)
 {
 	if (!cmd->command || cmd->command[0] == '\0')
@@ -48,6 +50,7 @@ static int	execute_system(t_data *data, t_cmd *cmd)
 	return (EXIT_FAILURE);
 }
 
+// Execute les scripts et autres prog locaux
 static int	execute_local(t_data *data, t_cmd *cmd)
 {
 	int	ret;
@@ -60,6 +63,11 @@ static int	execute_local(t_data *data, t_cmd *cmd)
 	return (EXIT_FAILURE);
 }
 
+// Fonction principale
+// Gère l'exécution de la commande en fonction de son type
+// Traite les commandes internes, systèmes et locales
+// Gère les redirections et les pipes avant d'exéc la commande
+// Quitte le shell avec le code d'état après l'exéc de la commande
 int	execute_command(t_data *data, t_cmd *cmd)
 {
 	int	ret;

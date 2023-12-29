@@ -6,12 +6,14 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:34:54 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:08:05 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:10:01 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Incrémente le niveau de shell (SHLVL) dans les venv.
+// Utilisé pour suivre le nombre de shells imbriqués lancés.
 static void	increment_shlvl(t_data *data)
 {
 	char	*tmp;
@@ -27,6 +29,9 @@ static void	increment_shlvl(t_data *data)
 	return ;
 }
 
+// Initialise l'environnement en copiant les venv du système.
+// Duplique chaque variable d'environnement pour une gestion indépendante.
+// Incrémente SHLVL pour indiquer un nouveau niveau de shell.
 static bool	init_venv(t_data *data, char **env)
 {
 	int		i;
@@ -45,6 +50,8 @@ static bool	init_venv(t_data *data, char **env)
 	return (true);
 }
 
+// Initialise les répertoires de travail actuel et précédent
+// Utilise `getcwd` pour obtenir et dupliquer le répertoire de travail actuel
 static bool	init_wds(t_data *data)
 {
 	char	buff[PATH_MAX];
@@ -69,6 +76,9 @@ static bool	init_wds(t_data *data)
 	return (true);
 }
 
+// Initialise les données principales du shell
+// Configure l'env, les répertoires de travail, et les structures de commande
+// Gère les erreurs d'initialisation et configure les valeurs par défaut
 bool	init_data(t_data *data, char **env)
 {
 	if (!init_venv(data, env))
@@ -89,6 +99,8 @@ bool	init_data(t_data *data, char **env)
 	return (true);
 }
 
+// Initialise les structures d'input/output pour les commandes.
+// Prépare le shell pour gérer les redirections d'entrée/sortie et les heredocs
 void	init_io(t_cmd *cmd)
 {
 	if (!cmd->io_fds)

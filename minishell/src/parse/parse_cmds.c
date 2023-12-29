@@ -6,13 +6,14 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:57:20 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:25:18 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:41:40 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	prepno_arg_cmds(t_data *data)
+// Prépare les commandes sans argument
+static void	prep_no_arg_cmds(t_data *data)
 {
 	t_cmd	*cmd;
 
@@ -32,6 +33,10 @@ static void	prepno_arg_cmds(t_data *data)
 	cmd = last_cmd(data->cmd);
 }
 
+// Crée une liste de commandes à partir des tokens
+// Parcourt la liste de tokens et crée des commandes en fonction du type
+// Gère différents types de commandes et leurs paramètres spécifiques
+// À la fin, appelle `prep_no_arg_cmds` pour préparer les commandes sans args
 void	create_commands(t_data *data, t_token *token)
 {
 	t_token	*temp;
@@ -58,5 +63,5 @@ void	create_commands(t_data *data, t_token *token)
 		else if (temp->type == END)
 			break ;
 	}
-	prepno_arg_cmds(data);
+	prep_no_arg_cmds(data);
 }

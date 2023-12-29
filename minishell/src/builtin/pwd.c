@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:30:14 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 08:40:44 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 11:57:08 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// utilise la fonction getcwd pour obtenir le wdir actuel du process
 int	builtin_pwd(t_data *data)
 {
 	char	buf[PATH_MAX];

@@ -6,12 +6,15 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:29:02 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/27 14:10:22 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 11:55:54 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Sépare les venv "clé=valeur" en deux str distinctes : clé et valeur.
+// Utilise un index pour trouver la position du caractère '='.
+// Cree un tableau de 2 str contenant la cle et la valeur, la 3eme est NULL
 static char	**get_key_value_pair(char *arg)
 {
 	char	**tmp;
@@ -25,6 +28,11 @@ static char	**get_key_value_pair(char *arg)
 	return (tmp);
 }
 
+// Ajoute ou modifie les variables d'environnement
+// Pour chaque argument, extrait la paire clé-valeur
+// Vérifie si la clé est valide (caractères alphanumériques et tirets bas)
+// Modifie la venv si deja existante, sinon, crée une nouvelle variable
+// Affiche toutes les variables d'environnement en cas d'appel sans arguments
 int	builtin_export(t_data *data, char **args)
 {
 	char	**tmp;

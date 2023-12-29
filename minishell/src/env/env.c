@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:32:25 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/27 14:10:22 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 12:03:42 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Compteur de nombre de venv
 int	venv_count(char **env)
 {
 	int	i;
@@ -22,6 +23,7 @@ int	venv_count(char **env)
 	return (i);
 }
 
+// Trouve l'index d'une venv donnée
 int	venv_index(char **env, char *var)
 {
 	int		i;
@@ -44,6 +46,7 @@ int	venv_index(char **env, char *var)
 	return (-1);
 }
 
+// Trouve la valeur d'une venv donnée a partir de la clé
 char	*venv_value(char **env, char *var)
 {
 	int		i;
@@ -66,6 +69,7 @@ char	*venv_value(char **env, char *var)
 	return (NULL);
 }
 
+// Verifie que la key d'une venv est valide
 bool	venv_valid_key(char *var)
 {
 	int	i;

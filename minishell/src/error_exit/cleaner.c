@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:33:10 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:32:21 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 12:08:20 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Libère les ressoruces de toute la structure, en supprimant ou non l'history
 void	free_data(t_data *data, bool clear_history)
 {
 	if (data && data->user_input)
@@ -35,6 +36,8 @@ void	free_data(t_data *data, bool clear_history)
 	}
 }
 
+// Ferme les FD ouverts par les redirections
+// Restore les FD si close_backups est true
 void	close_fds(t_cmd *cmds, bool close_backups)
 {
 	if (cmds->io_fds)
@@ -49,6 +52,8 @@ void	close_fds(t_cmd *cmds, bool close_backups)
 	close_pipe_fds(cmds, NULL);
 }
 
+// Libère les ressources structs io_fds
+// Restore les FD des fichiers standards & ferme les fichiers temp de l'heredoc
 void	free_io(t_io_fds *io)
 {
 	if (!io)
@@ -67,6 +72,7 @@ void	free_io(t_io_fds *io)
 		free_ptr(io);
 }
 
+// Libere les ressources d'un **tableau donné
 void	free_tab(char **tab)
 {
 	int	i;
@@ -87,6 +93,7 @@ void	free_tab(char **tab)
 	}
 }
 
+// Un free universel pour tout les pointeurs alloués
 void	free_ptr(void *ptr)
 {
 	if (ptr != NULL)

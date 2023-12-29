@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:29:29 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:15:52 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:27:57 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Recupère la taille du prompt
 static int	get_size(char *user, char *lvl, char *path)
 {
 	int	size_strs;
@@ -22,6 +23,7 @@ static int	get_size(char *user, char *lvl, char *path)
 	return (size_strs + size_colors);
 }
 
+// Assemble tout les éléments du prompt entre eux
 static char	*get_prompt_result(char *user, char *lvl, char *path)
 {
 	char	*result;
@@ -43,6 +45,9 @@ static char	*get_prompt_result(char *user, char *lvl, char *path)
 	return (result);
 }
 
+// Parse tout les éléments du prompt
+// Se mets à jour si modification ultérieure
+// Valeurs par défaut si NULL
 char	*get_prompt(t_data *data)
 {
 	char	*user;

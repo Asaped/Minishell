@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:25:10 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/27 14:55:34 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 11:53:43 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Verifie si le flag -n est présent
 static bool	has_flag(char *arg)
 {
 	if (ft_strcmp(arg, "-n") == SUCCESS)
@@ -20,6 +21,7 @@ static bool	has_flag(char *arg)
 		return (false);
 }
 
+// Ecris sur la sortie standard les arguments passés a la commande echo
 static void	print_args_echo(char **args, bool flag_n, int i)
 {
 	if (!args[i])
@@ -39,6 +41,9 @@ static void	print_args_echo(char **args, bool flag_n, int i)
 	}
 }
 
+// Fonction principale 
+// Verifie seulement si le 1er arg est le flag -n, et envoi les
+// arguments a partir de du 2eme si c'est le cas
 int	builtin_echo(char **args)
 {
 	int		i;

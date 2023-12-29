@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:30:46 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/27 14:41:15 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 11:58:43 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Supprime les variables d'environnement
 int	builtin_unset(t_data *data, char **args)
 {
 	int	i;

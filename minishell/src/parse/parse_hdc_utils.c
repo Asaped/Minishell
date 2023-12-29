@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:59:57 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:27:16 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:44:35 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Convertit un tableau de chaînes en une seule chaîne séparée par des espaces
 static char	*tab_to_str(char **tab)
 {
 	char	*str;
@@ -40,6 +41,9 @@ static char	*tab_to_str(char **tab)
 	return (str);
 }
 
+// Étend les variables dans une ligne de heredoc
+// Divise la ligne en mots et étend les variables dans chaque mot
+// Reconstruit et etourne la nouvelle ligne avec les variables étendues
 static char	*get_expanded_var_line(t_data *data, char *line)
 {
 	char	**words;
@@ -62,6 +66,9 @@ static char	*get_expanded_var_line(t_data *data, char *line)
 	return (tab_to_str(words));
 }
 
+// Vérifie une ligne de here-document pour l'expansion et la fin de delimiter
+// Si la ligne correspond au délimiteur, termine le here-document
+// Si des variables sont présentes et non entre quotes : expand
 static bool	check_hdc_line(t_data *data, char **line, t_io_fds *io, bool *res)
 {
 	if (*line == NULL)
@@ -89,6 +96,9 @@ static bool	check_hdc_line(t_data *data, char **line, t_io_fds *io, bool *res)
 	return (true);
 }
 
+// Remplit le contenu d'un here-document dans un fichier temporaire
+// Étend les variables dans les lignes si nécessaire
+// Écrit chaque ligne dans un fichier temporaire
 bool	fill_heredoc(t_data *data, t_io_fds *io, int fd)
 {
 	char	*line;

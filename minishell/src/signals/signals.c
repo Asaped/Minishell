@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 13:03:42 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:32:50 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 14:09:27 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Réinitialise le prompt lors de la réception du signal SIGINT (CTRL+C)
 void	signal_reset_prompt(int sig)
 {
 	(void)sig;
@@ -21,6 +22,7 @@ void	signal_reset_prompt(int sig)
 	rl_redisplay();
 }
 
+// Active les gestionnaires de signaux personnalisés pour le shell
 void	signals_on(void)
 {
 	struct sigaction	act;
@@ -31,12 +33,14 @@ void	signals_on(void)
 	sigaction(SIGINT, &act, NULL);
 }
 
+// Affiche une nouvelle ligne en réponse à un signal
 void	signal_print_newline(int signal)
 {
 	(void)signal;
 	rl_on_new_line();
 }
 
+// Désactive les gestionnaires de signaux personnalisés
 void	signals_off(void)
 {
 	struct sigaction	act;
@@ -47,6 +51,7 @@ void	signals_off(void)
 	sigaction(SIGQUIT, &act, NULL);
 }
 
+// Ignore le signal SIGQUIT (CTRL+\)
 void	ignore_sigquit(void)
 {
 	struct sigaction	act;

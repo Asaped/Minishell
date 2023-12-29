@@ -6,12 +6,14 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:56:31 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:47:09 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:37:40 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Supprime une commande de la liste de commandes
+// Libère la mémoire allouée pour la commande, ses arguments et les I/O
 void	cmd_remover(t_cmd *lst, void (*del)(void *))
 {
 	if (lst->command)
@@ -25,6 +27,7 @@ void	cmd_remover(t_cmd *lst, void (*del)(void *))
 	(*del)(lst);
 }
 
+// Parcourt et supprime toutes les commandes de la liste.
 void	cmds_clear(t_cmd **lst, void (*del)(void *))
 {
 	t_cmd	*temp;

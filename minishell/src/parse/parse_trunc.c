@@ -6,12 +6,14 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 13:01:51 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:31:30 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 14:01:48 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Convertit chemin relatif en absolu si nécessaire
+// Ajoute "./" pour chemin relatif
 char	*get_rel_path(char *file_to_open)
 {
 	char	*path;
@@ -25,6 +27,9 @@ char	*get_rel_path(char *file_to_open)
 	return (res);
 }
 
+// Ouvre fichier pour redirection sortie avec troncature
+// Gère suppression références précédentes
+// Définit descripteur de fichier `fd_out` & gère erreurs d'ouverture.
 static void	open_outfile_trunc(t_io_fds *io, char *file, char *var_filename)
 {
 	if (!remove_old_file_ref(io, false))
@@ -40,6 +45,8 @@ static void	open_outfile_trunc(t_io_fds *io, char *file, char *var_filename)
 		errmsg_cmd(io->outfile, NULL, strerror(errno), false);
 }
 
+// Analyse redirection de sortie avec troncature (opérateur '>'). Init I/O
+// Utilise `open_outfile_trunc` pour ouvrir fichier de sortie
 void	parse_trunc(t_cmd **last, t_token **token_lst)
 {
 	t_token	*temp;

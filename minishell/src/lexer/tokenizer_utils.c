@@ -6,12 +6,15 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:47:03 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:11:12 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:20:23 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Enregistre un token de séparateur dans la liste des tokens.
+// Gère les séparateurs spéciaux (comme '>>' et '<<') et les sép standards.
+// Utilisé pour traiter les redirections et les opérateurs
 int	save_separator(t_token **token_lst, char *str, int index, int type)
 {
 	int		i;
@@ -41,6 +44,9 @@ int	save_separator(t_token **token_lst, char *str, int index, int type)
 	return (0);
 }
 
+// Enregistre un token de mot dans la liste des tokens
+// Extrait un mot de la chaîne de commande et crée un token de type 'WORD'
+// Utilisé pour traiter les commandes et les arguments
 int	save_word(t_token **token_lst, char *str, int index, int start)
 {
 	int		i;
@@ -62,6 +68,9 @@ int	save_word(t_token **token_lst, char *str, int index, int start)
 	return (0);
 }
 
+// Identifie si un caractère est un séparateur
+// Détermine le type de séparateur (espace, pipe, redirection, etc.)
+// Utilisé pour identifier les elements entrés
 int	is_separator(char *str, int i)
 {
 	if (((str[i] > 8 && str[i] < 14) || str[i] == 32))
@@ -82,6 +91,9 @@ int	is_separator(char *str, int i)
 		return (0);
 }
 
+// Met à jour l'état de quotation pour un token
+// Gère l'entrée et la sortie des états de quote simples et doubles
+// Utilisé pour traiter correctement les chaînes entre quotes
 int	set_status(int status, char *str, int i)
 {
 	if (str[i] == '\'' && status == DEFAULT)
@@ -95,6 +107,8 @@ int	set_status(int status, char *str, int i)
 	return (status);
 }
 
+// Décide si un caractère fait partie d'un mot ou d'un séparateur
+// Utilisé pour décomposer la commande de l'utilisateur en tokens
 int	save_word_or_sep(int *i, char *str, int start, t_data *data)
 {
 	int	type;

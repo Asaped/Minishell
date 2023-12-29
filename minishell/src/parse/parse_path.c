@@ -6,12 +6,14 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:39:08 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:30:35 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:54:10 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Recherche le chemin valide pour une commande donnée.
+// Vérifie l'access et les droits d'execution
 static char	*find_valid_cmd_path(char *cmd, char **paths)
 {
 	int		i;
@@ -36,6 +38,10 @@ static char	*find_valid_cmd_path(char *cmd, char **paths)
 	return (NULL);
 }
 
+// Récupère et divise les chemins du système stockés dans PATH
+// Vérifie si la variable PATH est définie dans l'env
+// Divise la chaîne de PATH en utilisant ':' comme séparateur
+// Retourne un tableau NULL si PATH n'est pas défini ou si erreur
 static char	**get_paths_from_env(t_data *data)
 {
 	char	**env_paths;
@@ -48,6 +54,10 @@ static char	**get_paths_from_env(t_data *data)
 	return (env_paths);
 }
 
+// Analyse et trouve le chemin valide pour une commande
+// Obtient les chemins d'env et check si la cmde est spécifiée avec un chemin
+// Si aucun chemin n'est spécifié, cherche dans les chemins d'env
+// Retourne le chemin de la commande si trouvé ou NULL si échec
 char	*parse_cmd_path(t_data *data, char *name)
 {
 	char	**env_paths;

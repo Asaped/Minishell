@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:22:49 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 08:26:38 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 11:52:43 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Met à jour le répertoire de travail actuel dans wdir et old_wdir (venv)
 static void	update_current_dir(t_data *data, char *wd)
 {
 	venv_set(data, "OLDPWD", venv_value(data->env, "PWD"));
@@ -29,6 +30,8 @@ static void	update_current_dir(t_data *data, char *wd)
 	free_ptr(wd);
 }
 
+// Affiche un message selon l'erreur (dossier inexistant, permission refusée).
+// ESTALE est converti en ENOENT par simplicité
 static bool	chdir_error(char *path)
 {
 	if (errno == ESTALE)
@@ -37,6 +40,9 @@ static bool	chdir_error(char *path)
 	return (false);
 }
 
+// Vérifie si le chemin fourni est valide et accessible.
+// Utilise chdir pour changer le répertoire de travail du processus.
+// Mets a jour les venv.
 static bool	change_dir(t_data *data, char *path)
 {
 	char	*ret;
@@ -62,6 +68,7 @@ static bool	change_dir(t_data *data, char *path)
 	return (true);
 }
 
+// Fonction principale
 int	builtin_cd(t_data *data, char **args)
 {
 	char	*path;

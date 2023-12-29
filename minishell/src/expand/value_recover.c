@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:41:22 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 08:56:54 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 12:51:09 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Verifie si la venv existe
 static int	venv_exists(t_data *data, char *var)
 {
 	int		i;
@@ -27,6 +28,7 @@ static int	venv_exists(t_data *data, char *var)
 	return (FAILURE);
 }
 
+// Cherche et retourne une copie de la valeur d'une venv
 static char	*venv_search(t_data *data, char *var)
 {
 	char	*str;
@@ -44,6 +46,9 @@ static char	*venv_search(t_data *data, char *var)
 	return (str);
 }
 
+// Récupère la valeur d'une variable à partir d'un token
+// Identifie la variable dans le token et récupère sa valeur
+// Gère le cas spécial de la variable '$?', renvoyant le statut de sortie
 char	*var_recover(t_token *token, char *str, t_data *data)
 {
 	char	*value;

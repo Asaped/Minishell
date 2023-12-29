@@ -6,12 +6,14 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:58:33 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:22:24 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:32:48 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Rejoint plusieurs tokens de type VAR en une seul string
+// Utilisé pour gérer les cas où plusieurs venv sont concaténées
 char	*venv_joiner(t_token **token_node)
 {
 	t_token	*temp;
@@ -29,6 +31,8 @@ char	*venv_joiner(t_token **token_node)
 	return (str);
 }
 
+// Compte le nombre d'arguments en tenant compte des variables et mots
+// Traite les cas où plusieurs variables sont jointes en une seule
 int	args_counter(t_token *temp)
 {
 	int	i;
@@ -51,6 +55,8 @@ int	args_counter(t_token *temp)
 	return (i);
 }
 
+// Duplique un tableau d'arguments et ajoute de nouveaux arguments
+// Utilisé pour ajouter des arguments supplémentaires à une commande existante
 char	**tab_duplicate(int len, char **tab, t_cmd *last, t_token *tmp)
 {
 	int	i;
@@ -71,6 +77,8 @@ char	**tab_duplicate(int len, char **tab, t_cmd *last, t_token *tmp)
 	return (tab);
 }
 
+// Supprime les tokens vides de la liste
+// Ces tokens vides peuvent se produire lors de l'expansion des venv
 void	venv_remove_empty(t_token **tokens)
 {
 	t_token	*temp;

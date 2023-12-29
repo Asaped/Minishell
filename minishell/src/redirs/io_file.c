@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 13:02:53 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:32:21 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 14:04:08 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Restaure les descripteurs de fichier stdin et stdout aux valeurs originales
 bool	io_restorer(t_io_fds *io)
 {
 	int	ret;
@@ -36,6 +37,8 @@ bool	io_restorer(t_io_fds *io)
 	return (ret);
 }
 
+// Redirige stdin et stdout vers les descripteurs de fichier spécifiés
+// Duplique les descripteurs originaux pour restauration ultérieure
 bool	io_redirecter(t_io_fds *io)
 {
 	int	ret;
@@ -58,6 +61,7 @@ bool	io_redirecter(t_io_fds *io)
 	return (ret);
 }
 
+// Vérifie si les descripteurs de fichier pour l'entrée/sortie sont valides
 bool	check_if_of(t_io_fds *io)
 {
 	if (!io || (!io->infile && !io->outfile))

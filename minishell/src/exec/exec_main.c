@@ -6,7 +6,7 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:38:17 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:32:21 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 12:43:45 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 int	g_exit_status;
 
+// Attend la fin des processus enfants et récupère leur statut
+// Ferme les descripteurs de fichier ouverts par les commandes
+// Renvoie le statut de sortie du processus enfant
 static int	get_child(t_data *data)
 {
 	pid_t	wpid;
@@ -39,6 +42,10 @@ static int	get_child(t_data *data)
 	return (status);
 }
 
+// Crée des processus enfants pour chaque commande
+// Utilise fork pour créer un processus enfant
+// Exécute la commande dans le processus enfant
+// Renvoie le statut de sortie du processus enfant ou une erreur en cas d'échec
 static int	create_child(t_data *data)
 {
 	t_cmd	*cmd;
@@ -56,6 +63,10 @@ static int	create_child(t_data *data)
 	return (get_child(data));
 }
 
+// Prépare l'exécution des commandes
+// Vérifie si la commande est valide
+// Crée des pipes si nécessaire pour la communication entre les commandes
+// Renvoie un code d'état selon le succès ou l'échec de la préparation
 static int	exec_prep(t_data *data)
 {
 	if (!data || !data->cmd)
@@ -72,6 +83,10 @@ static int	exec_prep(t_data *data)
 	return (CMD_NOT_FOUND);
 }
 
+// Coordonne l'exécution des commandes
+// Prépare l'exécution, gère les redirections et exécute les commandes
+// Gère les commandes internes et externes
+// Renvoie le statut de sortie de la dernière commande exécutée
 int	execute(t_data *data)
 {
 	int	ret;

@@ -6,12 +6,14 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:44:30 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:10:14 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:13:35 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Vérifie si deux opérateurs consécutifs sont présents dans les tokens
+// Incluent les opérateurs de pipe consécutifs et les opérateurs à la fin
 static bool	consecutive_ops(t_token *token_node)
 {
 	if (token_node->prev)
@@ -26,6 +28,8 @@ static bool	consecutive_ops(t_token *token_node)
 	return (false);
 }
 
+// Utilise `consecutive_ops` pour chaque token.
+// En cas d'opérateurs consécutifs, affiche un message d'erreur syntaxe
 int	check_consecutives(t_token **token_lst)
 {
 	t_token	*temp;

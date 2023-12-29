@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:58:07 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/27 14:27:01 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:30:52 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Compte le nombre d'arguments de la commande
 static int	count_arguments(t_token *temp)
 {
 	int	i;
@@ -25,6 +26,8 @@ static int	count_arguments(t_token *temp)
 	return (i);
 }
 
+// Crée la liste d'arguments par défaut pour une commande.
+// Inclut le nom de la commande suivi de ses arguments.
 int	create_args_def(t_token **token_node, t_cmd *last_cmd)
 {
 	int		i;
@@ -52,6 +55,8 @@ int	create_args_def(t_token **token_node, t_cmd *last_cmd)
 	return (SUCCESS);
 }
 
+// Copie les arguments existants dans un nouveau tableau
+// Ajoute les nouveaux arguments
 static char	**copy_def_tab(int len, char **tab, t_cmd *last_cmd, t_token **tks)
 {
 	int		i;
@@ -74,6 +79,7 @@ static char	**copy_def_tab(int len, char **tab, t_cmd *last_cmd, t_token **tks)
 	return (tab);
 }
 
+// Ajoute des arguments supplémentaires à une commande déjà initialisée
 int	add_args_def(t_token **token_node, t_cmd *last_cmd)
 {
 	int		i;
@@ -101,6 +107,8 @@ int	add_args_def(t_token **token_node, t_cmd *last_cmd)
 	return (SUCCESS);
 }
 
+// Remplit les arguments d'une commande en fonction de son type
+// Traite spécialement la commande 'echo'
 int	fill_args(t_token **token_node, t_cmd *last_cmd)
 {
 	if (!ft_strcmp(last_cmd->command, "echo"))

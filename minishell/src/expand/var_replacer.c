@@ -6,12 +6,15 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:41:49 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:03:31 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:04:24 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Supprime la référence de venv d'une chaîne.
+// Crée une nouvelle str sans la référence de variable et remplace l'ancienne
+// Utilisée quand une venv est non définie ou sa valeur est NULL
 static int	venv_clear(t_token **token_node, char *str, int index)
 {
 	int		i;
@@ -41,6 +44,8 @@ static int	venv_clear(t_token **token_node, char *str, int index)
 	return (0);
 }
 
+// Remplace la référence de variable dans une chaîne par sa valeur.
+// Calcule la taille de la nouvelle chaîne et crée une chaîne a jour.
 static char	*erase_replace(t_token **tokens, char *str, char *var_value, int i)
 {
 	char	*newstr;
@@ -57,6 +62,9 @@ static char	*erase_replace(t_token **tokens, char *str, char *var_value, int i)
 	return (newstr);
 }
 
+// Remplace la référence de variable dans un token par sa valeur
+// Utilise `venv_clear` si la valeur de la variable est NULL
+// Utilise `erase_replace` pour remplacer la réf de variable par sa valeur
 int	var_replacer(t_token **token_node, char *var_value, int index)
 {
 	if (var_value == NULL)
@@ -79,6 +87,8 @@ int	var_replacer(t_token **token_node, char *var_value, int index)
 	return (SUCCESS);
 }
 
+// Remplace la référence de variable dans une chaîne (spécifique à heredoc)
+// Utilise `erase_replace` pour effectuer le remplacement
 char	*replace_str_heredoc(char *str, char *var_value, int index)
 {
 	char	*tmp;

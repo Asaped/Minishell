@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:32:01 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/27 14:34:25 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 12:01:34 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Realloc pour ajouter ou supprimer les venv
 static char	**venv_realloc(t_data *data, int size)
 {
 	char	**new_env;
@@ -31,6 +32,7 @@ static char	**venv_realloc(t_data *data, int size)
 	return (new_env);
 }
 
+// Ajoute a la fin ou met a jour une venv
 bool	venv_set(t_data *data, char *key, char *value)
 {
 	int		position;
@@ -59,6 +61,7 @@ bool	venv_set(t_data *data, char *key, char *value)
 	return (true);
 }
 
+// Supprime la venv a un endroit donné, et libère les ressources
 bool	venv_delete(t_data *data, int position)
 {
 	int	i;

@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:59:06 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:22:24 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:34:25 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Copie la commande 'echo' et tous les arguments supplémentaires dans un tab
 int	create_args_echo(t_token **token_node, t_cmd *last_cmd)
 {
 	int		nb_args;
@@ -41,6 +42,8 @@ int	create_args_echo(t_token **token_node, t_cmd *last_cmd)
 	return (SUCCESS);
 }
 
+// Ajoute des arguments supplémentaires à la commande 'echo' existante
+// Étend le tableau d'arguments initial pour inclure les nouveaux arguments
 int	add_args_echo(t_token **token_node, t_cmd *last_cmd)
 {
 	int		len;

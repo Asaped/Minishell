@@ -6,12 +6,14 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:40:43 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:43:34 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 12:49:15 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Change le statut du token en fonction du type de quote rencontré
+// S'utilise pour gérer correctement les quotes dans les tokens
 static void	change_status_to_quote(t_token **token_node, int *i)
 {
 	if ((*token_node)->str[*i] == '\'')
@@ -21,6 +23,8 @@ static void	change_status_to_quote(t_token **token_node, int *i)
 	(*i)++;
 }
 
+// Vérifie si le char actuel est une quote et si le token est en mode défaut
+// Utilisé pour détecter le début ou la fin des quotes dans un token
 static bool	if_quotes_and_default(t_token **token_node, int i)
 {
 	if (((*token_node)->str[i] == '\'' || (*token_node)->str[i] == '\"')
@@ -30,6 +34,8 @@ static bool	if_quotes_and_default(t_token **token_node, int i)
 		return (false);
 }
 
+// Change le statut du token de quote à par défaut si nécessaire
+// Utilisé pour marquer la fin d'une séquence de quotes dans un token
 static bool	change_back_to_default(t_token **token_node, int *i)
 {
 	if (((*token_node)->str[*i] == '\'' && (*token_node)->status == SQ)
@@ -43,6 +49,8 @@ static bool	change_back_to_default(t_token **token_node, int *i)
 		return (false);
 }
 
+// Supprime les quotes des tokens
+// Utilisé pour normaliser les tokens avant l'exécution des commandes
 int	quotes_remover(t_token **token_node)
 {
 	char	*new_line;

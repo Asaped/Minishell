@@ -6,12 +6,16 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 13:00:21 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:28:57 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:47:54 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Exécute et gère la création d'un heredoc
+// Ouvre un fichier temporaire pour stocker le contenu
+// Appelle 'fill_heredoc' pour remplir le fichier avec le contenu
+// Ferme le fichier temp après l'achèvement
 bool	get_heredoc(t_data *data, t_io_fds *io)
 {
 	int		tmp_fd;
@@ -24,6 +28,9 @@ bool	get_heredoc(t_data *data, t_io_fds *io)
 	return (res);
 }
 
+// Génère un nom unique pour un fichier temporaire de heredoc
+// Utilise un compteur statique pour assurer des noms uniques
+// Concatène un préfixe prédéfini avec un numéro incrémenté
 static char	*get_heredoc_name(void)
 {
 	static int	i;
@@ -39,6 +46,10 @@ static char	*get_heredoc_name(void)
 	return (name);
 }
 
+// Extrait et nettoie le délimiteur d'un hererdoc
+// Vérifie si le délimiteur est entre quotes simples ou doubles
+// Enlève les guillemets du délimiteur si nécessaire
+// Utilisé pour terminer la saisie du here-document
 static char	*get_delim(char *delim, bool *quotes)
 {
 	int	len;
@@ -53,6 +64,12 @@ static char	*get_delim(char *delim, bool *quotes)
 	return (ft_strdup(delim));
 }
 
+// Analyse et initialise un heredoc dans la commande
+// Crée une structure pour gérer les entrées/sorties
+// Génère un nom de fichier temporaire pour stocker le contenu
+// Extrait le délimiteur et gère les guillemets
+// Lit et stocke le contenu si le délimiteur est atteint
+// Joint le fichier temporaire à l'entrée standard de la commande
 void	parse_heredoc(t_data *data, t_cmd **last, t_token **token_lst)
 {
 	t_token		*temp;

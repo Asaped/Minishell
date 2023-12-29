@@ -6,12 +6,15 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:48:02 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/27 14:24:53 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:25:58 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Boucle principale du shell
+// Affiche le prompt, lit la saisie de l'utilisateur, et exécute les commandes
+// Gère les signaux et nettoie les données après chaque commande
 static void	minishell(t_data *data)
 {
 	char	*prompt;

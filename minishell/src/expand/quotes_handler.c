@@ -6,12 +6,15 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 15:10:32 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 08:54:34 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 12:47:00 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Compte la longueur d'une chaîne en tenant compte des quotes
+// Ignore les caractères à l'intérieur des quotes simples ou doubles
+// Utilisé pour trouver la taille nécessaire pour stocker str sans les quotes
 int	count_len(char *str, int count, int i)
 {
 	int	status;
@@ -41,6 +44,7 @@ int	count_len(char *str, int count, int i)
 	return (count + 1);
 }
 
+// Vérifie si une chaîne contient des quotes simples ou doubles
 bool	has_quote(char *str)
 {
 	int	i;
@@ -54,6 +58,7 @@ bool	has_quote(char *str)
 	return (false);
 }
 
+// Parcourt tous les tokens et supprime les quotes si nécessaire
 int	quotes_handler(t_data *data)
 {
 	t_token	*temp;

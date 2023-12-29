@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:56:54 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 13:46:38 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:39:37 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Initialise les champs d'une structure de commande
 static void	initialize_cmd(t_cmd **cmd)
 {
 	(*cmd)->command = NULL;
@@ -23,6 +24,8 @@ static void	initialize_cmd(t_cmd **cmd)
 	(*cmd)->next = NULL;
 }
 
+// Crée une nouvelle structure de commande
+// Définit `pipe_output` en fonction de la valeur passée
 t_cmd	*cmd_creator(bool value)
 {
 	t_cmd	*new_node;
@@ -36,6 +39,8 @@ t_cmd	*cmd_creator(bool value)
 	return (new_node);
 }
 
+// Ajoute un nouvel élément à la fin de la liste de commandes
+// Si la liste est vide, le nouvel élément devient le premier
 void	cmd_adder(t_cmd **alst, t_cmd *new_node)
 {
 	t_cmd	*start;
@@ -55,6 +60,7 @@ void	cmd_adder(t_cmd **alst, t_cmd *new_node)
 	}
 }
 
+// Renvoie le dernier élément de la liste de commandes
 t_cmd	*last_cmd(t_cmd *cmd)
 {
 	while (cmd->next != NULL)

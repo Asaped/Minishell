@@ -6,12 +6,15 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:28:06 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 08:37:07 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 11:55:36 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+//	Vérifie si la valeur de sortie est dans la plage acceptable pour un 'long'
+//	Si la valeur est hors plage, elle affecte 'true' à 'error'
+//	Utilisé pour gérer si la valeur de sortie est trop grande
 static bool	check_out_of_range(int neg, unsigned long long num, bool *error)
 {
 	if ((neg == 1 && num > LONG_MAX) || (neg == -1
@@ -20,6 +23,7 @@ static bool	check_out_of_range(int neg, unsigned long long num, bool *error)
 	return (*error);
 }
 
+// Pareil qu'un atoi, mais en unsigned long long
 static int	ft_atol(const char *str, bool *error)
 {
 	unsigned long long	num;
@@ -48,6 +52,9 @@ static int	ft_atol(const char *str, bool *error)
 	return (num * neg);
 }
 
+//	Récupère le code de sortie.
+//	Gère les cas spéciaux comme 'OLDPWD' non défini ou les arguments numériques
+//	'error' indique si une erreur s'est produite lors de la récupération du code
 static int	get_exit_code(char *arg, bool *error)
 {
 	unsigned long long	i;
@@ -73,6 +80,8 @@ static int	get_exit_code(char *arg, bool *error)
 	return (i % 256);
 }
 
+//	Détermine si la commande 'exit' silencieuse.
+//	Si 'exit' fait partie d'un pipeline de commandes = quiet
 static bool	is_quiet(t_data *data)
 {
 	t_cmd	*cmd;
@@ -85,6 +94,7 @@ static bool	is_quiet(t_data *data)
 	return (false);
 }
 
+//	Nettoie et libere les ressources avant de quitter le shell
 int	builtin_exit(t_data *data, char **args)
 {
 	int		exit_code;

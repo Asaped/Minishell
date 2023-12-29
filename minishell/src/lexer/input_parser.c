@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:45:17 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:08:30 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:11:57 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Vérifie si l'input contient uniquement des espaces
 static bool	input_is_space(char *input)
 {
 	int	i;
@@ -25,6 +26,13 @@ static bool	input_is_space(char *input)
 	return (true);
 }
 
+// Analyse l'input et prépare le traitement des commandes
+// Gère les cas d'entrée vide
+// Ajoute l'input à l'historique des commandes
+// Passe l'input à la fonction de tokenisation pour créer une liste de tokens
+// Vérifie et traite les variables dans les tokens
+// Gère les guillemets dans les tokens
+// Crée des structures de commande basées sur les tokens
 bool	parse_user_input(t_data *data)
 {
 	if (data->user_input == NULL)

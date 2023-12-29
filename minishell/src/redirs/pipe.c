@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 13:03:19 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:32:42 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 14:05:24 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Ferme les descripteurs de fichier de tous les pipes, sauf celui spécifié
 void	close_pipe_fds(t_cmd *cmds, t_cmd *skip_cmd)
 {
 	while (cmds)
@@ -25,6 +26,7 @@ void	close_pipe_fds(t_cmd *cmds, t_cmd *skip_cmd)
 	}
 }
 
+// Crée des pipes pour chaque cmd nécessitant une communication inter-process
 bool	create_pipes(t_data *data)
 {
 	int		*fd;
@@ -48,6 +50,7 @@ bool	create_pipes(t_data *data)
 	return (true);
 }
 
+// Configure les descripteurs de fichier stdin et stdout pour les pipes
 bool	set_pipe_fds(t_cmd *cmds, t_cmd *c)
 {
 	if (!c)

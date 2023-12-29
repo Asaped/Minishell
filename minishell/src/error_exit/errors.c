@@ -6,13 +6,14 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:33:52 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/27 14:14:00 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 12:36:31 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static char	*strs_joiner(char *str, char *add)
+// ft_strjoin dopé
+static char	*safe_join(char *str, char *add)
 {
 	char	*tmp;
 
@@ -26,6 +27,7 @@ static char	*strs_joiner(char *str, char *add)
 	return (str);
 }
 
+// Verifie si l'ajout de quotes est necessaire (si cmd est export ou unset)
 static bool	add_detail_quotes(char *cmd)
 {
 	if (ft_strncmp(cmd, "export", 7) == SUCCESS
@@ -34,6 +36,8 @@ static bool	add_detail_quotes(char *cmd)
 	return (false);
 }
 
+// Ecris le message d'erreur similaire a bash avec ajout de message d'erreur
+// Retourne le message d'erreur correspondant
 int	errmsg_cmd(char *cmd, char *detail, char *err_msg, int err_nb)
 {
 	char	*msg;
@@ -43,37 +47,38 @@ int	errmsg_cmd(char *cmd, char *detail, char *err_msg, int err_nb)
 	msg = ft_strdup("minishell: ");
 	if (cmd != NULL)
 	{
-		msg = strs_joiner(msg, cmd);
-		msg = strs_joiner(msg, ": ");
+		msg = safe_join(msg, cmd);
+		msg = safe_join(msg, ": ");
 	}
 	if (detail != NULL)
 	{
 		if (detail_quotes)
-			msg = strs_joiner(msg, "`");
-		msg = strs_joiner(msg, detail);
+			msg = safe_join(msg, "`");
+		msg = safe_join(msg, detail);
 		if (detail_quotes)
-			msg = strs_joiner(msg, "'");
-		msg = strs_joiner(msg, ": ");
+			msg = safe_join(msg, "'");
+		msg = safe_join(msg, ": ");
 	}
-	msg = strs_joiner(msg, err_msg);
+	msg = safe_join(msg, err_msg);
 	ft_putendl_fd(msg, STDERR_FILENO);
 	free_ptr(msg);
 	return (err_nb);
 }
 
+// Ecris un message d'erreur non relié une commande (parsing et lexing surout)
 void	errmsg(char *errmsg, char *detail, int quotes)
 {
 	char	*msg;
 
 	msg = ft_strdup("minishell: ");
-	msg = strs_joiner(msg, errmsg);
+	msg = safe_join(msg, errmsg);
 	if (quotes)
-		msg = strs_joiner(msg, " `");
+		msg = safe_join(msg, " `");
 	else
-		msg = strs_joiner(msg, ": ");
-	msg = strs_joiner(msg, detail);
+		msg = safe_join(msg, ": ");
+	msg = safe_join(msg, detail);
 	if (quotes)
-		msg = strs_joiner(msg, "'");
+		msg = safe_join(msg, "'");
 	ft_putendl_fd(msg, STDERR_FILENO);
 	free_ptr(msg);
 }

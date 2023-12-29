@@ -6,12 +6,16 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:47:38 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/26 09:11:40 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:22:07 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Fonction principale de lexing
+// Parcourt la chaîne d'entrée et la divise en tokens
+// Gère les quotes simples et doubles pour traitement des strings
+// Affiche un message d'erreur si erreurs de syntaxe ou quotes non fermées 
 int	tokenization(t_data *data, char *str)
 {
 	int	i;

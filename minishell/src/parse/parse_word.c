@@ -6,12 +6,13 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 13:02:12 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 15:08:47 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 14:02:50 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Vérifie si une chaîne contient des espaces. Utile pour le traitement des VAR
 static bool	contains_space(char *str)
 {
 	int	i;
@@ -26,6 +27,7 @@ static bool	contains_space(char *str)
 	return (false);
 }
 
+// Sépare et traite les tokens VAR avec espaces. Crée des tokens pour les args
 static void	split_var_cmd_token(t_cmd *last_cmd, char *cmd_str)
 {
 	t_token		*new_tokens;
@@ -52,6 +54,8 @@ static void	split_var_cmd_token(t_cmd *last_cmd, char *cmd_str)
 	free_tab(strs);
 }
 
+// Analyse et traite les tokens WORD et VAR pour construire les commandes
+// Utilise 'split_var_cmd_token' pour les VAR avec espaces
 void	parse_word(t_cmd **cmd, t_token **token_lst)
 {
 	t_token	*temp;

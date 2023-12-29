@@ -6,12 +6,14 @@
 /*   By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 12:43:57 by cedmulle          #+#    #+#             */
-/*   Updated: 2023/12/24 15:09:59 by cedmulle         ###   ########.fr       */
+/*   Updated: 2023/12/29 13:24:17 by cedmulle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+// Vérifie si le token actuel contient une variable
+// Si '$' est trouvé et que le token n'est pas dans un heredoc: token = VAR
 static void	variable_check(t_token **token_node)
 {
 	int	i;
@@ -30,6 +32,8 @@ static void	variable_check(t_token **token_node)
 	}
 }
 
+// Vérifie si un token est une variable
+// Vérifie les erreurs de syntaxe
 int	check_if_var(t_token **token_lst)
 {
 	t_token	*temp;
