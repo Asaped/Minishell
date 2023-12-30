@@ -6,7 +6,7 @@
 #    By: cedmulle <cedmulle@student.42lausanne.c    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/14 20:46:48 by cedmulle          #+#    #+#              #
-#    Updated: 2023/12/29 14:10:02 by cedmulle         ###   ########.fr        #
+#    Updated: 2023/12/30 17:38:47 by cedmulle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,7 +52,7 @@ W			= \033[1;37m
 #                                 Fonctions                                    #
 # ---------------------------------------------------------------------------- #
 # Règle générale ------------------------------------------------------------- #
-all:		load configure $(LOAD) $(NAME)
+all:		load $(LOAD) $(NAME)
 
 $(NAME):	$(OBJ) $(LF_LIB) $(GL_LIB)
 				@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LDFLAGS)
@@ -71,10 +71,6 @@ $(NAME):	$(OBJ) $(LF_LIB) $(GL_LIB)
 
 load:
 				@echo "$(B)Loading...$(RST)"
-
-configure:
-					@cd ./inc/readline/ && ./configure > /dev/null
-					@cd ./inc/readline/ && make > /dev/null
 
 # Création de la libft ------------------------------------------------------- #
 $(LF_LIB):	$(LF_OBJ)
