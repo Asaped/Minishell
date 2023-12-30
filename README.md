@@ -39,3 +39,6 @@ Pour quitter le programme, utilisez la commande :
 ```bash
 exit // ou utiliser la commande CTRL+D
 ```
+
+## Licence
+[Licence](./LICENSE)
