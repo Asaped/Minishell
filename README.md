@@ -22,9 +22,9 @@ Pour lancer Minishell :
 
 Une fois Minishell lancé, vous pouvez :
 
-Exécuter des commandes standard Unix.
-Gérer les redirections et les pipes.
-Utiliser les variables d'environnement.
+- Exécuter des commandes standard Unix.
+- Gérer les redirections et les pipes.
+- Utiliser les variables d'environnement.
 
 ## Fonctionnalités
 
