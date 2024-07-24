@@ -11,9 +11,11 @@ int	wordlen(const char *s, int i)
 			return (1);
 		return (2);
 	}
-	if (is_quote(s[i]))
+	else if (is_quote(s[i]))
 		return (j += skip_quote(s, i));
-	while (s[i + j] && s[i + j] != ' ' && !is_quote(s[i + j]) && !is_op(s[i + j]))
+	else if (s[i] == '$')
+		j++;
+	while (s[i + j] && s[i + j] != ' ' && s[i + j] != '$' && !is_quote(s[i + j]) && !is_op(s[i + j]))
 		j++;
 	return (j);
 }

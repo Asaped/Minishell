@@ -12,6 +12,8 @@ static t_type	find_token_type(char *str)
 		return (STRING);
 	else if (is_file(str) || !access(str, F_OK))
 		return (DIR);
+	else if (str[0] == '$' && str[1])
+		return ($);
 	else
 		return (UNKNOWN);
 }
@@ -19,10 +21,9 @@ static t_type	find_token_type(char *str)
 static void	create_token(t_mini *shell, int j, int i)
 {
 	char	*str;
-	int		len;
 	
-	len = wordlen(shell->input, j);
-	str = worddup(shell->input, j, len);
+	shell->token[i].original_len = wordlen(shell->input, j);
+	str = worddup(shell->input, j, shell->token[i].original_len);
 	shell->token[i].pos = j;
 	shell->token[i].type = find_token_type(str);
 	if (shell->token[i].type == OPTIONN)
@@ -37,7 +38,7 @@ static int	find_cmd(t_token *token, int i)
 		i--;
 	if (i == -1 || (token[i].value[0] == '|' && token[i].type == OPERATOR))
 		i++;
-	if (token[i].type == CMD || (token[i].type == OPERATOR && token[i].value[0] != '|'))
+	if (token[i].type == CMD || token[i].type == $ || (token[i].type == OPERATOR && token[i].value[0] != '|'))
 		return (1);
 	return (0);
 }
@@ -69,8 +70,8 @@ void	tokenize(t_mini *shell)
 		while (shell->input[j] && shell->input[j] == ' ')
 			j++;
 		if (shell->input[j] && !is_quote(shell->input[j]) && !is_op(shell->input[j]))
-			create_token(shell, j, i++);
-		while (shell->input[j] && shell->input[j] != ' ' && !is_op(shell->input[j]) && !is_quote(shell->input[j]))
+			create_token(shell, j++, i++);
+		while (shell->input[j] && shell->input[j] != ' ' && shell->input[j] != '$' && !is_op(shell->input[j]) && !is_quote(shell->input[j]))
 			j++;
 		if (is_quote(shell->input[j]) || is_op(shell->input[j]))
 		{

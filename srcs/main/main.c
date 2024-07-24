@@ -11,6 +11,8 @@ static void print_token(t_mini *shell)
 	{
 		if (shell->token[i].type == CMD)
 			printf("TYPE = CMD\n");
+		else if (shell->token[i].type == $)
+			printf("TYPE = DOLLAR\n");
 		else if (shell->token[i].type == DIR)
 			printf("TYPE = DIR\n");
 		else if (shell->token[i].type == STRING)
@@ -29,13 +31,12 @@ int 	main(int ac, char **av)
 {
 	t_mini	shell;
 
-	av[1] = " >f.txt echo hi>> echo ha\"hi\" ho<<|<|bruh bruh bruh<<echo slt||echo bjr  ";
-
 	if (ac > 1)
 	{
-		if (init_shell(&shell, av[1]))
-			tokenize(&shell);
+		if (!init_shell(&shell, av[1]))
+			return (0);
+		tokenize(&shell);
+		print_token(&shell);
 	}
-	print_token(&shell);
 	return (1);
 }

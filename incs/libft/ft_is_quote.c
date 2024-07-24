@@ -14,7 +14,9 @@
 
 int	is_quote(char c)
 {
-	if (c == '\"' || c == '\'')
+	if (c == '\"')
 		return (1);
+	else if (c == '\'')
+		return (2);
 	return (0);
 }

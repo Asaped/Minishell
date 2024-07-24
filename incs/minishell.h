@@ -16,6 +16,7 @@ typedef enum e_type
 	STRING,
 	OPTIONN,
 	OPERATOR,
+	$,
 	UNKNOWN
 }				t_type;
 
@@ -23,6 +24,7 @@ typedef struct	s_token
 {
 	t_type	type;
 	int		pos;
+	int		original_len;
 	char	*value;
 }				t_token;
 
@@ -45,5 +47,8 @@ int		skip_quote(const char *str, int i);
 
 // token.c
 void	tokenize(t_mini *shell);
+
+// error.c
+int		ft_error(int error);
 
 #endif
