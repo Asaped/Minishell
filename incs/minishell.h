@@ -6,11 +6,23 @@
 # include <stdio.h>
 # include <stdbool.h>
 # include <fcntl.h>
+# include <signal.h>
 # include "libft/libft.h"
 # include "gnl/get_next_line.h"
+# include "readline/history.h"
+# include "readline/readline.h"
+
+# define STDIN 0
+# define STDOUT 1
+# define STDERR 2
+
+# define FALSE 0
+# define TRUE 1
+# define t_bool int
 
 typedef enum e_type
 {
+	BUILTIN,
 	CMD,
 	DIR,
 	STRING,
@@ -33,10 +45,12 @@ typedef struct	s_mini
 	char	*input;
 	t_token	*token;
 	int		tlen;
+	char	**env;
+	char	path[4096];
 }				t_mini;
 
 // init.c
-int		init_shell(t_mini *shell, char *input);
+t_bool		init_shell(t_mini *shell);
 
 // token_utils.c
 int		wordlen(const char *s, int i);

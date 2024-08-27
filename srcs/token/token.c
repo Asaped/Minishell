@@ -3,7 +3,7 @@
 static t_type	find_token_type(char *str)
 {
 	if (is_cmd(str))
-		return (CMD);
+		return (BUILTIN);
 	else if (is_op(str[0]) && (!is_op(str[1]) || (is_op(str[1]) && str[1] != '|' && str[0] != '|')))
 		return (OPERATOR);
 	else if (str[0] == '-' && str[1] == 'n' && !str[2])
@@ -32,15 +32,15 @@ static void	create_token(t_mini *shell, int j, int i)
 		shell->token[i].value = str;
 }
 
-static int	find_cmd(t_token *token, int i)
+static t_bool	find_cmd(t_token *token, int i)
 {
 	while (token[i].type != OPERATOR && i >= 0)
 		i--;
 	if (i == -1 || (token[i].value[0] == '|' && token[i].type == OPERATOR))
 		i++;
 	if (token[i].type == CMD || token[i].type == $ || (token[i].type == OPERATOR && token[i].value[0] != '|'))
-		return (1);
-	return (0);
+		return (TRUE);
+	return (FALSE);
 }
 
 static void	second_pass(t_mini *shell)

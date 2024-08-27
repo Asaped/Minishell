@@ -2,6 +2,9 @@ NAME	= mini
 CC		= gcc
 RM 		= rm
 CFLAGS	= -Wall -Wextra
+RDIR	= /usr/local/opt/readline
+CFLAGS += -I$(RDIR)/include
+LDFLAGS	= -L$(RDIR)/lib -lreadline -lhistory -lncurses
 SRCDIR	= srcs/
 OBJDIR	= objs/
 SRCS	= $(wildcard $(SRCDIR)**/*.c)
@@ -12,7 +15,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 				make -C incs/libft/
 				make -C incs/gnl/
-				$(CC) $(CFLAGS) $(OBJS) -o $(NAME) incs/libft/libft.a incs/gnl/gnl.a
+				$(CC) $(CFLAGS) $(OBJS) -o $(NAME) incs/libft/libft.a incs/gnl/gnl.a $(LDFLAGS)
 
 $(OBJDIR)%.o:	$(SRCDIR)%.c
 				@$(CC) $(CFLAGS) -c $< -o $@
