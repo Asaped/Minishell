@@ -1,7 +1,7 @@
 NAME	= mini
 CC		= gcc
 RM 		= rm
-CFLAGS	= -Wall -Wextra
+CFLAGS	= -Wall -Wextra -Werror
 RDIR	= /usr/local/opt/readline
 CFLAGS += -I$(RDIR)/include
 LDFLAGS	= -L$(RDIR)/lib -lreadline -lhistory -lncurses

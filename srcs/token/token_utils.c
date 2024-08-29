@@ -43,9 +43,9 @@ int	skip_quote(const char *str, int i)
 	int	j;
 
 	j = 1;
-	while (str[i + j] && str[i + j] != '\'' && str[i + j] != '\"')
+	while (str[i + j] && str[i + j] != str[i])
 		j++;
-	if (str[i + j] == '\'' || str[i + j] == '\"')
+	if (str[i + j] == str[i])
 		j++;
 	return (j);
 }

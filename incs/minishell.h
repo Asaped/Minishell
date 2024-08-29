@@ -12,10 +12,6 @@
 # include "readline/history.h"
 # include "readline/readline.h"
 
-# define STDIN 0
-# define STDOUT 1
-# define STDERR 2
-
 # define FALSE 0
 # define TRUE 1
 # define t_bool int

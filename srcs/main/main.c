@@ -77,7 +77,7 @@ static void	signal_handler(void)
 {
 	struct sigaction	sigint;
 	struct sigaction	sigquit;
-
+	
 	sigint.sa_handler = handle_sigint;
 	sigemptyset(&sigint.sa_mask);
 	sigint.sa_flags = 0;
@@ -88,23 +88,79 @@ static void	signal_handler(void)
 	sigaction(SIGQUIT, &sigquit, NULL);
 }
 
+static void	free_tab(char **tab)
+{
+	int	len;
+	int	i;
+
+	len = ft_tablen(tab);
+	i = -1;
+	while (++i < len)
+	{
+		if (tab[i])
+			free(tab[i]);
+	}
+	if (tab != NULL)
+		free(tab);
+}
+
+static void	free_token(t_token *token, int tlen)
+{
+	int	i;
+
+	i = -1;
+	while (++i < tlen)
+	{
+		if (token[i].value)
+			free(token[i].value);
+	}
+	if (token != NULL)
+		free(token);
+}
+
+static t_bool	ft_free(t_mini *shell, int error)
+{
+	if (shell->input != NULL)
+		free(shell->input);
+	if (shell->env != NULL && error != 0)
+		free_tab(shell->env);
+	if (shell->token != NULL)
+		free_token(shell->token, shell->tlen);
+	if (error != 0 && error != 10)
+		return (ft_error(error));
+	return (TRUE);
+}
+
 int 	main(int ac, char **av, char **envp)
 {
 	t_mini	shell;
 
+	(void)ac;
+	(void)av;
 	shell.env = ft_tabdup(envp);
 	if (!shell.env)
-		return (ft_error(3));
+		return (ft_free(&shell, 3));
 	while (1)
 	{
+		shell.input = NULL;
+		shell.token = NULL;
 		signal_handler();
 		shell.input = readline("minishell$ ");
-		if (!init_shell(&shell))
-			return (0);
-		printf("input = \"%s\"\n", shell.input);
-		add_history(shell.input);
-		tokenize(&shell);
-		print_token(&shell);
+		if (shell.input == NULL)
+		{
+			ft_free(&shell, 10);
+			exit(0);
+		}
+		if (init_shell(&shell) == FALSE)
+			ft_free(&shell, 0);
+		else
+		{	
+			add_history(shell.input);
+			tokenize(&shell);
+			print_token(&shell);
+			ft_free(&shell, 0);
+		}
 	}
+	rl_clear_history();
 	return (1);
 }

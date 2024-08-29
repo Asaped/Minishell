@@ -31,67 +31,81 @@ static int	count_word(char *str, int i, int count)
 static t_bool	is_unclosed_quote(char *str)
 {
 	int	i;
-	int	quote1;
-	int	quote2;
+	int	pos;
 
-	i = 0;
-	while (str[i])
+	i = -1;
+	pos = 0;
+	while (++i < ft_strlen(str))
 	{
 		while (str[i] && !is_quote(str[i]))
 			i++;
 		if (is_quote(str[i]))
-		{
-			quote1 = is_quote(str[i]);
-			i += skip_quote(str, i) - 1;
-			quote2 = is_quote(str[i]);
-			if (quote1 != quote2)
-				return (TRUE);
+			pos = i++;
+		while (str[i] && str[i] != str[pos])
 			i++;
-		}
+		if (str[i] != str[pos] && is_quote(str[pos]))
+			return (TRUE);
 	}
 	return (FALSE);
+}
+
+static void	redisplay_prompt(t_mini *shell, int mode)
+{
+	char	*input;
+
+	while (1)
+	{
+		if (mode == 1)
+		{
+			input = readline("> ");
+			if (count_word(input, 0, 0) > 0)
+				break;
+		}
+		else if (mode == 2)
+		{
+			shell->input = ft_strjoin2(shell->input, '\n');
+			input = readline("> ");
+			shell->input = ft_strjoin(shell->input, input);
+			if (is_unclosed_quote(shell->input) == FALSE)
+				return ;
+		}
+	}
+	shell->input = ft_strjoin2(shell->input, ' ');
+	shell->input = ft_strjoin(shell->input, input);
 }
 
 static t_bool	check_pipe(t_mini *shell)
 {
 	int		i;
-	char	*input;
 
 	i = 0;
 	while (shell->input[i] && shell->input[i] == ' ')
 		i++;
 	if (shell->input[i] == '|')
 		return (FALSE);
-	//a gérer à 42
 	i = ft_strlen(shell->input) - 1;
 	while (i >= 0 && shell->input[i] == ' ')
 		i--;
 	if (shell->input[i] == '|')
-	{
-		while (1)
-		{
-			input = readline("> ");
-			if (count_word(input, 0, 0) > 0)
-				break;
-		}
-		shell->tlen += count_word(input, 0, 0);
-		shell->input = ft_strjoin2(shell->input, ' ');
-		shell->input = ft_strjoin(shell->input, input);
-	}
+		redisplay_prompt(shell, 1);
 	return (TRUE);
 }
 
 t_bool	init_shell(t_mini *shell)
 {
-	getcwd(shell->path, 4096);
 	shell->tlen = count_word(shell->input, 0 , 0);
 	if (shell->tlen < 1)
 		return (FALSE);
-	else if (check_pipe(shell) == FALSE)
+	getcwd(shell->path, 4096);
+	if (check_pipe(shell) == FALSE)
 		return (ft_error(2));
 	else if (is_unclosed_quote(shell->input) == TRUE)
-		return (ft_error(1));
-	//else if (escape_char())
+		redisplay_prompt(shell, 2);
+	shell->tlen = count_word(shell->input, 0 , 0);
+	if (shell->tlen < 1)
+		return (FALSE);
 	shell->token = malloc(sizeof(t_token) * shell->tlen);
+	if (!shell->token)
+		return (ft_error(3));
 	return (TRUE);
 }
