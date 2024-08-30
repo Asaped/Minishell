@@ -1,6 +1,6 @@
 #include "../../incs/minishell.h"
 
-static t_bool	find_cmd(char *path_bin, char *cmd)
+static t_bool	find_cmd(t_mini *shell, char *path_bin, char *cmd, int j)
 {
 	char	**tab;
 	char	*tmp;
@@ -12,24 +12,26 @@ static t_bool	find_cmd(char *path_bin, char *cmd)
 	i = -1;
 	while (++i < len)
 	{
-		tmp = ft_strdup(cmd);
-		tab[i] = ft_strjoin3(tab[i], "/");
-		tmp = ft_strjoin(tab[i], tmp);
+		tab[i] = ft_strjoin2(tab[i], '/');
+		tmp = ft_strjoin3(tab[i], cmd);
 		if (access(tmp, X_OK) == 0)
+		{
+			shell->token[j].path_bin = tmp;
+			free_tab(tab);
 			return (TRUE);
+		}
 	}
-	if (tab != NULL)
-		free(tab);
+	if (tab)
+		free_tab(tab);
 	return (FALSE);
 }
 
-static t_type	find_token_type(t_mini *shell, char *str)
+static t_type	find_token_type(t_mini *shell, char *str, int i)
 {
-	(void)shell;
-	if (is_builtin(str))
-		return (BUILTIN);
-	else if (find_cmd(get_env_value(shell, "PATH"), str))
+	if (find_cmd(shell, get_env_value(shell, "PATH"), str, i))
 		return (CMD);
+	else if (is_builtin(str))
+		return (BUILTIN);
 	else if (is_op(str[0]) && (!is_op(str[1]) || (is_op(str[1]) && str[1] != '|' && str[0] != '|')))
 		return (OPERATOR);
 	else if (str[0] == '-' && str[1] == 'n' && !str[2])
@@ -47,11 +49,12 @@ static t_type	find_token_type(t_mini *shell, char *str)
 static void	create_token(t_mini *shell, int j, int i)
 {
 	char	*str;
-	
-	shell->token[i].original_len = wordlen(shell->input, j);
-	str = worddup(shell->input, j, shell->token[i].original_len);
-	shell->token[i].pos = j;
-	shell->token[i].type = find_token_type(shell, str);
+
+	shell->token[i].path_bin = NULL;
+	shell->token[i].len = wordlen(shell->input, j);
+	str = worddup(shell->input, j, shell->token[i].len);
+	shell->token[i].original_pos = j;
+	shell->token[i].type = find_token_type(shell, str, i);
 	if (shell->token[i].type == OPTIONN)
 		shell->token[i].value = NULL;
 	else
@@ -102,11 +105,40 @@ static void	expand(t_mini *shell)
 	}
 }
 
-void	rearrange_token(t_mini *shell)
+static int	find_next_operator(char *str, int i)
+{
+	int	j;
+
+	j = 0;
+	while (str[i + j] && !is_op(str[i + j]))
+		j++;
+	return (j);
+}
+
+static t_token	token_dup(t_mini *shell, int i, int cmd)
+{
+	t_token	token;
+
+	token.path_bin = NULL;
+	token.type = shell->token[i].type;
+	token.original_pos = shell->token[i].original_pos;
+	token.len = shell->token[i].len;
+	if (cmd)
+	{
+		token.path_bin = ft_strdup(shell->token[i].path_bin);
+		token.value = worddup(shell->input, shell->token[i].original_pos, find_next_operator(shell->input, shell->token[i].original_pos));
+	}
+	else
+		token.value = ft_strdup(shell->token[i].value);
+	return (token);
+}
+
+static void	rearrange_token(t_mini *shell)
 {
 	t_token	*token;
 	int	len;
 	int	i;
+	int	j;
 	int	trigger;
 
 	len = shell->tlen;
@@ -124,27 +156,21 @@ void	rearrange_token(t_mini *shell)
 	token = malloc(sizeof(t_token) * shell->tlen);
 	i = -1;
 	trigger = 0;
+	j = 0;
 	while (++i < len)
 	{
 		if (shell->token[i].type == CMD)
 		{
 			trigger = 1;
-			token[i].type = shell->token[i].type;
-			token[i].pos = shell->token[i].pos;
-			token[i].original_len = shell->token[i].original_len;
-		//	token[i].value = ft_strndup(shell->input + shell->token[i].original_len + ft_strlen(shell->token[i].value)))
+			token[j++] = token_dup(shell, i, 1);
 		}
 		else if (shell->token[i].type == OPERATOR && trigger == 1)
 			trigger = 0;
-		else if (trigger == 0)
-		{
-			token[i].type = shell->token[i].type;
-			token[i].pos = shell->token[i].pos;
-			token[i].original_len = shell->token[i].original_len;
-		//	token[i].value = ft_strndup(ft_strnstr(shell->input, ))
-		}
-
+		if (trigger == 0)
+			token[j++] = token_dup(shell, i, 0);
 	}
+	free_token(shell->token, len);
+	shell->token = token;
 }
 
 void	tokenize(t_mini *shell)

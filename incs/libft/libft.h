@@ -22,6 +22,10 @@ typedef struct s_list
 	struct s_list	*next;
 }				t_list;
 
+int		ft_tablen(char **tab);
+
+char	**ft_tabdup(char **src);
+
 int		is_quote(char c);
 
 int		is_op(char c);

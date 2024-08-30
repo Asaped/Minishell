@@ -31,9 +31,10 @@ typedef enum e_type
 typedef struct	s_token
 {
 	t_type	type;
-	int		pos;
-	int		original_len;
+	int		original_pos;
+	int		len;
 	char	*value;
+	char	*path_bin;
 }				t_token;
 
 typedef struct	s_mini
@@ -45,7 +46,6 @@ typedef struct	s_mini
 	char	path[4096];
 }				t_mini;
 
-int	ft_tablen(char **tab);
 // env.c
 char    *get_env_value(t_mini *shell, char *str);
 
@@ -62,7 +62,16 @@ int		skip_quote(const char *str, int i);
 // token.c
 void	tokenize(t_mini *shell);
 
-// error.c
-int		ft_error(int error);
+// free.c
+t_bool	ft_error(int error);
+
+void	free_tab(char **tab);
+
+void	free_token(t_token *token, int tlen);
+
+t_bool	ft_free(t_mini *shell, int error);
+
+// signal.c
+void	signal_handler(void);
 
 #endif
