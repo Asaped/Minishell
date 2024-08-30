@@ -28,7 +28,7 @@ int		is_op(char c);
 
 int		is_file(char *str);
 
-int		is_cmd(char *str);
+int		is_builtin(char *str);
 
 int		ft_isalpha(int c);
 
@@ -76,11 +76,15 @@ int		ft_atoi(const char *nptr);
 
 char	*ft_strdup(const char *s);
 
+char	*ft_strndup(const char *s, int len);
+
 void	*ft_calloc(size_t nmemb, size_t size);
 
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 char	*ft_strjoin(char *s1, char *s2);
+
+char	*ft_strjoin3(char *s1, char *s2);
 
 char	*ft_strtrim(char const *s1, char const *set);
 

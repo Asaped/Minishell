@@ -20,7 +20,7 @@ typedef enum e_type
 {
 	BUILTIN,
 	CMD,
-	DIR,
+	FICHIER,
 	STRING,
 	OPTIONN,
 	OPERATOR,
@@ -44,6 +44,10 @@ typedef struct	s_mini
 	char	**env;
 	char	path[4096];
 }				t_mini;
+
+int	ft_tablen(char **tab);
+// env.c
+char    *get_env_value(t_mini *shell, char *str);
 
 // init.c
 t_bool		init_shell(t_mini *shell);

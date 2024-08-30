@@ -1,6 +1,6 @@
 #include "../../incs/minishell.h"
 
-static int	ft_tablen(char **tab)
+int	ft_tablen(char **tab)
 {
 	int	len;
 
@@ -42,10 +42,12 @@ static void print_token(t_mini *shell)
 	{
 		if (shell->token[i].type == BUILTIN)
 			printf("TYPE = BUILTIN\n");
+		else if (shell->token[i].type == CMD)
+			printf("TYPE = CMD\n");
 		else if (shell->token[i].type == $)
 			printf("TYPE = DOLLAR\n");
-		else if (shell->token[i].type == DIR)
-			printf("TYPE = DIR\n");
+		else if (shell->token[i].type == FICHIER)
+			printf("TYPE = FICHIER\n");
 		else if (shell->token[i].type == STRING)
 			printf("TYPE = STRING\n");
 		else if (shell->token[i].type == OPTIONN)
@@ -56,10 +58,10 @@ static void print_token(t_mini *shell)
 			printf("TYPE = UNKNOWN\n");
 		printf("POS = %i\nVALUE = %s\n\n", shell->token[i].pos, shell->token[i].value);
 	}
-	/*i = -1;
+	i = -1;
 	while (++i < ft_tablen(shell->env))
 		printf("%s\n", shell->env[i]);
-	printf("%s\n", shell->path);*/
+	printf("%s\n", shell->path);
 }
 
 static void	handle_sigint(int sig)

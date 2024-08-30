@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_is_cmd.c                                         :+:      :+:    :+:  */
+/*   ft_is_builtin.c                                     :+:      :+:    :+:  */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moturki <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int	is_cmd(char *str)
+int	is_builtin(char *str)
 {
 	if (!ft_strncmp(str, "echo", ft_strlen(str)) || !ft_strncmp(str, "cd", ft_strlen(str))
 		|| !ft_strncmp(str, "pwd", ft_strlen(str)) || !ft_strncmp(str, "export", ft_strlen(str))
