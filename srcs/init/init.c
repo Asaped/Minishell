@@ -4,13 +4,13 @@ static int	count_word(char *str, int i, int count)
 {
 	while (str[i])
 	{
-		while (str[i] && str[i] == ' ')
+		while (str[i] && is_whitespace(str[i]))
 			i++;
-		if (str[i] && str[i] != ' ' && !is_op(str[i]) && !is_quote(str[i]))
+		if (str[i] && !is_whitespace(str[i]) && !is_op(str[i]) && !is_quote(str[i]))
 			count++;
 		if (str[i] == '$')
 		 i++;
-		while (str[i] && str[i] != ' ' && str[i] != '$' && !is_quote(str[i]) && !is_op(str[i]))
+		while (str[i] && !is_whitespace(str[i]) && str[i] != '$' && !is_quote(str[i]) && !is_op(str[i]))
 			i++;
 		if (is_quote(str[i]))
 		{
@@ -79,12 +79,12 @@ static t_bool	check_pipe(t_mini *shell)
 	int		i;
 
 	i = 0;
-	while (shell->input[i] && shell->input[i] == ' ')
+	while (shell->input[i] && is_whitespace(shell->input[i]))
 		i++;
 	if (shell->input[i] == '|')
 		return (FALSE);
 	i = ft_strlen(shell->input) - 1;
-	while (i >= 0 && shell->input[i] == ' ')
+	while (i >= 0 && is_whitespace(shell->input[i]))
 		i--;
 	if (shell->input[i] == '|')
 		redisplay_prompt(shell, 1);
@@ -96,16 +96,15 @@ t_bool	init_shell(t_mini *shell)
 	shell->tlen = count_word(shell->input, 0 , 0);
 	if (shell->tlen < 1)
 		return (FALSE);
-	getcwd(shell->path, 4096);
+	// retourne une érreur si il y a un pipe au début et un prompt si le pipe est à la fin
 	if (check_pipe(shell) == FALSE)
-		return (ft_error(2));
+		return (ft_error("Syntax error near unexpected token \'|\'\n"));
+	// retourne un prompt si une quote n'est pas fermé
 	else if (is_unclosed_quote(shell->input) == TRUE)
 		redisplay_prompt(shell, 2);
 	shell->tlen = count_word(shell->input, 0 , 0);
-	if (shell->tlen < 1)
-		return (FALSE);
-	shell->token = malloc(sizeof(t_token) * shell->tlen);
+	shell->token = malloc(sizeof(t_token) * (shell->tlen));
 	if (!shell->token)
-		return (ft_error(3));
+		return (ft_error(strerror(errno)));
 	return (TRUE);
 }

@@ -26,6 +26,8 @@ int		ft_tablen(char **tab);
 
 char	**ft_tabdup(char **src);
 
+int 	is_whitespace(char c);
+
 int		is_quote(char c);
 
 int		is_op(char c);

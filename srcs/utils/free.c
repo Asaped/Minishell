@@ -1,16 +1,5 @@
 #include "../../incs/minishell.h"
 
-t_bool	ft_error(int error)
-{
-	if (error == 1)
-		printf("Error : unclosed quote\n");
-	else if (error == 2)
-		printf("Syntax error near unexpected token \'|\'\n");
-	else if (error == 3)
-		printf("Malloc error.\n");
-	return (FALSE);
-}
-
 void	free_tab(char **tab)
 {
 	int	len;
@@ -43,15 +32,22 @@ void	free_token(t_token *token, int tlen)
 		free(token);
 }
 
-t_bool	ft_free(t_mini *shell, int error)
+t_bool	ft_free(t_mini *shell, char *error, int flag)
 {
 	if (shell->input != NULL)
 		free(shell->input);
-	if (shell->env != NULL && error != 0)
-		free_tab(shell->env);
 	if (shell->token != NULL)
 		free_token(shell->token, shell->tlen);
-	if (error != 0 && error != 10)
+	if (shell->env != NULL && flag)
+		free_tab(shell->env);
+	if (error)
 		return (ft_error(error));
-	return (TRUE);
+	return (FALSE);
+}
+
+t_bool	ft_error(char *error)
+{
+	write(STDERR_FILENO, error, ft_strlen(error));
+	errno = 0;
+	return (FALSE);
 }

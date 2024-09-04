@@ -7,11 +7,14 @@
 # include <stdbool.h>
 # include <fcntl.h>
 # include <signal.h>
+# include <string.h>
+# include <errno.h>
 # include "libft/libft.h"
 # include "gnl/get_next_line.h"
 # include "readline/history.h"
 # include "readline/readline.h"
 
+# define WHITESPACE " \t\n\r\f\v"
 # define FALSE 0
 # define TRUE 1
 # define t_bool int
@@ -63,13 +66,13 @@ int		skip_quote(const char *str, int i);
 void	tokenize(t_mini *shell);
 
 // free.c
-t_bool	ft_error(int error);
+t_bool	ft_error(char *error);
 
 void	free_tab(char **tab);
 
 void	free_token(t_token *token, int tlen);
 
-t_bool	ft_free(t_mini *shell, int error);
+t_bool	ft_free(t_mini *shell, char *error, int flag);
 
 // signal.c
 void	signal_handler(void);
