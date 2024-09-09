@@ -14,10 +14,21 @@
 
 int	is_builtin(char *str)
 {
-	if (!ft_strncmp(str, "echo", ft_strlen(str)) || !ft_strncmp(str, "cd", ft_strlen(str))
-		|| !ft_strncmp(str, "pwd", ft_strlen(str)) || !ft_strncmp(str, "export", ft_strlen(str))
-		|| !ft_strncmp(str, "unset", ft_strlen(str)) || !ft_strncmp(str, "env", ft_strlen(str))
-		|| !ft_strncmp(str, "exit", ft_strlen(str)))
+	char	*tmp;
+	int		i;
+
+	tmp = ft_strdup(str);
+	i = -1;
+	while (tmp[++i])
+		if (ft_is_upper_case(tmp[i]))
+			tmp[i] = ft_tolower(tmp[i]);
+	if (!ft_strncmp(tmp, "echo", ft_strlen(tmp)) || !ft_strncmp(tmp, "cd", ft_strlen(tmp))
+		|| !ft_strncmp(tmp, "pwd", ft_strlen(tmp)) || !ft_strncmp(tmp, "export", ft_strlen(tmp))
+		|| !ft_strncmp(tmp, "unset", ft_strlen(tmp)) || !ft_strncmp(tmp, "env", ft_strlen(tmp))
+		|| !ft_strncmp(tmp, "exit", ft_strlen(tmp)))
+	{
+		free(tmp);
 		return (1);
+	}
 	return (0);
 }

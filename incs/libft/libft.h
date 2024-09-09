@@ -22,6 +22,10 @@ typedef struct s_list
 	struct s_list	*next;
 }				t_list;
 
+int		ft_is_upper_case(char c);
+
+char    *lower_str(char *str);
+
 int		ft_tablen(char **tab);
 
 char	**ft_tabdup(char **src);
@@ -91,6 +95,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char *s1, char *s2);
 
 char	*ft_strjoin3(char *s1, char *s2);
+
+char	*ft_strjoin4(char *s1, char *s2);
 
 char	*ft_strtrim(char const *s1, char const *set);
 

@@ -23,11 +23,9 @@ typedef enum e_type
 {
 	BUILTIN,
 	CMD,
-	FICHIER,
 	STRING,
 	OPTIONN,
 	OPERATOR,
-	$,
 	UNKNOWN
 }				t_type;
 

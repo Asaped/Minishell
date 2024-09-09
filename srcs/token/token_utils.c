@@ -5,17 +5,13 @@ int	wordlen(const char *s, int i)
 	int	j;
 
 	j = 0;
-	if (is_op(s[i]))
-	{
-		if (!is_op(s[i + 1]))
-			return (1);
+	if (is_op(s[i]) && !is_op(s[i + 1]))
+		return (1);
+	else if (is_op(s[i]) && is_op(s[i + 1]))
 		return (2);
-	}
 	else if (is_quote(s[i]))
-		return (j += skip_quote(s, i));
-	else if (s[i] == '$')
-		j++;
-	while (s[i + j] && !is_whitespace(s[i + j]) && s[i + j] != '$' && !is_quote(s[i + j]) && !is_op(s[i + j]))
+		return (skip_quote(s, i));
+	while (s[i + j] && !is_whitespace(s[i + j]) && !is_op(s[i + j]) && !is_quote(s[i + j]))
 		j++;
 	return (j);
 }

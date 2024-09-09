@@ -13,10 +13,6 @@ static void print_token(t_mini *shell)
 			printf("TYPE = BUILTIN\n");
 		else if (shell->token[i].type == CMD)
 			printf("TYPE = CMD\n");
-		else if (shell->token[i].type == $)
-			printf("TYPE = DOLLAR\n");
-		else if (shell->token[i].type == FICHIER)
-			printf("TYPE = FICHIER\n");
 		else if (shell->token[i].type == STRING)
 			printf("TYPE = STRING\n");
 		else if (shell->token[i].type == OPTIONN)
@@ -41,7 +37,7 @@ static void	init_value(t_mini *shell)
 	shell->tlen = 0;
 }
 
-/*static void	exec(t_mini *shell)
+static void	exec(t_mini *shell)
 {
 	char	**tab;
 	int	i;
@@ -64,22 +60,19 @@ static void	init_value(t_mini *shell)
 				tab[k] = shell->token[i + b++].value;
 			tab[k] = NULL;
 			j++;
-			//j = execve(shell->token[i].path_bin, tab, NULL);
+			j = execve(shell->token[i].path_bin, tab, NULL);
 			free(tab);
 		}
 	}
-}*/
+}
 
 static void	minishell(t_mini *shell)
 {
 	while (1)
 	{
-		/* pour gérer CTRL + C , D et \ */ 
 		signal_handler();
 		init_value(shell);
-		//le prompt pour récupérer l'input user
 		shell->input = readline("minishell$ ");
-		//pour gérer CTRL + D qui envoie une input (null)
 		if (shell->input == NULL)
 		{
 			ft_free(shell, NULL, 0);
@@ -90,11 +83,10 @@ static void	minishell(t_mini *shell)
 			ft_free(shell, NULL, 0);
 		else
 		{	
-			// fonction pour pouvoir réafficher les inputs avec fleche du haut/bas
 			add_history(shell->input);
 			tokenize(shell);
 			print_token(shell);
-			//exec(shell);
+			exec(shell);
 			ft_free(shell, NULL, 0);
 		}
 	}
@@ -109,7 +101,6 @@ int 	main(int ac, char **av, char **envp)
 	shell.env = ft_tabdup(envp);
 	if (!shell.env)
 		return (ft_free(&shell, strerror(errno), 1));
-	//pour avoir le path actuel
 	if (getcwd(shell.path, 4096) == NULL)
 		return (ft_free(&shell, strerror(errno), 1));
 	shell.path[ft_strlen(shell.path)] = '\0';
