@@ -7,15 +7,25 @@ static t_bool	find_cmd(t_mini *shell, char *path_bin, char *cmd, int j)
 	int		len;
 	int		i;
 
+	if (!path_bin || !cmd || ft_strlen(cmd) < 1)
+		return (FALSE);
 	tab = ft_split(path_bin, ':');
+	if (!tab)
+		return (ft_error(strerror(errno)));
 	len = ft_tablen(tab);
 	i = -1;
 	while (++i < len)
 	{
 		tab[i] = ft_strjoin2(tab[i], '/');
+		if (!tab[i])
+			return (ft_error(strerror(errno)));
 		tmp = ft_strjoin3(tab[i], cmd);
-		if (access(tmp, X_OK) == 0)
+		if (!tmp)
+			return (ft_error(strerror(errno)));
+		if (access(tmp, F_OK) == 0 || access(tmp, X_OK) == 0)
 		{
+			tmp = lower_str(tmp);
+			cmd = lower_str(cmd);
 			shell->token[j].path_bin = tmp;
 			free_tab(tab);
 			return (TRUE);
@@ -36,41 +46,67 @@ static t_type	find_token_type(t_mini *shell, char *str, int i)
 		return (CMD);
 	else if (is_op(str[0]) && (!is_op(str[1]) || (is_op(str[1]) && str[1] != '|' && str[0] != '|')))
 		return (OPERATOR);
-	else if (str[0] == '-' && str[1] == 'n' && !str[2])
-		return (OPTIONN);
-	else if (is_quote(str[0]) && is_quote(str[ft_strlen(str) - 1]))
-		return (STRING);
 	else
 		return (UNKNOWN);
 }
 
-static void	create_token(t_mini *shell, int j, int i)
+static char	*expand_env(t_mini *shell, char *str)
+{
+	char	result[4096];
+	char	*var;
+	char	*tmp;
+	int		i;
+	int		j;
+	int		k;
+	int		len;	
+
+	i = 0;
+	j = 0;
+	k = 0;
+	ft_bzero(result, 4096);
+	while (str[i])
+	{
+		while (str[i] && str[i] != '$')
+			result[j++] = str[i++];
+		if (str[i] == '$' && str[i + 1])
+		{
+			i++;
+			len = wordlen(str, i);
+			var = worddup(str, i, &len);
+			tmp = get_env_value(shell, var);
+			if (!tmp)
+				return (NULL);
+			while (tmp[k])
+				result[j++] = tmp[k++];
+			k = 0;
+			i += wordlen(str, i);
+			free(var);
+		}
+	}
+	free(str);
+	str = ft_strdup(result);
+	return (str);
+}
+
+static t_bool	create_token(t_mini *shell, int j, int i)
 {
 	char	*str;
 
 	shell->token[i].path_bin = NULL;
-	if (is_quote(shell->input[j]))
-		shell->token[i].len = skip_quote(shell->input, j);
-	else
-		shell->token[i].len = wordlen(shell->input, j);
-	str = worddup(shell->input, j, shell->token[i].len);
-	shell->token[i].original_pos = j;
-	shell->token[i].type = find_token_type(shell, str, i);
-	if (shell->token[i].type == CMD || shell->token[i].type == BUILTIN)
-		shell->token[i].value = lower_str(str);
-	else if (shell->token[i].type == STRING)
+	shell->token[i].len = wordlen(shell->input, j);
+	str = worddup(shell->input, j, &shell->token[i].len);
+	if (!str)
+		return (ft_error(strerror(errno)));
+	if (shell->input[i] != '\'')
 	{
-		str[ft_strlen(str) - 1] = '\0';
-		shell->token[i].value = ft_strdup(str + 1);
-		free(str);
-		shell->token[i].type = find_token_type(shell, shell->token[i].value, i);
-		if (shell->token[i].type == CMD || shell->token[i].type == BUILTIN)
-			shell->token[i].value = lower_str(shell->token[i].value);
+		str = expand_env(shell, str);
+		shell->token[i].len = ft_strlen(str);
 	}
-	else if (shell->token[i].type == OPTIONN)
-		shell->token[i].value = NULL;
-	else
-		shell->token[i].value = str;
+	if (!str)
+		return (ft_error("Error : Environnement variable not found\n"));
+	shell->token[i].type = find_token_type(shell, str, i); 
+	shell->token[i].value = str;
+	return (TRUE);
 }
 
 static t_bool	find_first_token(t_token *token, int i)
@@ -84,7 +120,7 @@ static t_bool	find_first_token(t_token *token, int i)
 	return (FALSE);
 }
 
-static void	second_pass(t_mini *shell)
+static t_bool	second_pass(t_mini *shell)
 {
 	int	i;
 
@@ -93,13 +129,20 @@ static void	second_pass(t_mini *shell)
 	{
 		if (shell->token[i].type == UNKNOWN)
 		{
-			if (find_first_token(shell->token, i))
+			if (find_first_token(shell->token, i) == TRUE)
 				shell->token[i].type = STRING;
+			else
+			{
+				ft_error("Command not found : ");
+				ft_error(shell->token[i].value);
+				return (ft_error("\n"));
+			}
 		}
 	}
+	return (TRUE);
 }
 
-void	tokenize(t_mini *shell)
+t_bool	tokenize(t_mini *shell)
 {
 	int	i;
 	int	j;
@@ -111,7 +154,8 @@ void	tokenize(t_mini *shell)
 		while (is_whitespace(shell->input[j]))
 			j++;
 		if (shell->input[j])
-			create_token(shell, j, i++);
+			if (create_token(shell, j, i++) == FALSE)
+				return (FALSE);
 		if (shell->input[j] && !is_whitespace(shell->input[j]) && !is_op(shell->input[j]) && !is_quote(shell->input[j]))
 			while (shell->input[j] && !is_whitespace(shell->input[j]) && !is_op(shell->input[j]) && !is_quote(shell->input[j]))
 				j++;
@@ -121,6 +165,8 @@ void	tokenize(t_mini *shell)
 			if (is_op(shell->input[++j]))
 				j++;
 	}
-	second_pass(shell);
-	//expand(shell);
+	if (second_pass(shell) == FALSE)
+		return (FALSE);
+	//second_pass(shell);
+	return (TRUE);
 }

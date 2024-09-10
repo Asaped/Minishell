@@ -82,7 +82,7 @@ static t_bool	check_pipe(t_mini *shell)
 	return (TRUE);
 }
 
-/*static void	expand(t_mini *shell, char *str)
+/*static t_bool	expand(t_mini *shell, char *str)
 {
 	int		i;
 	int		j;
@@ -96,25 +96,38 @@ static t_bool	check_pipe(t_mini *shell)
 	len = ft_strlen(str);
 	while (++i < len)
 	{
-		while (str[i] && str[i] != '$')
+		while (str[i] && str[i] != '$' && str[i] != '\"')
 			tmp[j++] = str[i++];
-		if (str[i] == '$' && str[i + 1] && ft_memcpy(value, shell->input + i + 1, wordlen(shell->input, i + 1)) != NULL)
+		if (str[i] == '\"')
 		{
-			tmp2 = get_env_value(shell, value);
-			ft_memcpy(tmp + j, tmp2, ft_strlen(tmp2));
-			printf("tmp = %s\n", tmp);
-			j += ft_strlen(tmp2);
-			tmp[j++] = ' ';
-			i += wordlen(shell->input, i);
-		}
-		else
-		{
-			while (str[i] && !is_whitespace(str[i]) && !is_op(str[i]) && !is_quote(str[i]))
+			tmp[j++] = str[i++];
+			while (str[i] && str[i] != '\"' && str[i] != '$')
 				tmp[j++] = str[i++];
+			if (str[i] == '\"')
+				tmp[j++] = str[i++];
+			else if (str[i] == '$')
+				ft_memcpy(value, shell->input + i + 1, wordlen(shell->input, i + 1));
+
 		}
-		printf("j and i = %d %d\n", j, i);
-		printf("str[j] = %c\n", str[j - 1]);
+		if (str[i] == '$' && str[i + 1])
+		{
+			i++;
+			ft_memcpy(value, shell->input + i, wordlen(shell->input, i));
+			tmp2 = get_env_value(shell, value);
+			if (!tmp2)
+				return(ft_error("Error : Environnement variable not found\n"));
+			ft_memcpy(tmp + j, tmp2, ft_strlen(tmp2));
+			printf("TMP = \"%s\"\n", tmp);
+			printf("STR = \"%s\"\n", str);
+			j += ft_strlen(tmp2);
+			printf("\"%c\"\n", tmp[j]);
+			while (str[i] && !is_whitespace(str[i]))
+				i++;
+			printf("%i = \"%c\"\n", i, str[i]);
+		}
 	}
+	printf("\"%s\"\n", tmp);
+	return (TRUE);
 }*/
 
 t_bool	init_shell(t_mini *shell)
@@ -126,7 +139,8 @@ t_bool	init_shell(t_mini *shell)
 		return (ft_error("Syntax error near unexpected token \'|\'\n"));
 	else if (is_unclosed_quote(shell->input) == TRUE)
 		redisplay_prompt(shell, 2);
-	//expand(shell, shell->input);
+	/*if (expand(shell, shell->input) == FALSE)
+		return (FALSE);*/
 	shell->tlen = count_word(shell->input, 0 , 0);
 	shell->token = malloc(sizeof(t_token) * (shell->tlen));
 	if (!shell->token)

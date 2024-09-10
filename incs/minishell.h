@@ -24,15 +24,14 @@ typedef enum e_type
 	BUILTIN,
 	CMD,
 	STRING,
-	OPTIONN,
 	OPERATOR,
+	$,
 	UNKNOWN
 }				t_type;
 
 typedef struct	s_token
 {
 	t_type	type;
-	int		original_pos;
 	int		len;
 	char	*value;
 	char	*path_bin;
@@ -56,12 +55,12 @@ t_bool		init_shell(t_mini *shell);
 // token_utils.c
 int		wordlen(const char *s, int i);
 
-char	*worddup(const char *s, int i, int n);
+char	*worddup(const char *s, int i, int *n);
 
 int		skip_quote(const char *str, int i);
 
 // token.c
-void	tokenize(t_mini *shell);
+t_bool	tokenize(t_mini *shell);
 
 // free.c
 t_bool	ft_error(char *error);

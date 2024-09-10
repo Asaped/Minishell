@@ -16,16 +16,21 @@ int	wordlen(const char *s, int i)
 	return (j);
 }
 
-char	*worddup(const char *s, int i, int n)
+char	*worddup(const char *s, int i, int *n)
 {
 	int		j;
 	char	*str;
 
 	j = 0;
-	str = malloc(sizeof(char) * (n + 1));
+	if (is_quote(s[i]))
+	{
+		i++;
+		n[0] -= 2;
+	}
+	str = malloc(sizeof(char) * (n[0] + 1));
 	if (!str)
 		return (NULL);
-	while (j < n)
+	while (j < n[0])
 	{
 		str[j] = s[i + j];
 		j++;

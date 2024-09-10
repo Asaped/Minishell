@@ -15,19 +15,18 @@ static void print_token(t_mini *shell)
 			printf("TYPE = CMD\n");
 		else if (shell->token[i].type == STRING)
 			printf("TYPE = STRING\n");
-		else if (shell->token[i].type == OPTIONN)
-			printf("TYPE = OPTION -n\n");
 		else if (shell->token[i].type == OPERATOR)
 			printf("TYPE = OPERATOR\n");
 		else if (shell->token[i].type == UNKNOWN)
 			printf("TYPE = UNKNOWN\n");
 		if (shell->token[i].path_bin != NULL)
 			printf("PATH_BIN = \"%s\"\n", shell->token[i].path_bin);
-		printf("POS = %i\nVALUE = \"%s\"\n\n", shell->token[i].original_pos, shell->token[i].value);
+		printf("VALUE = \"%s\"\n", shell->token[i].value);
+		printf("LEN = %d\n\n", shell->token[i].len);
 	}
-	i = -1;
+	/*i = -1;
 	while (++i < ft_tablen(shell->env))
-		printf("%s\n", shell->env[i]);
+		printf("%s\n", shell->env[i]);*/
 	printf("%s\n", shell->path);
 }
 static void	init_value(t_mini *shell)
@@ -84,10 +83,14 @@ static void	minishell(t_mini *shell)
 		else
 		{	
 			add_history(shell->input);
-			tokenize(shell);
-			print_token(shell);
-			exec(shell);
-			ft_free(shell, NULL, 0);
+			if (tokenize(shell) == FALSE)
+				ft_free(shell, NULL, 0);
+			else
+			{
+				print_token(shell);
+				exec(shell);
+				ft_free(shell, NULL, 0);
+			}
 		}
 	}
 	rl_clear_history();
