@@ -40,52 +40,61 @@ static t_bool	find_cmd(t_mini *shell, char *path_bin, char *cmd, int j)
 
 static t_type	find_token_type(t_mini *shell, char *str, int i)
 {
+	(void)shell;
+	(void)i;
 	if (is_builtin(str))
 		return (BUILTIN);
-	else if (find_cmd(shell, get_env_value(shell, "PATH"), str, i))
+	else if ((access(str, F_OK) == 0 && access(str, X_OK) == 0) || find_cmd(shell, get_env_value(shell, "PATH"), str, i))
 		return (CMD);
 	else if (is_op(str[0]) && (!is_op(str[1]) || (is_op(str[1]) && str[1] != '|' && str[0] != '|')))
 		return (OPERATOR);
 	else
 		return (UNKNOWN);
 }
-
-static char	*expand_env(t_mini *shell, char *str)
+//à revoir
+static t_bool	get_final_string(t_mini *shell, char *result, char *str, char *tmp, int *i)
 {
-	char	result[4096];
 	char	*var;
-	char	*tmp;
-	int		i;
-	int		j;
-	int		k;
-	int		len;	
 
-	i = 0;
-	j = 0;
-	k = 0;
-	ft_bzero(result, 4096);
-	while (str[i])
+	while (str[i[0]])
 	{
-		while (str[i] && str[i] != '$')
-			result[j++] = str[i++];
-		if (str[i] == '$' && str[i + 1])
+		while (str[i[0]] && str[i[0]] != '$')
+			result[i[1]++] = str[i[0]++];
+		if (str[i[0]] == '$' && str[i[0] + 1])
 		{
-			i++;
-			len = wordlen(str, i);
-			var = worddup(str, i, &len);
+			i[0]++;
+			i[3] = wordlen(str, i[0]);
+			var = worddup(str, i[0], &i[3]);
+			if (!var)
+				return (ft_error(strerror(errno)));
 			tmp = get_env_value(shell, var);
 			if (!tmp)
-				return (NULL);
-			while (tmp[k])
-				result[j++] = tmp[k++];
-			k = 0;
-			i += wordlen(str, i);
+				return (ft_error("Error : Environnement variable not found\n"));
+			while (tmp[i[2]])
+				result[i[1]++] = tmp[i[2]++];
+			i[2] = 0;
+			i[0] += wordlen(str, i[0]);
 			free(var);
 		}
 	}
-	free(str);
 	str = ft_strdup(result);
-	return (str);
+	return (TRUE);
+}
+
+static t_bool	expand_env(t_mini *shell, char *str)
+{
+	char	result[4096];
+	int		i[4];
+
+	i[0] = 0;
+	i[1] = 0;
+	i[2] = 0;
+	ft_bzero(result, 4096);
+	free(str);
+	get_final_string(shell, result, str, NULL, i);
+	if (!str)
+		return (ft_error(strerror(errno)));
+	return (TRUE);
 }
 
 static t_bool	create_token(t_mini *shell, int j, int i)
@@ -99,12 +108,18 @@ static t_bool	create_token(t_mini *shell, int j, int i)
 		return (ft_error(strerror(errno)));
 	if (shell->input[i] != '\'')
 	{
-		str = expand_env(shell, str);
+		expand_env(shell, str);
+		if (!str)
+			return (FALSE);
 		shell->token[i].len = ft_strlen(str);
 	}
-	if (!str)
-		return (ft_error("Error : Environnement variable not found\n"));
-	shell->token[i].type = find_token_type(shell, str, i); 
+	shell->token[i].type = find_token_type(shell, str, i);
+	if (shell->token[i].type == CMD && !shell->token[i].path_bin)
+	{
+		shell->token[i].path_bin = ft_strdup(str);
+		if (!shell->token[i].path_bin)
+			return (ft_error(strerror(errno)));
+	}
 	shell->token[i].value = str;
 	return (TRUE);
 }
@@ -133,9 +148,16 @@ static t_bool	second_pass(t_mini *shell)
 				shell->token[i].type = STRING;
 			else
 			{
-				ft_error("Command not found : ");
+				ft_error("minishell: ");
 				ft_error(shell->token[i].value);
-				return (ft_error("\n"));
+				if (access(shell->token[i].value, F_OK) == 0 && access(shell->token[i].value, W_OK) == -1)
+					return (ft_error(": Is a directory\n"));
+				else if (access(shell->token[i].value, F_OK) == 0 && access(shell->token[i].value, W_OK) == 0 && access(shell->token[i].value, X_OK) == -1)
+					return (ft_error(": Permission denied\n"));
+				else if (access(shell->token[i].value, F_OK) == -1)
+					return (ft_error(": No such file or directory\n"));
+				else
+					return (ft_error(": Command not found\n"));
 			}
 		}
 	}

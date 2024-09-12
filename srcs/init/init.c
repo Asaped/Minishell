@@ -40,7 +40,7 @@ static t_bool	is_unclosed_quote(char *str)
 	return (FALSE);
 }
 
-static void	redisplay_prompt(t_mini *shell, int mode)
+/*static void	redisplay_prompt(t_mini *shell, int mode)
 {
 	char	*input;
 
@@ -63,9 +63,9 @@ static void	redisplay_prompt(t_mini *shell, int mode)
 	}
 	shell->input = ft_strjoin2(shell->input, ' ');
 	shell->input = ft_strjoin(shell->input, input);
-}
+}*/
 
-static t_bool	check_pipe(t_mini *shell)
+static t_bool	check_operator(t_mini *shell)
 {
 	int		i;
 
@@ -77,73 +77,24 @@ static t_bool	check_pipe(t_mini *shell)
 	i = ft_strlen(shell->input) - 1;
 	while (i >= 0 && is_whitespace(shell->input[i]))
 		i--;
-	if (shell->input[i] == '|')
-		redisplay_prompt(shell, 1);
+	if (is_op(shell->input[i]))
+		return (FALSE);
 	return (TRUE);
 }
-
-/*static t_bool	expand(t_mini *shell, char *str)
-{
-	int		i;
-	int		j;
-	int		len;
-	char	tmp[4096];
-	char	*tmp2;
-	char	value[4096];
-
-	i = -1;
-	j = 0;
-	len = ft_strlen(str);
-	while (++i < len)
-	{
-		while (str[i] && str[i] != '$' && str[i] != '\"')
-			tmp[j++] = str[i++];
-		if (str[i] == '\"')
-		{
-			tmp[j++] = str[i++];
-			while (str[i] && str[i] != '\"' && str[i] != '$')
-				tmp[j++] = str[i++];
-			if (str[i] == '\"')
-				tmp[j++] = str[i++];
-			else if (str[i] == '$')
-				ft_memcpy(value, shell->input + i + 1, wordlen(shell->input, i + 1));
-
-		}
-		if (str[i] == '$' && str[i + 1])
-		{
-			i++;
-			ft_memcpy(value, shell->input + i, wordlen(shell->input, i));
-			tmp2 = get_env_value(shell, value);
-			if (!tmp2)
-				return(ft_error("Error : Environnement variable not found\n"));
-			ft_memcpy(tmp + j, tmp2, ft_strlen(tmp2));
-			printf("TMP = \"%s\"\n", tmp);
-			printf("STR = \"%s\"\n", str);
-			j += ft_strlen(tmp2);
-			printf("\"%c\"\n", tmp[j]);
-			while (str[i] && !is_whitespace(str[i]))
-				i++;
-			printf("%i = \"%c\"\n", i, str[i]);
-		}
-	}
-	printf("\"%s\"\n", tmp);
-	return (TRUE);
-}*/
 
 t_bool	init_shell(t_mini *shell)
 {
 	shell->tlen = count_word(shell->input, 0 , 0);
 	if (shell->tlen < 1)
 		return (FALSE);
-	if (check_pipe(shell) == FALSE)
-		return (ft_error("Syntax error near unexpected token \'|\'\n"));
+	if (check_operator(shell) == FALSE)
+		return (ft_error("Syntax error : unexpected operator near end of line.\n"));
 	else if (is_unclosed_quote(shell->input) == TRUE)
-		redisplay_prompt(shell, 2);
-	/*if (expand(shell, shell->input) == FALSE)
-		return (FALSE);*/
+		return (ft_error("Syntax error : unclosed quote.\n"));
 	shell->tlen = count_word(shell->input, 0 , 0);
 	shell->token = malloc(sizeof(t_token) * (shell->tlen));
 	if (!shell->token)
 		return (ft_error(strerror(errno)));
+	add_history(shell->input);
 	return (TRUE);
 }

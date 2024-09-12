@@ -35,5 +35,6 @@ int	is_builtin(char *str)
 		str = lower_str(str);
 		return (1);
 	}
+	free(tmp);
 	return (0);
 }

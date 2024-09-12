@@ -9,8 +9,10 @@ void	free_tab(char **tab)
 	i = -1;
 	while (++i < len)
 	{
+		printf("free_tab\n");
 		if (tab[i])
 			free(tab[i]);
+		printf("freed_tab\n");
 	}
 	if (tab != NULL)
 		free(tab);
@@ -23,10 +25,13 @@ void	free_token(t_token *token, int tlen)
 	i = -1;
 	while (++i < tlen)
 	{
+		printf("free_token[%d]\n", i);
 		if (token[i].value)
 			free(token[i].value);
+		printf("freed_token_value\n");
 		if (token[i].path_bin)
 			free(token[i].path_bin);
+		printf("freed_path_bin\n");
 	}
 	if (token != NULL)
 		free(token);

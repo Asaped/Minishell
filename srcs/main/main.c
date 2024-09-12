@@ -29,12 +29,6 @@ static void print_token(t_mini *shell)
 		printf("%s\n", shell->env[i]);*/
 	printf("%s\n", shell->path);
 }
-static void	init_value(t_mini *shell)
-{
-	shell->input = NULL;
-	shell->token = NULL;
-	shell->tlen = 0;
-}
 
 static void	exec(t_mini *shell)
 {
@@ -59,10 +53,17 @@ static void	exec(t_mini *shell)
 				tab[k] = shell->token[i + b++].value;
 			tab[k] = NULL;
 			j++;
-			j = execve(shell->token[i].path_bin, tab, NULL);
+			//j = execve(shell->token[i].path_bin, tab, NULL);
 			free(tab);
 		}
 	}
+}
+
+static void	init_value(t_mini *shell)
+{
+	shell->input = NULL;
+	shell->token = NULL;
+	shell->tlen = 0;
 }
 
 static void	minishell(t_mini *shell)
@@ -78,22 +79,17 @@ static void	minishell(t_mini *shell)
 			exit(0);
 		}
 		shell->input[ft_strlen(shell->input)] = '\0';
-		if (init_shell(shell) == FALSE)
+		if (init_shell(shell) == FALSE || tokenize(shell) == FALSE)
 			ft_free(shell, NULL, 0);
 		else
 		{	
-			add_history(shell->input);
-			if (tokenize(shell) == FALSE)
-				ft_free(shell, NULL, 0);
-			else
-			{
-				print_token(shell);
-				exec(shell);
-				ft_free(shell, NULL, 0);
-			}
+			print_token(shell);
+			exec(shell);
+			ft_free(shell, NULL, 0);
 		}
 	}
 	rl_clear_history();
+	ft_free(shell, NULL, 1);
 }
 
 int 	main(int ac, char **av, char **envp)
