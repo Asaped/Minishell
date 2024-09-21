@@ -32,7 +32,7 @@ static void print_token(t_mini *shell)
 
 static void	exec(t_mini *shell)
 {
-	char	**tab;
+	/*char	**tab;
 	int	i;
 	int	j;
 	int	k;
@@ -56,14 +56,91 @@ static void	exec(t_mini *shell)
 			//j = execve(shell->token[i].path_bin, tab, NULL);
 			free(tab);
 		}
-	}
+	}*/
 }
 
 static void	init_value(t_mini *shell)
 {
 	shell->input = NULL;
 	shell->token = NULL;
+	shell->cmd = NULL;
+	shell->clen = 0;
 	shell->tlen = 0;
+}
+
+static int	get_token_length(t_token *token, int i, int tlen)
+{
+	int	count;
+
+	count = 0;
+	while (++i < tlen)
+	{
+		if (token[i].type == OPERATOR && token[i].value[0] == '|')
+			return (count);
+		count++;
+	}
+	return (count);
+}
+
+static int	get_command(t_cmd *cmd, t_token *token, int *j, int tlen)
+{
+	int		i;
+
+	i = -1;
+	cmd->tlen = get_token_length(token, j[0] - 1, tlen);
+	cmd->token = malloc(sizeof(t_token) * cmd->tlen);
+	if (!cmd->token)
+		return (ft_error(strerror(errno)));
+	while (++i < cmd->tlen)
+		cmd->token[i] = token[j[0]++];
+	if (token[j[0]].type == OPERATOR)
+		j[0]++;
+	cmd->fd_bracket = 0;
+	cmd->fd_in = 0;
+	cmd->fd_out = 0;
+	return (TRUE);
+}
+
+static int	pipe_count(t_token *token, int tlen)
+{
+	int	i;
+	int	count;
+
+	i = -1;
+	count = 0;
+	while (++i < tlen)
+		if (token[i].value[0] == '|')
+			count++;
+	return (count);
+}
+
+static int	get_command_tab(t_mini *shell)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	j = 0;
+	shell->clen = pipe_count(shell->token, shell->tlen) + 1;
+	shell->cmd = malloc(sizeof(t_cmd) * shell->clen);
+	if (!shell->cmd)
+		return (ft_error(strerror(errno)));
+	while (++i < shell->clen)
+		get_command(&shell->cmd[i], shell->token, &j, shell->tlen);
+	i = -1;
+	while (++i < shell->clen)
+	{
+		j = -1;
+		printf("-----command[%d]-----\n", i);
+		printf("token len = %d\n", shell->cmd[i].tlen);
+		while (++j < shell->cmd[i].tlen)
+			printf("token[%d] = \"%s\"\n", j, shell->cmd[i].token[j].value);
+		printf("fd_bracket value = %d\n", shell->cmd[i].fd_bracket);
+		printf("fd_in value = %d\n", shell->cmd[i].fd_in);
+		printf("fd_out value = %d\n", shell->cmd[i].fd_out);
+		printf("-----command[%d]-----\n\n", i);
+	}
+	return (TRUE);
 }
 
 static void	minishell(t_mini *shell)
@@ -84,6 +161,7 @@ static void	minishell(t_mini *shell)
 		else
 		{	
 			print_token(shell);
+			get_command_tab(shell);
 			exec(shell);
 			ft_free(shell, NULL, 0);
 		}

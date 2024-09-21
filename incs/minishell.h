@@ -25,7 +25,6 @@ typedef enum e_type
 	CMD,
 	STRING,
 	OPERATOR,
-	$,
 	UNKNOWN
 }				t_type;
 
@@ -37,11 +36,22 @@ typedef struct	s_token
 	char	*path_bin;
 }				t_token;
 
-typedef struct	s_mini
+typedef struct	s_cmd
 {
-	char	*input;
 	t_token	*token;
 	int		tlen;
+	int		fd_bracket;
+	int		fd_in;
+	int		fd_out;
+}				t_cmd;
+
+typedef struct	s_mini
+{
+	t_cmd	*cmd;
+	t_token	*token;
+	int		clen;
+	int		tlen;
+	char	*input;
 	char	**env;
 	char	path[4096];
 }				t_mini;
