@@ -1,34 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_is_whitespace.c                                   :+:      :+:    :+: */
+/*   ft_is_unclosed_quote.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moturki <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 11:00:45 by moturki           #+#    #+#             */
-/*   Updated: 2023/10/23 11:00:48 by moturki          ###   ########.fr       */
+/*   Created: 2023/10/23 11:01:17 by moturki           #+#    #+#             */
+/*   Updated: 2023/10/23 11:01:19 by moturki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int is_whitespace(char c)
+t_bool	is_unclosed_quote(char *str)
 {
-    if (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\f')
-        return (1);
-    return (0);
-}
+	int	i;
+	int	pos;
 
-int is_only_whitespace(char *str)
-{
-    int i;
-
-    i = 0;
-    while (str[i])
-    {
-        if (!is_whitespace(str[i]))
-            return (FALSE);
-        i++;
-    }
-    return (TRUE);
+	i = -1;
+	while (++i < ft_strlen(str))
+	{
+		pos = -1;
+		while (str[i] && !is_quote(str[i]))
+			i++;
+		if (is_quote(str[i]))
+			pos = i++;
+		while (str[i] && str[i] != str[pos])
+			i++;
+		if (pos != -1 && str[i] != str[pos] && is_quote(str[pos]))
+			return (TRUE);
+	}
+	return (FALSE);
 }

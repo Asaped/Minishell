@@ -1,34 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_is_whitespace.c                                   :+:      :+:    :+: */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moturki <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 11:00:45 by moturki           #+#    #+#             */
-/*   Updated: 2023/10/23 11:00:48 by moturki          ###   ########.fr       */
+/*   Created: 2023/10/23 11:19:13 by moturki           #+#    #+#             */
+/*   Updated: 2023/10/23 15:57:48 by moturki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int is_whitespace(char c)
+char	*worddup(const char *s, int i, int n)
 {
-    if (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\f')
-        return (1);
-    return (0);
-}
+	int		j;
+	char	*str;
 
-int is_only_whitespace(char *str)
-{
-    int i;
-
-    i = 0;
-    while (str[i])
-    {
-        if (!is_whitespace(str[i]))
-            return (FALSE);
-        i++;
-    }
-    return (TRUE);
+	j = 0;
+	if (is_quote(s[i]))
+	{
+		i++;
+		n -= 2;
+	}
+	str = malloc(sizeof(char) * (n + 1));
+	if (!str)
+		return (NULL);
+	while (j < n)
+	{
+		str[j] = s[i + j];
+		j++;
+	}
+	str[j] = 0;
+	return (str);
 }

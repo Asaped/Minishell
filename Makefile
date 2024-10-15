@@ -6,7 +6,6 @@ RDIR	= /usr/local/opt/readline
 CFLAGS += -I$(RDIR)/include
 LDFLAGS	= -L$(RDIR)/lib -lreadline -lhistory -lncurses
 SRCDIR	= srcs/
-OBJDIR	= objs/
 SRCS	= $(wildcard $(SRCDIR)**/*.c)
 OBJS	= $(patsubst $(SRCDIR)%.c,$(SRCDIR)%.o,$(SRCS))
 

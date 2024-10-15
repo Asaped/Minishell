@@ -1,52 +1,68 @@
 #include "../../incs/minishell.h"
 
-int	wordlen(const char *s, int i)
+static t_bool	find_first_token(t_token *token, int i, int original_pos)
 {
-	int	j;
-
-	j = 0;
-	if (is_op(s[i]) && !is_op(s[i + 1]))
-		return (1);
-	else if (is_op(s[i]) && is_op(s[i + 1]))
-		return (2);
-	else if (is_quote(s[i]))
-		return (skip_quote(s, i));
-	while (s[i + j] && !is_whitespace(s[i + j]) && !is_op(s[i + j]) && !is_quote(s[i + j]))
-		j++;
-	return (j);
-}
-
-char	*worddup(const char *s, int i, int *n)
-{
-	int		j;
-	char	*str;
-
-	j = 0;
-	if (is_quote(s[i]))
-	{
+	while (i >= 0 && !is_pipe(token[i]))
+		i--;
+	if (i == -1 || is_pipe(token[i]))
 		i++;
-		n[0] -= 2;
-	}
-	str = malloc(sizeof(char) * (n[0] + 1));
-	if (!str)
-		return (NULL);
-	while (j < n[0])
+	if (token[i].type == CMD || token[i].type == BUILTIN)
+		return (TRUE);
+	if (token[i].type == OPERATOR)
 	{
-		str[j] = s[i + j];
-		j++;
+		i = original_pos;
+		while (i >= 0 && token[i].type != OPERATOR)
+		{
+			i--;
+			if ((token[i].type == CMD || token[i].type == BUILTIN) && token[i - 1].type != OPERATOR && token[i - 1].value[0] != '|')
+				return (TRUE);
+		}
+		if (token[i].type == OPERATOR && token[i].value[0] != '|')
+		{
+			i = original_pos;
+			if (token[i - 1].type == OPERATOR && token[i - 1].value[0] != '|')
+				return (TRUE);
+		}
 	}
-	str[j] = 0;
-	return (str);
+	return (FALSE);
 }
 
-int	skip_quote(const char *str, int i)
+static t_bool	check_operator(t_token *token, int i, int tlen)
 {
-	int	j;
+	if (token[i].type == OPERATOR)
+	{
+		if ((i == 0 && is_pipe(token[i])) || (i == tlen - 1 && token[i].type == OPERATOR) || (token[i].value[0] == '|' && token[i - 1].type == OPERATOR) ||
+			(token[i].type == OPERATOR && token[i].value[0] != '|' && token[i - 1].type == OPERATOR && token[i - 1].value[0] != '|'))
+		{
+			ft_error("bash: syntax error near unexpected token \'");
+			ft_error(token[i].value);
+			return (ft_error("\'\n"));
+		}
+	}
+	return (TRUE);
+}
 
-	j = 1;
-	while (str[i + j] && str[i + j] != str[i])
-		j++;
-	if (str[i + j] == str[i])
-		j++;
-	return (j);
+t_bool	second_pass(t_mini *shell)
+{
+	int	i;
+
+	i = -1;
+	while (++i < shell->tlen)
+	{
+		if (shell->token[i].type == OPERATOR)
+			if (!check_operator(shell->token, i, shell->tlen))
+				return(FALSE);
+		if (shell->token[i].type == UNKNOWN)
+		{
+			if (find_first_token(shell->token, i, i) == TRUE)
+				shell->token[i].type = STRING;
+			else
+			{
+				ft_error("minishell: ");
+				ft_error(shell->token[i].value);
+				return (ft_error(": Command not found\n"));
+			}
+		}
+	}
+	return (TRUE);
 }

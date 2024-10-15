@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_is_whitespace.c                                   :+:      :+:    :+: */
+/*   ft_skip_quote.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moturki <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 11:00:45 by moturki           #+#    #+#             */
-/*   Updated: 2023/10/23 11:00:48 by moturki          ###   ########.fr       */
+/*   Created: 2023/10/23 11:26:42 by moturki           #+#    #+#             */
+/*   Updated: 2023/10/23 11:27:24 by moturki          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int is_whitespace(char c)
+int	skip_quote(const char *str, int i)
 {
-    if (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\f')
-        return (1);
-    return (0);
+	int	j;
+
+	j = 1;
+	while (str[i + j] && str[i + j] != str[i])
+		j++;
+	if (str[i + j] == str[i])
+		j++;
+	return (j);
 }
 
-int is_only_whitespace(char *str)
+int	skip_op(const char *str, int i)
 {
-    int i;
-
-    i = 0;
-    while (str[i])
-    {
-        if (!is_whitespace(str[i]))
-            return (FALSE);
-        i++;
-    }
-    return (TRUE);
+	if ((str[i] == '>' && str[i + 1] == '>') || (str[i] == '<' && str[i + 1] == '<'))
+		return (2);
+	return (1);
 }

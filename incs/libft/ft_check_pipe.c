@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_is_whitespace.c                                   :+:      :+:    :+: */
+/*   ft_check_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: moturki <marvin@42lausanne.ch>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,23 +12,11 @@
 
 #include "libft.h"
 
-int is_whitespace(char c)
+t_bool	check_pipe(char *str, int len)
 {
-    if (c == ' ' || c == '\t' || c == '\n' || c == '\r' || c == '\f' || c == '\f')
-        return (1);
-    return (0);
-}
-
-int is_only_whitespace(char *str)
-{
-    int i;
-
-    i = 0;
-    while (str[i])
-    {
-        if (!is_whitespace(str[i]))
-            return (FALSE);
-        i++;
-    }
-    return (TRUE);
+	while (len >= 0 && is_whitespace(str[len]))
+		len--;
+	if (str[len] == '|')
+		return (TRUE);
+	return (FALSE);
 }

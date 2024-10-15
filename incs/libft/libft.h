@@ -15,6 +15,7 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include "../struct.h"
 
 typedef struct s_list
 {
@@ -32,11 +33,37 @@ char	**ft_tabdup(char **src);
 
 int 	is_whitespace(char c);
 
+t_bool	check_pipe(char *str, int len);
+
+int		is_only_whitespace(char *str);
+
+int		skip_quote(const char *str, int i);
+
+int		skip_op(const char *str, int i);
+
 int		is_quote(char c);
 
 int		is_op(char c);
 
 int		is_file(char *str);
+
+int		wordlen(const char *s, int i);
+
+int 	wordlen2(char *str, int *i);
+
+int		pipelen(t_token *token, int tlen);
+
+int		count_word(char *str, int i, int count);
+
+int		get_token_length(t_token *token, int i, int tlen);
+
+t_bool	is_pipe(t_token token);
+
+t_bool	is_heredoc(t_token token);
+
+t_bool	is_unclosed_quote(char *str);
+
+char	*worddup(const char *s, int i, int n);
 
 int		is_builtin(char *str);
 

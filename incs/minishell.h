@@ -13,64 +13,34 @@
 # include "gnl/get_next_line.h"
 # include "readline/history.h"
 # include "readline/readline.h"
+# include "struct.h"
 
-# define WHITESPACE " \t\n\r\f\v"
-# define FALSE 0
-# define TRUE 1
-# define t_bool int
+// set_command_tab.c
+int		set_command_tab(t_mini *shell);
 
-typedef enum e_type
-{
-	BUILTIN,
-	CMD,
-	STRING,
-	OPERATOR,
-	UNKNOWN
-}				t_type;
+// handle_redirection.c
+t_bool	handle_output(t_token *token, t_cmd *cmd, int i);
 
-typedef struct	s_token
-{
-	t_type	type;
-	int		len;
-	char	*value;
-	char	*path_bin;
-}				t_token;
+t_bool	handle_input(t_token *token, t_cmd *cmd, int i);
 
-typedef struct	s_cmd
-{
-	t_token	*token;
-	int		tlen;
-	int		fd_bracket;
-	int		fd_in;
-	int		fd_out;
-}				t_cmd;
-
-typedef struct	s_mini
-{
-	t_cmd	*cmd;
-	t_token	*token;
-	int		clen;
-	int		tlen;
-	char	*input;
-	char	**env;
-	char	path[4096];
-}				t_mini;
+t_bool	handle_heredoc(t_mini *shell, t_token *token, t_cmd *cmd, int i);
 
 // env.c
-char    *get_env_value(t_mini *shell, char *str);
+char	*get_env_value(t_mini *shell, char *str, int malloc);
 
 // init.c
-t_bool		init_shell(t_mini *shell);
+t_bool	init_shell(t_mini *shell, int first_time, char **envp);
+
+void	init_cmd(t_cmd *cmd);
 
 // token_utils.c
-int		wordlen(const char *s, int i);
-
-char	*worddup(const char *s, int i, int *n);
-
-int		skip_quote(const char *str, int i);
+t_bool	second_pass(t_mini *shell);
 
 // token.c
-t_bool	tokenize(t_mini *shell);
+t_bool	set_token(t_mini *shell);
+
+// expand.c
+char	*expand_env(t_mini *shell, char *str);
 
 // free.c
 t_bool	ft_error(char *error);
@@ -83,5 +53,10 @@ t_bool	ft_free(t_mini *shell, char *error, int flag);
 
 // signal.c
 void	signal_handler(void);
+
+// debug.c
+void	print_token(t_mini *shell);
+
+void	print_cmd(t_mini *shell);
 
 #endif

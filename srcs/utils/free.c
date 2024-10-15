@@ -38,7 +38,24 @@ static void	free_cmd(t_cmd *cmd, int clen)
 
 	i = -1;
 	while (++i < clen)
-		free(cmd[i].token);
+	{
+		if (cmd[i].token)
+			free(cmd[i].token);
+		if (cmd[i].heredoc_key)
+		{
+			free(cmd[i].heredoc_key);
+			if (cmd[i].input)
+				unlink(cmd[i].input);
+		}
+		if (cmd[i].input)
+			free(cmd[i].input);
+		if (cmd[i].output)
+			free(cmd[i].output);
+		if (cmd[i].fd_in != -1)
+			close(cmd[i].fd_in);
+		if (cmd[i].fd_out != -1)
+			close(cmd[i].fd_out);
+	}
 	free(cmd);
 }
 
