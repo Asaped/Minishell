@@ -11,7 +11,7 @@ static void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
-void	signal_handler(void)
+void	signal_handler_interactive(void)
 {
 	struct sigaction	sigint;
 	struct sigaction	sigquit;
@@ -24,4 +24,21 @@ void	signal_handler(void)
 	sigemptyset(&sigquit.sa_mask);
 	sigquit.sa_flags = 0;
 	sigaction(SIGQUIT, &sigquit, NULL);
+}
+
+static void	print_newline(int sig)
+{
+	(void)sig;
+	rl_on_new_line();
+}
+
+void	signal_handler_non_interactive(void)
+{
+	struct sigaction	sig;
+
+	sig.sa_handler = print_newline;
+	sigemptyset(&sig.sa_mask);
+	sig.sa_flags = 0;
+	sigaction(SIGQUIT, &sig, NULL);
+	sigaction(SIGINT, &sig, NULL);
 }

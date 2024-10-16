@@ -35,8 +35,9 @@ static t_bool	redisplay_prompt(t_mini *shell)
 
 	while (1)
 	{
-		signal_handler();
+		signal_handler_interactive();
 		input = readline("> ");
+		signal_handler_non_interactive();
 		if (input == NULL)
 		{
 			free(input);
@@ -77,8 +78,9 @@ static void	minishell(t_mini *shell)
 {
 	while (1)
 	{
-		signal_handler();
+		signal_handler_interactive();
 		init_shell(shell, 0, NULL);
+		signal_handler_non_interactive();
 		shell->input = readline("minishell$ ");
 		if (shell->input == NULL)
 		{

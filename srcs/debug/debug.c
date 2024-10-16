@@ -11,8 +11,9 @@ void	print_cmd(t_mini *shell)
 		j = -1;
 		printf("-----command[%d]-----\n", i);
 		printf("token len = %d\n", shell->cmd[i].tlen);
+		printf("path_bin = \"%s\"\n", shell->cmd[i].path_bin);
 		while (++j < shell->cmd[i].tlen)
-			printf("token[%d] = \"%s\"\n", j, shell->cmd[i].token[j].value);
+			printf("token[%d] = \"%s\"\n", j, shell->cmd[i].token[j]);
 		printf("heredoc_key = \"%s\"\n", shell->cmd[i].heredoc_key);
 		printf("input = \"%s\"\n", shell->cmd[i].input);
 		printf("output = \"%s\"\n", shell->cmd[i].output);

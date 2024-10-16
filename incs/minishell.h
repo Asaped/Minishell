@@ -52,7 +52,9 @@ void	free_token(t_token *token, int tlen);
 t_bool	ft_free(t_mini *shell, char *error, int flag);
 
 // signal.c
-void	signal_handler(void);
+void	signal_handler_interactive(void);
+
+void    signal_handler_non_interactive(void);
 
 // debug.c
 void	print_token(t_mini *shell);

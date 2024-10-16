@@ -25,7 +25,8 @@ typedef struct	s_token
 
 typedef struct	s_cmd
 {
-	t_token			*token;
+	char			**token;
+	char			*path_bin;
 	int				tlen;
 	char			*heredoc_key;
 	char			*input;

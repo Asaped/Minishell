@@ -22,6 +22,7 @@ t_bool	init_shell(t_mini *shell, int first_time, char **envp)
 void	init_cmd(t_cmd *cmd)
 {
 	cmd->token = NULL;
+	cmd->path_bin = NULL;
 	cmd->heredoc_key = NULL;
 	cmd->input = NULL;
 	cmd->output = NULL;

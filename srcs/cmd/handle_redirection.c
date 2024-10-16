@@ -49,8 +49,9 @@ static t_bool set_heredoc(t_mini *shell, t_cmd *cmd)
 		return (ft_error(strerror(errno)));
 	while (1)
 	{
-		signal_handler();
+		signal_handler_interactive();
 		str = readline("> ");
+		signal_handler_non_interactive();
 		if (str == NULL || !ft_strncmp(str, cmd->heredoc_key, ft_strlen(cmd->heredoc_key)))
 			break ;
 		if (ft_strchr(str, '$'))
