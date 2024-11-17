@@ -2,6 +2,8 @@
 # define MINISHELL_H
 
 # include <stdlib.h>
+# include <sys/types.h>
+# include <sys/stat.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <stdbool.h>
@@ -14,6 +16,7 @@
 # include "readline/history.h"
 # include "readline/readline.h"
 # include "struct.h"
+# include <limits.h>
 
 // set_command_tab.c
 int		set_command_tab(t_mini *shell);
@@ -60,5 +63,34 @@ void    signal_handler_non_interactive(void);
 void	print_token(t_mini *shell);
 
 void	print_cmd(t_mini *shell);
+
+// cd.c
+t_bool	ft_cd(t_mini *shell, char **token);
+
+// echo.c
+void	ft_echo(char **token);
+
+// env.c
+t_bool	ft_env(char **env, char **token, int export_mode);
+
+// exit.c
+t_bool	ft_exit(t_mini *shell, t_cmd cmd);
+
+// export.c
+t_bool	ft_export(t_mini *shell, char **token);
+
+char	**set_env_var(char **env, char *key, char *value);
+
+char    **realloc_env(char **env, int len);
+
+int		get_env_index(char **env, char *key);
+
+t_bool	is_valid_key(char *str);
+
+// pwd.c
+t_bool	ft_pwd(void);
+
+// unset.c
+char 	**ft_unset(char **env, char **token);
 
 #endif

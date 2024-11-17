@@ -44,7 +44,7 @@ typedef struct	s_mini
 	int		tlen;
 	char	*input;
 	char	**env;
-	char	path[4096];
+	char	*path;
 }				t_mini;
 
 #endif

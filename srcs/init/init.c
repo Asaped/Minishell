@@ -2,14 +2,19 @@
 
 t_bool	init_shell(t_mini *shell, int first_time, char **envp)
 {
+	char	path[4096];
+
 	if (first_time == 1)
 	{
 		shell->env = ft_tabdup(envp);
 		if (!shell->env)
 			return (ft_free(shell, strerror(errno), 1));
-		if (getcwd(shell->path, 4096) == NULL)
+		shell->path = getcwd(path, 4096);
+		if (!shell->path)
 			return (ft_free(shell, strerror(errno), 1));
-		shell->path[ft_strlen(shell->path)] = '\0';
+		shell->path = ft_strdup(shell->path);
+		if (!shell->path)
+			return (ft_free(shell, strerror(errno), 1));
 	}
 	shell->input = NULL;
 	shell->token = NULL;
