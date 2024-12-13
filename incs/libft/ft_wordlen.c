@@ -76,10 +76,10 @@ int	count_word(char *str, int i, int count)
 int	get_token_length(t_token *token, int i, int tlen)
 {
 	int	count;
-	int	op;
+	//int	op;
 
 	count = 0;
-	op = 0;
+	//op = 0;
 	while (++i < tlen && !is_pipe(token[i]))
 		count++;
 	while (--i >= 0 && !is_pipe(token[i]))

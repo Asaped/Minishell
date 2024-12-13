@@ -29,6 +29,8 @@
 	}
 }*/
 
+int g_exit_status = 0;
+
 static t_bool	redisplay_prompt(t_mini *shell)
 {
 	char	*input;
@@ -94,7 +96,10 @@ static void	minishell(t_mini *shell)
 		{
 			print_token(shell);
 			print_cmd(shell);
-			//exec(shell);
+			//simple_command_exec(shell);
+			//main_exe3(shell);
+			printf("bruh\n");
+			execute(shell);
 			ft_free(shell, NULL, 0);
 		}
 	}

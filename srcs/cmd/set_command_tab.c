@@ -74,9 +74,10 @@ static t_bool	get_command(t_mini *shell, t_cmd *cmd, t_token *token, int *j)
 	if (set_io(shell, cmd, token, j[0] - 1) == FALSE)
 		return (FALSE);
 	cmd->tlen = get_token_length(token, j[0] - 1, shell->tlen);
-	cmd->token = malloc(sizeof(char *) * (cmd->tlen));
+	cmd->token = malloc(sizeof(char *) * (cmd->tlen + 1));
 	if (!cmd->token)
 		return (ft_error(strerror(errno)));
+	cmd->token[cmd->tlen] = NULL;
 	if (token[j[0]].type == OPERATOR && token[j[0]].value[0] != '|')
 			j[0] += 2;
 	while (i < cmd->tlen)
