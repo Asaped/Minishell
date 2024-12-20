@@ -125,6 +125,8 @@ char	*ft_strjoin3(char *s1, char *s2);
 
 char	*ft_strjoin4(char *s1, char *s2);
 
+char	*ft_strjoin5(char *s1, char *s2);
+
 char	*ft_strtrim(char const *s1, char const *set);
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));

@@ -89,6 +89,7 @@ static t_bool	get_command(t_mini *shell, t_cmd *cmd, t_token *token, int *j)
 		if (token[j[0]].type == OPERATOR && token[j[0]].value[0] != '|')
 			j[0] += 2;
 	}
+	cmd->token[i] = NULL;
 	if (is_pipe(token[j[0]]))
 		j[0]++;
 	return (TRUE);

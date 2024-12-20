@@ -87,7 +87,7 @@ static void	minishell(t_mini *shell)
 		shell->input = readline("minishell$ ");
 		if (shell->input == NULL)
 		{
-			ft_free(shell, NULL, 0);
+			ft_free(shell, NULL, 1);
 			exit(0);
 		}
 		shell->input[ft_strlen(shell->input)] = '\0';
