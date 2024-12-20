@@ -31,23 +31,4 @@ void	init_cmd(t_cmd *cmd)
 	cmd->tlen = 0;
 	cmd->fd_pipe[0] = -1;
 	cmd->fd_pipe[1] = -1;
-	init_fds(cmd);
-}
-
-void	init_fds(t_cmd *cmd)
-{
-	if (!cmd->fds)
-	{
-		cmd->fds = malloc(sizeof * cmd->fds);
-		if (!cmd->fds)
-			return ;
-		cmd->fds->infile = NULL;
-		cmd->fds->outfile = NULL;
-		cmd->fds->heredoc_EOF = NULL;
-		cmd->fds->heredoc_quotes = false;
-		cmd->fds->fd_in = -1;
-		cmd->fds->fd_out = -1;
-		cmd->fds->stdin_backup = -1;
-		cmd->fds->stdout_backup = -1;
-	}
 }

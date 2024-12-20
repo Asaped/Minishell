@@ -33,18 +33,6 @@ typedef struct	s_token
 	char	*path_bin;
 }				t_token;
 
-typedef struct	s_mini_fd
-{
-	char	*infile;
-	char	*outfile;
-	int		fd_in;
-	int		fd_out;
-	char	*heredoc_EOF;
-	bool	heredoc_quotes;
-	int		stdin_backup;
-	int		stdout_backup;
-}				t_mini_fd;
-
 typedef struct	s_cmd
 {
 	char			**token;
@@ -57,7 +45,6 @@ typedef struct	s_cmd
 	int				fd_out;
 	int				fd_pipe[2];
 	int				*pipe_fd;
-	t_mini_fd		*fds;
 }				t_cmd;
 
 typedef struct	s_mini

@@ -78,6 +78,7 @@ static t_bool	set_shell(t_mini *shell)
 
 static void	minishell(t_mini *shell)
 {
+	g_exit_status = 0;
 	while (1)
 	{
 		signal_handler_interactive();
@@ -96,10 +97,7 @@ static void	minishell(t_mini *shell)
 		{
 			print_token(shell);
 			print_cmd(shell);
-			//simple_command_exec(shell);
-			//main_exe3(shell);
-			printf("bruh\n");
-			execute(shell);
+			execute_pipeline(shell);
 			ft_free(shell, NULL, 0);
 		}
 	}

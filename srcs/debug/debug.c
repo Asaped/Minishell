@@ -20,12 +20,6 @@ void	print_cmd(t_mini *shell)
 		printf("fd_in value = %d\n", shell->cmd[i].fd_in);
 		printf("fd_out value = %d\n", shell->cmd[i].fd_out);
 		printf("-----command[%d]-----\n\n", i);
-		printf("input = \"%s\"\n", shell->cmd[i].fds->infile);
-		printf("output = \"%s\"\n", shell->cmd[i].fds->outfile);
-		printf("fd_in value = %d\n", shell->cmd[i].fds->fd_in);
-		printf("fd_out value = %d\n", shell->cmd[i].fds->fd_out);
-		printf("stdin_backup value = %d\n", shell->cmd[i].fds->stdin_backup);
-		printf("stdout_backup value = %d\n", shell->cmd[i].fds->stdout_backup);
 	}
 }
 
