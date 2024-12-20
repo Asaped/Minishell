@@ -30,7 +30,7 @@ char	**ft_tabdup(char **src)
 
 	i = 0;
 	count = ft_tablen(src);
-	dest = malloc(sizeof(char *) * count);
+	dest = malloc(sizeof(char *) * (count + 1));
 	if (!dest)
 		return (NULL);
 	while (i < count)
@@ -40,5 +40,6 @@ char	**ft_tabdup(char **src)
 			return (NULL);
 		i++;
 	}
+	dest[i] = NULL;
 	return (dest);
 }

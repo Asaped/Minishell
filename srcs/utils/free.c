@@ -69,6 +69,8 @@ t_bool	ft_free(t_mini *shell, char *error, int flag)
 		free_token(shell->token, shell->tlen);
 	if (shell->env != NULL && flag)
 		free_tab(shell->env);
+	if (shell->path != NULL && flag)
+		free(shell->path);
 	if (error)
 		return (ft_error(error));
 	return (FALSE);
