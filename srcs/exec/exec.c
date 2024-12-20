@@ -6,7 +6,7 @@
 /*   By: nigateau <nigateau@student.42.lausanne>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:45:17 by nigateau          #+#    #+#             */
-/*   Updated: 2024/12/20 16:37:26 by nigateau         ###   ########.fr       */
+/*   Updated: 2024/12/20 16:50:34 by nigateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,13 @@ void execute_pipeline(t_mini *shell)
     while (i < shell->clen)
     {
         t_cmd *cmd = &shell->cmd[i];
+
+        if (is_builtin(cmd->token[0]))
+        {
+            g_exit_status = exec_builtin(cmd, shell);
+            i++;
+            continue;
+        }
         if (i < shell->clen - 1 && pipe(cmd->fd_pipe) == -1)
         {
             perror("pipe");
