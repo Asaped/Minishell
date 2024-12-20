@@ -29,6 +29,8 @@
 	}
 }*/
 
+int g_exit_status = 0;
+
 static t_bool	redisplay_prompt(t_mini *shell)
 {
 	char	*input;
@@ -76,6 +78,7 @@ static t_bool	set_shell(t_mini *shell)
 
 static void	minishell(t_mini *shell)
 {
+	g_exit_status = 0;
 	while (1)
 	{
 		signal_handler_interactive();
@@ -94,15 +97,8 @@ static void	minishell(t_mini *shell)
 		{
 			print_token(shell);
 			print_cmd(shell);
-			//ft_cd(shell, shell->cmd[0].token, shell->cmd[0].tlen);
-			//ft_export(shell, shell->cmd[0].token);
-			//shell->env = ft_unset(shell->env, shell->cmd[0].token);
-			//ft_env(shell->env, shell->cmd[0].token, 0);
-			//ft_echo(shell->cmd[0].token);
-			//ft_pwd();
-			//ft_exit(shell, shell->cmd[0]);
+			execute_pipeline(shell);
 			ft_free(shell, NULL, 0);
-
 		}
 	}
 	rl_clear_history();

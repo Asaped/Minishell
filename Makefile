@@ -1,8 +1,8 @@
 NAME	= mini
 CC		= gcc
 RM 		= rm
-CFLAGS	= -Wall -Wextra -Werror
-RDIR	= /home/linuxbrew/.linuxbrew/opt/readline
+CFLAGS	= -Wall -Wextra -Werror -g
+RDIR	= /usr/local/opt/readline
 CFLAGS += -I$(RDIR)/include
 LDFLAGS	= -L$(RDIR)/lib -lreadline -lhistory -lncurses
 SRCDIR	= srcs/

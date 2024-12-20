@@ -6,6 +6,16 @@
 # define TRUE 1
 # define t_bool int
 
+/* ERROR CODES */
+# define ERROR 				-1
+# define SUCCESS 			0
+# define TRUE				1
+# define FALSE				0
+# define IS_DIRECTORY 		126
+# define UNKNOWN_COMMAND 	127
+
+extern int g_exit_status;
+
 typedef enum e_type
 {
 	BUILTIN,
@@ -34,6 +44,7 @@ typedef struct	s_cmd
 	int				fd_in;
 	int				fd_out;
 	int				fd_pipe[2];
+	int				*pipe_fd;
 }				t_cmd;
 
 typedef struct	s_mini
@@ -42,6 +53,7 @@ typedef struct	s_mini
 	t_token	*token;
 	int		clen;
 	int		tlen;
+	pid_t	pid;
 	char	*input;
 	char	**env;
 	char	*path;

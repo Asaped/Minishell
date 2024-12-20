@@ -3,6 +3,7 @@
 static void	handle_sigint(int sig)
 {
 	(void)sig;
+	g_exit_status = 130;
 	rl_redisplay();
 	printf("  \b");
 	printf("\n");
