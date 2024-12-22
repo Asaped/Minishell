@@ -17,6 +17,8 @@
 # include "readline/readline.h"
 # include "struct.h"
 # include <limits.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 // set_command_tab.c
 int		set_command_tab(t_mini *shell);
@@ -65,13 +67,14 @@ void setup_redirections(t_cmd *cmd);
 void setup_pipes(t_cmd *cmd, int prev_fd, int is_last_cmd);
 
 //exec_builtins
+int exec_builtin(t_cmd *cmd, t_mini *shell);
 void update_exit_status(int status);
 
 //cd.c
 t_bool	ft_cd(t_mini *shell, char **token);
 
 //echo.c
-void	ft_echo(char **token);
+t_bool	ft_echo(char **token);
 
 //env.c
 t_bool	ft_env(char **env, char **token, int export_mode);
@@ -90,6 +93,6 @@ t_bool	is_valid_key(char *str);
 t_bool	ft_pwd(void);
 
 // unset.c
-char 	**ft_unset(char **env, char **token);
+t_bool	ft_unset(char **env, char **token);
 
 #endif

@@ -19,7 +19,7 @@ static char	**remove_env(char **env, int pos)
     return (env);
 }
 
-char  **ft_unset(char **env, char **token)
+t_bool	ft_unset(char **env, char **token)
 {
     int i;
     int pos;
@@ -29,7 +29,10 @@ char  **ft_unset(char **env, char **token)
     {
     	pos = get_env_index(env, token[i]);
 		if (pos != -1)
+		{
     		env = remove_env(env, pos);
+			return (TRUE);
+		}
     }
-    return (env);
+    return (FALSE);
 }

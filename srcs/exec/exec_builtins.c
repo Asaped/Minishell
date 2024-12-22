@@ -17,17 +17,17 @@ int exec_builtin(t_cmd *cmd, t_mini *shell)
     if (!ft_strncmp(cmd->token[0], "echo", ft_strlen("echo")))
         return ft_echo(cmd->token);
     if (!ft_strncmp(cmd->token[0], "cd", ft_strlen("cd")))
-        return ft_cd(cmd->token, shell->env);
+        return ft_cd(shell, cmd->token);
     if (!ft_strncmp(cmd->token[0], "pwd", ft_strlen("pwd")))
         return ft_pwd();
     if (!ft_strncmp(cmd->token[0], "export", ft_strlen("export")))
-        return ft_export(cmd->token, &shell->env);
+        return ft_export(shell, cmd->token);
     if (!ft_strncmp(cmd->token[0], "unset", ft_strlen("unset")))
-        return ft_unset(cmd->token, &shell->env);
+        return ft_unset(shell->env, cmd->token);
     if (!ft_strncmp(cmd->token[0], "env", ft_strlen("env")))
-        return ft_env(shell->env);
+        return ft_env(shell->env, cmd->token, 0);
     if (!ft_strncmp(cmd->token[0], "exit", ft_strlen("exit")))
-        return ft_exit(cmd->token);
+        return ft_exit(shell, *cmd);
     return 0;
 }
 

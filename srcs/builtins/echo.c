@@ -14,7 +14,7 @@ t_bool is_n_option(char *str)
     return (FALSE);
 }
 
-void ft_echo(char **token)
+t_bool ft_echo(char **token)
 {
     int i;
     int is_n;
@@ -32,4 +32,5 @@ void ft_echo(char **token)
     }
 	if (!is_n)
 		ft_putchar_fd('\n', STDOUT_FILENO);
+	return (TRUE);
 }
