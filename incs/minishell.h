@@ -69,6 +69,8 @@ void setup_pipes(t_cmd *cmd, int prev_fd, int is_last_cmd);
 //exec_builtins
 int exec_builtin(t_cmd *cmd, t_mini *shell);
 void update_exit_status(int status);
+void    execute_builtin(t_cmd *cmd, t_mini *shell, int *prev_fd, int i);
+void    restore_stdin_stdout(int std_in, int std_out);
 
 //cd.c
 t_bool	ft_cd(t_mini *shell, char **token);
