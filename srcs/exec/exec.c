@@ -6,7 +6,7 @@
 /*   By: nigateau <nigateau@student.42.lausanne>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:45:17 by nigateau          #+#    #+#             */
-/*   Updated: 2024/12/30 18:36:21 by nigateau         ###   ########.fr       */
+/*   Updated: 2025/01/05 16:39:25 by nigateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void setup_redirections(t_cmd *cmd)
         }
         close(cmd->fd_in);
     }
-
+    
     if (cmd->output)
     {
         if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
@@ -58,7 +58,6 @@ void setup_redirections(t_cmd *cmd)
         close(cmd->fd_out);
     }
 }
-
 
 // Exécution d'une commande
 void execute_command(t_cmd *cmd, char **env)
