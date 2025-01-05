@@ -13,6 +13,8 @@ t_bool is_valid_key(char *str)
             return (FALSE);
         i++;
     }
+    if (str[i] = '=')
+        return(FALSE);
     return (TRUE);
 }
 
@@ -39,7 +41,7 @@ char    **realloc_env(char **env, int len)
 
     i = -1;
     res = malloc(sizeof(char *) * (len + 1));
-	env[len] = NULL;
+	res[len] = NULL;
     if (!res)
         return (NULL);
     while (env[++i] && i < len)
