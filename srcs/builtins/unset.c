@@ -31,8 +31,8 @@ t_bool	ft_unset(char **env, char **token)
 		if (pos != -1)
 		{
     		env = remove_env(env, pos);
-			return (TRUE);
+			return (FALSE);
 		}
     }
-    return (FALSE);
+    return (TRUE);
 }

@@ -27,7 +27,7 @@ int exec_builtin(t_cmd *cmd, t_mini *shell)
     if (!ft_strncmp(cmd->token[0], "env", ft_strlen("env")))
         return ft_env(shell->env, cmd->token, 0);
     if (!ft_strncmp(cmd->token[0], "exit", ft_strlen("exit")))
-        return ft_exit(shell, *cmd);
+        return ft_exit(shell, cmd->token);
     return 0;
 }
 

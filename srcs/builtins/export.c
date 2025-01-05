@@ -105,13 +105,13 @@ t_bool ft_export(t_mini *shell, char **token)
 	while (token[++i])
     {
         if (!is_valid_key(token[i]))
-            return (ft_error("export: "), ft_error("`"), ft_error(token[i]), ft_error("\'"), ft_error(": not a valid identifier\n"));
-        else
+            return (ft_error("export: "), ft_error("`"), ft_error(token[i]), ft_error("\'"), ft_error(": not a valid identifier\n"), TRUE);
+        else if (token[i])
         {
             tmp = get_key_and_value(token[i]);
             shell->env = set_env_var(shell->env, tmp[0], tmp[1]);
             free_tab(tmp);
         }
     }
-    return (TRUE);
+    return (FALSE);
 }

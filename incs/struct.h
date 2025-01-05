@@ -2,8 +2,6 @@
 # define STRUCT_H
 
 # define WHITESPACE " \t\n\r\f\v"
-# define FALSE 0
-# define TRUE 1
 # define t_bool int
 
 /* ERROR CODES */

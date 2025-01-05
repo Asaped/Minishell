@@ -103,7 +103,7 @@ int	set_command_tab(t_mini *shell)
 	i = -1;
 	j = 0;
 	shell->clen = pipelen(shell->token, shell->tlen) + 1;
-	shell->cmd = malloc(sizeof(t_cmd) * shell->clen);
+	shell->cmd = malloc(sizeof(t_cmd) * (shell->clen + 1));
 	if (!shell->cmd)
 		return (ft_error(strerror(errno)));
 	while (++i < shell->clen)
@@ -111,5 +111,6 @@ int	set_command_tab(t_mini *shell)
 		if (get_command(shell, &shell->cmd[i], shell->token, &j) == FALSE)
 			return (FALSE);
 	}
+	shell->cmd[i].token = NULL;
 	return (TRUE);
 }

@@ -82,7 +82,7 @@ t_bool	ft_echo(char **token);
 t_bool	ft_env(char **env, char **token, int export_mode);
 
 //exit.c
-t_bool	ft_exit(t_mini *shell, t_cmd cmd);
+t_bool ft_exit(t_mini *shell, char **token);
 
 //export.c
 t_bool	ft_export(t_mini *shell, char **token);

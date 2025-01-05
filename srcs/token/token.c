@@ -13,8 +13,6 @@ static t_bool	get_path_bin(char *str, char *cmd, t_token *token)
 	free(str);
 	if (access(tmp, F_OK) == 0 && access(tmp, X_OK) == 0)
 	{
-		tmp = lower_str(tmp);
-		cmd = lower_str(cmd);
 		token->path_bin = tmp;
 		return (TRUE);
 	}

@@ -58,29 +58,24 @@ static int	get_exit_code(char *error_code, int *error)
 	return (code % 256);
 }
 
-t_bool ft_exit(t_mini *shell, t_cmd cmd)
+t_bool ft_exit(t_mini *shell, char **token)
 {
-	int	silent;
-	int	exit_code;
 	int	error;
 
-	silent = 1;
 	error = 0;
-	if (shell->clen == 1)
-		silent = 0;
-	if (!silent)
+	if (shell->cmd[1].token == NULL)
 		ft_putendl_fd("exit", STDOUT_FILENO);
-	if (cmd.tlen > 2)
-		return (ft_error("bash: exit: too many arguments\n"));
-	if (cmd.tlen == 1)
-		exit_code = 0; //g_exit_code
+	if (token[1] && token[2])
+		return (ft_error("bash: exit: too many arguments\n"), TRUE);
+	if (!token[1])
+		g_exit_status = 0;
 	else
 	{
-		exit_code = get_exit_code(cmd.token[1], &error);
+		g_exit_status = get_exit_code(token[1], &error);
 		if (error == 1)
-			return (ft_error("bash: exit: "), ft_error(cmd.token[1]), ft_error(": numeric argument required\n"));
+			return (ft_error("bash: exit: "), ft_error(token[1]), ft_error(": numeric argument required\n"), TRUE);
 	}
 	ft_free(shell, NULL, 1);
-	exit(exit_code);
-	return (TRUE);
+	exit(g_exit_status);
+	return (FALSE);
 }
