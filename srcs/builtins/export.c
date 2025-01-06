@@ -13,7 +13,7 @@ t_bool is_valid_key(char *str)
             return (FALSE);
         i++;
     }
-    if (str[i] = '=')
+    if (str[i] == '=')
         return(FALSE);
     return (TRUE);
 }
