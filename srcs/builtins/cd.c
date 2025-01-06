@@ -43,7 +43,7 @@ t_bool ft_cd(t_mini *shell, t_cmd *cmd)
     path = NULL;
     if (cmd->tlen >= 3)
         return (ft_error("bash: cd: too many arguments\n"), TRUE);
-    if (cmd->tlen <= 1 || !ft_strncmp(cmd->token[1], "-", 2) || !ft_strncmp(cmd->token[1], "--", 3))
+    if (cmd->tlen <= 1 || !ft_strncmp(cmd->token[1], "-\0", 2) || !ft_strncmp(cmd->token[1], "~\0", 2) || !ft_strncmp(cmd->token[1], "--\0", 3))
     {
         path = get_env_value(shell, "HOME", 0);
         if (!path)
