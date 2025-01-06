@@ -43,12 +43,14 @@ static t_bool	find_cmd(t_mini *shell, char *path_bin, char *cmd, int j)
 	return (FALSE);
 }
 
-static t_type	find_token_type(t_mini *shell, char *str, int i)
+static t_type	find_token_type(t_mini *shell, char *str, int i, char c)
 {
 	if (is_builtin(str))
 		return (BUILTIN);
 	else if ((access(str, F_OK) == 0 && access(str, X_OK) == 0) || find_cmd(shell, get_env_value(shell, "PATH", 0), str, i))
 		return (CMD);
+	else if (c == '\'' || c == '\"')
+		return (STRING);
 	else if ((is_op(str[0]) && !is_op(str[1])) || (is_op(str[0]) && is_op(str[1]) && str[1] != '|'))
 		return (OPERATOR);
 	else
@@ -66,7 +68,7 @@ static t_bool	create_token(t_mini *shell, int j, int i)
 	if (shell->input[j] != '\'' && !is_heredoc(shell->token[i - 1]))
 		str = expand_env(shell, str);
 	shell->token[i].len = ft_strlen(str);
-	shell->token[i].type = find_token_type(shell, str, i);
+	shell->token[i].type = find_token_type(shell, str, i, shell->input[j]);
 	if (shell->token[i].type == CMD && !shell->token[i].path_bin)
 	{
 		shell->token[i].path_bin = ft_strdup(str);

@@ -48,7 +48,7 @@ int	pipelen(t_token *token, int tlen)
 	i = -1;
 	count = 0;
 	while (++i < tlen)
-		if (token[i].value[0] == '|')
+		if (token[i].value[0] == '|' && token[i].type == OPERATOR)
 			count++;
 	return (count);
 }
