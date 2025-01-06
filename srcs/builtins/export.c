@@ -79,7 +79,7 @@ char	**set_env_var(char **env, char *key, char *value)
     return (env);
 }
 
-static char **get_key_and_value(char *str)
+char **get_key_and_value(char *str)
 {
     char    *pos;
     char    **tmp;

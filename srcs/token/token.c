@@ -6,10 +6,10 @@ static t_bool	get_path_bin(char *str, char *cmd, t_token *token)
 
 	str = ft_strjoin2(str, '/');
 	if (!str)
-		return (ft_error(strerror(errno)));
+		return (ft_error(strerror(errno)), ft_error("\n"));
 	tmp = ft_strjoin3(str, cmd);
 	if (!tmp)
-			return (ft_error(strerror(errno)));
+			return (ft_error(strerror(errno)), ft_error("\n"));
 	free(str);
 	if (access(tmp, F_OK) == 0 && access(tmp, X_OK) == 0)
 	{
@@ -31,7 +31,7 @@ static t_bool	find_cmd(t_mini *shell, char *path_bin, char *cmd, int j)
 		return (FALSE);
 	tab = ft_split(path_bin, ':');
 	if (!tab)
-		return (ft_error(strerror(errno)));
+		return (ft_error(strerror(errno)), ft_error("\n"));
 	len = ft_tablen(tab);
 	i = -1;
 	while (++i < len)
@@ -64,7 +64,7 @@ static t_bool	create_token(t_mini *shell, int j, int i)
 	shell->token[i].path_bin = NULL;
 	str = worddup(shell->input, j, wordlen(shell->input, j));
 	if (!str)
-		return (ft_error(strerror(errno)));
+		return (ft_error(strerror(errno)), ft_error("\n"));
 	if (shell->input[j] != '\'' && !is_heredoc(shell->token[i - 1]))
 		str = expand_env(shell, str);
 	shell->token[i].len = ft_strlen(str);
@@ -73,7 +73,7 @@ static t_bool	create_token(t_mini *shell, int j, int i)
 	{
 		shell->token[i].path_bin = ft_strdup(str);
 		if (!shell->token[i].path_bin)
-			return (ft_error(strerror(errno)));
+			return (ft_error(strerror(errno)), ft_error("\n"));
 	}
 	shell->token[i].value = str;
 	return (TRUE);

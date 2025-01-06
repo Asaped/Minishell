@@ -1,5 +1,24 @@
 #include "../../incs/minishell.h"
 
+static void	increment_shlvl(t_mini *shell)
+{
+	char **tmp;
+	int	lvl;
+	int	pos;
+
+	if ((pos = get_env_index(shell->env, "SHLVL")) == -1)
+		shell->env = set_env_var(shell->env, "SHLVL=", "2");
+	else
+	{
+		tmp = get_key_and_value(shell->env[pos]);
+		lvl = ft_atoi(tmp[1]);
+		lvl++;
+		free(tmp[1]);
+		tmp[1] = ft_itoa(lvl);
+		shell->env = set_env_var(shell->env, tmp[0], tmp[1]);
+	}
+}
+
 t_bool	init_shell(t_mini *shell, int first_time, char **envp)
 {
 	char	path[4096];
@@ -15,6 +34,7 @@ t_bool	init_shell(t_mini *shell, int first_time, char **envp)
 		shell->path = ft_strdup(shell->path);
 		if (!shell->path)
 			return (ft_free(shell, strerror(errno), 1));
+		increment_shlvl(shell);
 	}
 	shell->input = NULL;
 	shell->token = NULL;

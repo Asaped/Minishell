@@ -89,6 +89,7 @@ t_bool	ft_export(t_mini *shell, t_cmd *cmd);
 char	**set_env_var(char **env, char *key, char *value);
 char    **realloc_env(char **env, int len);
 int		get_env_index(char **env, char *key);
+char    **get_key_and_value(char *str);
 t_bool	is_valid_key(char *str);
 
 // pwd.c

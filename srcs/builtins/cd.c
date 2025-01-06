@@ -20,7 +20,7 @@ static t_bool change_dir(t_mini *shell, char *path)
 	char	tab[4096];
 
 	if (chdir(path) == -1)
-        return (ft_error(strerror(errno)), TRUE);
+        return (ft_error(strerror(errno)), ft_error("\n"), TRUE);
     if (shell->path)
 	{
     	free(shell->path);

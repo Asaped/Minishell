@@ -70,7 +70,7 @@ static t_bool	set_shell(t_mini *shell)
 	add_history(shell->input);
 	shell->token = malloc(sizeof(t_token) * (shell->tlen));
 	if (!shell->token)
-		return (ft_error(strerror(errno)));
+		return (ft_error(strerror(errno)), ft_error("\n"));
 	if (set_token(shell) == FALSE || set_command_tab(shell) == FALSE)
 		return (FALSE);
 	return (TRUE);
