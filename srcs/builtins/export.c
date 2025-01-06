@@ -13,7 +13,7 @@ t_bool is_valid_key(char *str)
             return (FALSE);
         i++;
     }
-    if (str[i] == '=')
+    if (str[i] != '=')
         return(FALSE);
     return (TRUE);
 }
@@ -87,30 +87,35 @@ static char **get_key_and_value(char *str)
     tmp = malloc(sizeof(char *) * 3);
     if (!tmp)
         return (NULL);
-    pos = ft_strchr(str, '=');
+    if ((pos = ft_strchr(str, '=')) == NULL)
+    {
+        tmp[0] = ft_strdup(str);
+        tmp[1] = NULL;
+        return (tmp);
+    }
     tmp[0] = ft_substr(str, 0, pos - str);
     tmp[1] = ft_substr(pos, 1, ft_strlen(pos));
     tmp[2] = NULL;
     return (tmp);
 }
 
-t_bool ft_export(t_mini *shell, char **token)
+t_bool ft_export(t_mini *shell, t_cmd *cmd)
 {
     int		i;
     char    **tmp;
 
-    if (!token[1])
+    if (cmd->tlen == 1)
 	{
-        return (ft_env(shell->env, NULL, 1));
+        return (ft_env(shell->env, cmd, 1));
 	}
 	i = 0;
-	while (token[++i])
+	while (++i < cmd->tlen)
     {
-        if (!is_valid_key(token[i]))
-            return (ft_error("export: "), ft_error("`"), ft_error(token[i]), ft_error("\'"), ft_error(": not a valid identifier\n"), TRUE);
-        else if (token[i])
+        if (!is_valid_key(cmd->token[i]))
+            return (ft_error("export: "), ft_error("`"), ft_error(cmd->token[i]), ft_error("\'"), ft_error(": not a valid identifier\n"), TRUE);
+        if (cmd->token[i])
         {
-            tmp = get_key_and_value(token[i]);
+            tmp = get_key_and_value(cmd->token[i]);
             shell->env = set_env_var(shell->env, tmp[0], tmp[1]);
             free_tab(tmp);
         }

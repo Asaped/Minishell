@@ -19,18 +19,18 @@ static char	**remove_env(char **env, int pos)
     return (env);
 }
 
-t_bool	ft_unset(char **env, char **token)
+t_bool	ft_unset(t_mini *shell, t_cmd *cmd)
 {
     int i;
     int pos;
 
     i = 0;
-    while (token[++i])
+    while (++i < cmd->tlen)
     {
-    	pos = get_env_index(env, token[i]);
+    	pos = get_env_index(shell->env, cmd->token[i]);
 		if (pos != -1)
 		{
-    		env = remove_env(env, pos);
+    		shell->env = remove_env(shell->env, pos);
 			return (FALSE);
 		}
     }

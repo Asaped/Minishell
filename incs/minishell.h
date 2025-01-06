@@ -73,19 +73,19 @@ void    execute_builtin(t_cmd *cmd, t_mini *shell, int *prev_fd, int i);
 void    restore_stdin_stdout(int std_in, int std_out);
 
 //cd.c
-t_bool	ft_cd(t_mini *shell, char **token);
+t_bool	ft_cd(t_mini *shell, t_cmd *cmd);
 
 //echo.c
-t_bool	ft_echo(char **token);
+t_bool	ft_echo(t_cmd *cmd);
 
 //env.c
-t_bool	ft_env(char **env, char **token, int export_mode);
+t_bool	ft_env(char **env, t_cmd *cmd, int export_mode);
 
 //exit.c
-t_bool ft_exit(t_mini *shell, char **token);
+t_bool ft_exit(t_mini *shell, t_cmd *cmd);
 
 //export.c
-t_bool	ft_export(t_mini *shell, char **token);
+t_bool	ft_export(t_mini *shell, t_cmd *cmd);
 char	**set_env_var(char **env, char *key, char *value);
 char    **realloc_env(char **env, int len);
 int		get_env_index(char **env, char *key);
@@ -95,6 +95,6 @@ t_bool	is_valid_key(char *str);
 t_bool	ft_pwd(void);
 
 // unset.c
-t_bool	ft_unset(char **env, char **token);
+t_bool	ft_unset(t_mini *shell, t_cmd *cmd);
 
 #endif

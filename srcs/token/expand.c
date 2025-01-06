@@ -17,7 +17,13 @@ char	*expand_env(t_mini *shell, char *str)
             result[j++] = str[i++];
         if (str[i] == '$' && str[i + 1] && str[i + 1] != '$' && !is_op(str[i + 1]) && !is_whitespace(str[i + 1]))
         {
-            tmp = get_env_value(shell, worddup(str, ++i, wordlen2(str, &i)), 1);
+            if (str[i] == '$' && str[i + 1] == '?' && (is_whitespace(str[i + 2]) || !str[i + 2]))
+            {
+                i += 2;
+                tmp = ft_itoa(g_exit_status);
+            }
+            else
+                tmp = get_env_value(shell, worddup(str, ++i, wordlen2(str, &i)), 1);
             k = 0;
             while (tmp && tmp[k])
                 result[j++] = tmp[k++];

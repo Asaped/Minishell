@@ -36,21 +36,21 @@ static t_bool change_dir(t_mini *shell, char *path)
     return (FALSE);
 }
 
-t_bool ft_cd(t_mini *shell, char **token)
+t_bool ft_cd(t_mini *shell, t_cmd *cmd)
 {
     char    *path;
 
     path = NULL;
-    if (token[2])
+    if (cmd->tlen >= 3)
         return (ft_error("bash: cd: too many arguments\n"), TRUE);
-    if (!token[1] || !ft_strncmp(token[1], "-", 2) || !ft_strncmp(token[1], "--", 3))
+    if (cmd->tlen <= 1 || !ft_strncmp(cmd->token[1], "-", 2) || !ft_strncmp(cmd->token[1], "--", 3))
     {
         path = get_env_value(shell, "HOME", 0);
         if (!path)
             return (ft_error("bash: cd: HOME not set\n"), TRUE);
     }
-    else if (token[1])
-        path = token[1];
+    else if (cmd->tlen == 2)
+        path = cmd->token[1];
     if (ft_is_dir(path))
         return (change_dir(shell, path));
     else
