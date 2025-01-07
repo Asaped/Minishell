@@ -65,6 +65,7 @@ void fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd, int is_last_cmd);
 void execute_command(t_cmd *cmd, char **env);
 void setup_redirections(t_cmd *cmd);
 void setup_pipes(t_cmd *cmd, int prev_fd, int is_last_cmd);
+void    check_dot_and_file(t_cmd *cmd);
 
 //exec_builtins
 int exec_builtin(t_cmd *cmd, t_mini *shell);

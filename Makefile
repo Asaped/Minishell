@@ -1,4 +1,4 @@
-NAME    = mini
+NAME    = minishell
 CC      = gcc
 RM      = rm -f
 CFLAGS  = -Wall -Wextra -Werror -g
