@@ -6,7 +6,7 @@
 /*   By: nigateau <nigateau@student.42.lausanne>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:45:17 by nigateau          #+#    #+#             */
-/*   Updated: 2025/01/05 16:39:25 by nigateau         ###   ########.fr       */
+/*   Updated: 2025/01/07 20:49:09 by nigateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void setup_pipes(t_cmd *cmd, int prev_fd, int is_last_cmd)
         if (dup2(prev_fd, STDIN_FILENO) == -1)
         {
             perror("dup2");
+            g_exit_status = errno;
             exit(EXIT_FAILURE);
         }
         close(prev_fd);
@@ -28,7 +29,8 @@ void setup_pipes(t_cmd *cmd, int prev_fd, int is_last_cmd)
     {
         if (dup2(cmd->fd_pipe[1], STDOUT_FILENO) == -1)
         {
-            perror("dup2");
+            perror("Error with dup2");
+            g_exit_status = errno;
             exit(EXIT_FAILURE);
         }
         close(cmd->fd_pipe[1]);
@@ -42,7 +44,8 @@ void setup_redirections(t_cmd *cmd)
     {
         if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
         {
-            perror("dup2");
+            perror("Error with dup2");
+            g_exit_status = errno;
             exit(EXIT_FAILURE);
         }
         close(cmd->fd_in);
@@ -52,7 +55,8 @@ void setup_redirections(t_cmd *cmd)
     {
         if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
         {
-            perror("dup2");
+            perror("Error with dup2");
+            g_exit_status = errno;
             exit(EXIT_FAILURE);
         }
         close(cmd->fd_out);
@@ -60,25 +64,59 @@ void setup_redirections(t_cmd *cmd)
 }
 
 // Exécution d'une commande
-int execute_command(t_cmd *cmd, char **env)
+void execute_command(t_cmd *cmd, char **env)
 {
+    check_dot_and_file(cmd);
+
     if (access(cmd->path_bin, F_OK) == -1)
     {
         fprintf(stderr, "%s: Command not found\n", cmd->token[0]);
-        g_exit_status = 127;
+        g_exit_status = 127; // Commande introuvable
         exit(127);
     }
+
     if (access(cmd->path_bin, X_OK) == -1)
     {
         fprintf(stderr, "%s: Permission denied\n", cmd->token[0]);
-        g_exit_status = 126;
+        g_exit_status = 126; // Commande non exécutable
         exit(126);
     }
+
     if (execve(cmd->path_bin, cmd->token, env) == -1)
     {
-        return (ft_error(strerror(errno)), errno);   
+        perror(cmd->token[0]); // Affiche une erreur détaillée
+        g_exit_status = 127;  // Commande introuvable
+        exit(127);
     }
-    exit(EXIT_FAILURE);
+}
+
+void    check_dot_and_file(t_cmd *cmd)
+{
+    struct stat sb;
+
+    if (!cmd || !cmd->token[0])
+    {
+        g_exit_status = 0; // Rien à exécuter, succès
+        exit(0);
+    }
+
+    if (strcmp(cmd->token[0], ".") == 0 && (!cmd->token[1] || cmd->token[1][0] == '\0'))
+    {
+        fprintf(stderr, ".: filename argument required\n");
+        g_exit_status = 2; // Usage incorrect
+        exit(2);
+    }
+
+    if (stat(cmd->token[0], &sb) == 0)
+    {
+        if (S_ISDIR(sb.st_mode))
+        {
+            fprintf(stderr, "%s: is a directory\n", cmd->token[0]);
+            g_exit_status = 126; // Commande non exécutable
+            exit(126);
+        }
+    }
+    return;
 }
 
 // Fork et exécution d'une commande
@@ -87,7 +125,8 @@ void fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd, int is_last_cmd)
     shell->pid = fork();
     if (shell->pid == -1)
     {
-        perror("fork");
+        perror("Error with fork");
+        g_exit_status = errno;
         exit(EXIT_FAILURE);
     }
     if (shell->pid == 0)
@@ -124,8 +163,8 @@ void execute_pipeline(t_mini *shell)
         }
         if (i < shell->clen - 1 && pipe(cmd->fd_pipe) == -1)
         {
-            perror("pipe");
-            g_exit_status = 1;
+            perror("Error with pipe");
+            g_exit_status = errno;
             exit(EXIT_FAILURE);
         }
         fork_and_execute(shell, cmd, prev_fd, i == shell->clen - 1);

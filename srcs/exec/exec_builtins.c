@@ -6,7 +6,7 @@
 /*   By: nigateau <nigateau@student.42.lausanne>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:57:37 by nigateau          #+#    #+#             */
-/*   Updated: 2024/12/30 18:49:45 by nigateau         ###   ########.fr       */
+/*   Updated: 2025/01/07 21:02:20 by nigateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,15 @@ void execute_builtin(t_cmd *cmd, t_mini *shell, int *prev_fd, int i)
     {
         if (pipe(cmd->fd_pipe) == -1)
         {
-            perror("pipe");
-            g_exit_status = 1;
+            perror("Error with pipe");
+            g_exit_status = errno;
             restore_stdin_stdout(saved_stdin, saved_stdout);
             exit(EXIT_FAILURE);
         }
         if (dup2(cmd->fd_pipe[1], STDOUT_FILENO) == -1)
         {
-            perror("dup2");
+            perror("Error with dup2");
+            g_exit_status = errno;
             exit(EXIT_FAILURE);
         }
         close(cmd->fd_pipe[1]);
