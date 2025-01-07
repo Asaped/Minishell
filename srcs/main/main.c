@@ -95,8 +95,6 @@ static void	minishell(t_mini *shell)
 			ft_free(shell, NULL, 0);
 		else
 		{
-			print_token(shell);
-			print_cmd(shell);
 			execute_pipeline(shell);
 			ft_free(shell, NULL, 0);
 		}
@@ -111,6 +109,18 @@ int 	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	init_shell(&shell, 1, envp);
-	minishell(&shell);
+	if (ac == 1)
+		minishell(&shell);
+	else if (ac == 3 && ft_strncmp(av[1], "-c\0", 3) == 0 && av[2])
+	{
+		shell.input = ft_strdup(av[2]);
+		if (set_shell(&shell) == FALSE)
+			ft_free(&shell, NULL, 0);
+		else
+		{
+			execute_pipeline(&shell);
+			ft_free(&shell, NULL, 1);
+		}
+	}
 	return (1);
 }

@@ -62,7 +62,7 @@ void	print_cmd(t_mini *shell);
 //exec.c
 void execute_pipeline(t_mini *shell);
 void fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd, int is_last_cmd);
-void execute_command(t_cmd *cmd, char **env);
+int execute_command(t_cmd *cmd, char **env);
 void setup_redirections(t_cmd *cmd);
 void setup_pipes(t_cmd *cmd, int prev_fd, int is_last_cmd);
 

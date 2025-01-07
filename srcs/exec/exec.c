@@ -60,7 +60,7 @@ void setup_redirections(t_cmd *cmd)
 }
 
 // Exécution d'une commande
-void execute_command(t_cmd *cmd, char **env)
+int execute_command(t_cmd *cmd, char **env)
 {
     if (access(cmd->path_bin, F_OK) == -1)
     {
@@ -74,8 +74,10 @@ void execute_command(t_cmd *cmd, char **env)
         g_exit_status = 126;
         exit(126);
     }
-    execve(cmd->path_bin, cmd->token, env);
-    perror("execve");
+    if (execve(cmd->path_bin, cmd->token, env) == -1)
+    {
+        return (ft_error(strerror(errno)), errno);   
+    }
     exit(EXIT_FAILURE);
 }
 

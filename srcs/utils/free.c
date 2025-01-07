@@ -78,7 +78,7 @@ t_bool	ft_free(t_mini *shell, char *error, int flag)
 
 t_bool	ft_error(char *error)
 {
-	write(STDERR_FILENO, error, ft_strlen(error));
+	ft_putendl_fd(error, STDERR_FILENO);
 	errno = 0;
 	return (FALSE);
 }
