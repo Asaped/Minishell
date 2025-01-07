@@ -6,7 +6,7 @@
 /*   By: nigateau <nigateau@student.42.lausanne>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:45:17 by nigateau          #+#    #+#             */
-/*   Updated: 2025/01/05 16:39:25 by nigateau         ###   ########.fr       */
+/*   Updated: 2025/01/06 22:38:33 by nigateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,12 +90,16 @@ void fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd, int is_last_cmd)
     }
     if (shell->pid == 0)
     {
+        signal(SIGINT, SIG_DFL);  // Rétablit le comportement par défaut pour l'enfant
+        signal(SIGQUIT, SIG_DFL); // Rétablit également SIGQUIT si nécessaire
         setup_pipes(cmd, prev_fd, is_last_cmd);
         setup_redirections(cmd);
         execute_command(cmd, shell->env);
     }
     else // Processus parent
     {
+        signal(SIGINT, SIG_IGN);  // Ignore SIGINT pendant que l'enfant s'exécute
+        signal(SIGQUIT, SIG_IGN);
         if (prev_fd != -1)
             close(prev_fd);
         if (!is_last_cmd)

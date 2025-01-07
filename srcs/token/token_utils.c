@@ -56,13 +56,6 @@ t_bool	second_pass(t_mini *shell)
 		{
 			if (find_first_token(shell->token, i, i) == TRUE)
 				shell->token[i].type = STRING;
-			else
-			{
-				g_exit_status = 127;
-				ft_error("minishell: ");
-				ft_error(shell->token[i].value);
-				return (ft_error(": Command not found\n"));
-			}
 		}
 	}
 	return (TRUE);

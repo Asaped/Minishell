@@ -19,8 +19,9 @@ void	signal_handler_interactive(void)
 	
 	sigint.sa_handler = handle_sigint;
 	sigemptyset(&sigint.sa_mask);
-	sigint.sa_flags = 0;
+	sigint.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sigint, NULL);
+
 	sigquit.sa_handler = SIG_IGN;
 	sigemptyset(&sigquit.sa_mask);
 	sigquit.sa_flags = 0;
