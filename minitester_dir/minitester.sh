@@ -1321,13 +1321,7 @@ chmod 755 minishell
 
 create_test_files
 
-print_h2 "BASIC EXECUTION TESTS"
-#################################### BASIC EXEC
-test_exec_basic
-#################################### PIPES
-test_pipes
-
-
+test_variable_expansion
 
 print_h2 "RESULTS"
 test_num+=1

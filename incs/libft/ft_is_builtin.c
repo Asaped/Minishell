@@ -14,13 +14,10 @@
 
 int	is_builtin(char *str)
 {
-	int len;
-
-	len = ft_strlen(str);
-	if (!ft_strncmp(str, "echo", len) || !ft_strncmp(str, "cd", len)
-		|| !ft_strncmp(str, "pwd", len) || !ft_strncmp(str, "export", len)
-		|| !ft_strncmp(str, "unset", len) || !ft_strncmp(str, "env", len)
-		|| !ft_strncmp(str, "exit", len))
+	if (!ft_strncmp(str, "echo", 5) || !ft_strncmp(str, "cd", 3)
+		|| !ft_strncmp(str, "pwd", 4) || !ft_strncmp(str, "export", 7)
+		|| !ft_strncmp(str, "unset", 6) || !ft_strncmp(str, "env", 4)
+		|| !ft_strncmp(str, "exit", 5))
 		return (1);
 	return (0);
 }

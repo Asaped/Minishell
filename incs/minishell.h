@@ -75,6 +75,7 @@ void    restore_stdin_stdout(int std_in, int std_out);
 
 //cd.c
 t_bool	ft_cd(t_mini *shell, t_cmd *cmd);
+t_bool  ft_is_dir(char *path);
 
 //echo.c
 t_bool	ft_echo(t_cmd *cmd);
