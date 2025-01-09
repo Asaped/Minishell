@@ -99,4 +99,7 @@ t_bool	ft_pwd(void);
 // unset.c
 t_bool	ft_unset(t_mini *shell, t_cmd *cmd);
 
+//error.c
+void    f_printf(int std, char *error_msg, char *token);
+
 #endif
