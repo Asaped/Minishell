@@ -31,7 +31,7 @@
 
 int g_exit_status = 0;
 
-static t_bool	redisplay_prompt(t_mini *shell)
+/*static t_bool	redisplay_prompt(t_mini *shell)
 {
 	char	*input;
 
@@ -55,13 +55,10 @@ static t_bool	redisplay_prompt(t_mini *shell)
 		}
 	}
 	return (TRUE);
-}
+}*/
 
 static t_bool	set_shell(t_mini *shell)
 {
-	if (check_pipe(shell->input, ft_strlen(shell->input) - 1) == TRUE)
-		if (redisplay_prompt(shell) == FALSE)
-			return (FALSE);
 	if (is_unclosed_quote(shell->input) == TRUE)
 		return (ft_error("Syntax error : unclosed quote.\n"));
 	shell->tlen = count_word(shell->input, 0 , 0);
@@ -95,6 +92,8 @@ static void	minishell(t_mini *shell)
 			ft_free(shell, NULL, 0);
 		else
 		{
+			print_token(shell);
+			print_cmd(shell);
 			execute_pipeline(shell);
 			ft_free(shell, NULL, 0);
 		}

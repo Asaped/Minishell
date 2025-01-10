@@ -42,6 +42,11 @@ void setup_redirections(t_cmd *cmd)
 {
     if (cmd->input)
     {
+        if (cmd->fd_in == -1)
+        {
+            g_exit_status = errno;
+            exit(EXIT_FAILURE);
+        }
         if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
         {
             perror("Error with dup2");
@@ -53,6 +58,11 @@ void setup_redirections(t_cmd *cmd)
     
     if (cmd->output)
     {
+        if (cmd->fd_out == -1)
+        {
+            g_exit_status = errno;
+            exit(EXIT_FAILURE);
+        }
         if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
         {
             perror("Error with dup2");
@@ -66,58 +76,60 @@ void setup_redirections(t_cmd *cmd)
 // Exécution d'une commande
 void execute_command(t_cmd *cmd, char **env)
 {
-    check_dot_and_file(cmd);
-
-    if (access(cmd->path_bin, F_OK) == -1)
+    if (!ft_strncmp(cmd->token[0], "..", 3))
     {
-        fprintf(stderr, "%s: Command not found\n", cmd->token[0]);
-        g_exit_status = 127; // Commande introuvable
-        exit(127);
+        fprintf(stderr, "bash: line 1: %s: Command not found\n", cmd->token[0]);
+        g_exit_status = 127;
+        exit(g_exit_status);
     }
-
-    if (access(cmd->path_bin, X_OK) == -1)
+    else if (!ft_strncmp(cmd->token[0], ".", 2))
     {
-        fprintf(stderr, "%s: Permission denied\n", cmd->token[0]);
-        g_exit_status = 126; // Commande non exécutable
-        exit(126);
+        fprintf(stderr, "bash: line 1: %s: filename argument required\n.: usage: . filename [arguments]\n", cmd->token[0]);
+        g_exit_status = 2;
+        exit(g_exit_status);
     }
-
+    else if (ft_strchr(cmd->token[0], '/') != NULL && !cmd->path_bin)
+    {
+        g_exit_status = 127;
+        fprintf(stderr, "bash: %s: No such file or directory\n", cmd->token[0]);
+        exit(g_exit_status);
+    }
+    else if (!cmd->path_bin)
+    {
+        fprintf(stderr, "bash: %s: Command not found\n", cmd->token[0]);
+        g_exit_status = 127;
+        exit(g_exit_status);
+    }
+    else if (ft_strchr(cmd->token[0], '/') != NULL && cmd->path_bin)
+    {
+        if (ft_is_dir(cmd->path_bin) == 1)
+        {
+            g_exit_status = 126;
+            fprintf(stderr, "bash: %s: Is a directory\n", cmd->token[0]);
+            exit(g_exit_status);
+        }
+        else if (access(cmd->path_bin, X_OK) == -1)
+        {
+            g_exit_status = 126;
+            fprintf(stderr, "bash: %s: Permission denied\n", cmd->token[0]);
+            exit(g_exit_status);
+        }
+    }
     if (execve(cmd->path_bin, cmd->token, env) == -1)
     {
         perror(cmd->token[0]); // Affiche une erreur détaillée
-        g_exit_status = 127;  // Commande introuvable
-        exit(127);
+        g_exit_status = errno;
     }
+    exit(g_exit_status);
 }
 
-void    check_dot_and_file(t_cmd *cmd)
+/*void    check_dot(t_cmd *cmd)
 {
     struct stat sb;
 
-    if (!cmd || !cmd->token[0])
-    {
-        g_exit_status = 0; // Rien à exécuter, succès
-        exit(0);
-    }
-
-    if (strcmp(cmd->token[0], ".") == 0 && (!cmd->token[1] || cmd->token[1][0] == '\0'))
-    {
-        fprintf(stderr, ".: filename argument required\n");
-        g_exit_status = 2; // Usage incorrect
-        exit(2);
-    }
-
-    if (stat(cmd->token[0], &sb) == 0)
-    {
-        if (S_ISDIR(sb.st_mode))
-        {
-            fprintf(stderr, "%s: is a directory\n", cmd->token[0]);
-            g_exit_status = 126; // Commande non exécutable
-            exit(126);
-        }
-    }
+    if (!ft_strncmp(cmd->token[0], ".", 2) )
     return;
-}
+}*/
 
 // Fork et exécution d'une commande
 void fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd, int is_last_cmd)
@@ -155,7 +167,7 @@ void execute_pipeline(t_mini *shell)
     {
         t_cmd *cmd = &shell->cmd[i];
 
-        if (is_builtin(cmd->token[0]))
+        if (cmd->token[0] && is_builtin(cmd->token[0]))
         {
             execute_builtin(cmd, shell, &prev_fd, i);
             i++;

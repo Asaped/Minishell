@@ -6,10 +6,10 @@ static t_bool	get_path_bin(char *str, char *cmd, t_token *token)
 
 	str = ft_strjoin2(str, '/');
 	if (!str)
-		return (ft_error(strerror(errno)), ft_error("\n"));
+		return (ft_error(strerror(errno)));
 	tmp = ft_strjoin3(str, cmd);
 	if (!tmp)
-			return (ft_error(strerror(errno)), ft_error("\n"));
+			return (ft_error(strerror(errno)));
 	free(str);
 	if (access(tmp, F_OK) == 0 && access(tmp, X_OK) == 0)
 	{
@@ -31,13 +31,21 @@ static t_bool	find_cmd(t_mini *shell, char *path_bin, char *cmd, int j)
 		return (FALSE);
 	tab = ft_split(path_bin, ':');
 	if (!tab)
-		return (ft_error(strerror(errno)), ft_error("\n"));
+		return (ft_error(strerror(errno)));
 	len = ft_tablen(tab);
 	i = -1;
-	while (++i < len)
+	while (ft_strchr(cmd, '/') == NULL && ++i < len)
 		get_path_bin(tab[i], cmd, &shell->token[j]);
 	if (tab)
 		free(tab);
+	if (shell->token[j].path_bin != NULL)
+		return (TRUE);
+	else if (cmd[0] == '/' && cmd[1] && access(cmd, F_OK) != -1)
+		shell->token[j].path_bin = ft_strdup(cmd);
+	else if (cmd[0] == '.' && cmd[1] == '/' && cmd[2] && access(cmd + 2, F_OK) != -1)
+		shell->token[j].path_bin = ft_strjoin3(shell->path, cmd + 1);
+	else if (access(cmd, F_OK) != -1)
+		shell->token[j].path_bin = ft_strjoin4(shell->path, ft_strjoin3("/", cmd));
 	if (shell->token[j].path_bin != NULL)
 		return (TRUE);
 	return (FALSE);
@@ -47,7 +55,7 @@ static t_type	find_token_type(t_mini *shell, char *str, int i, char c)
 {
 	if (is_builtin(str))
 		return (BUILTIN);
-	else if ((access(str, F_OK) == 0 && access(str, X_OK) == 0) || find_cmd(shell, get_env_value(shell, "PATH", 0), str, i))
+	else if (find_cmd(shell, get_env_value(shell, "PATH", 0), str, i))
 		return (CMD);
 	else if (c == '\'' || c == '\"')
 		return (STRING);
@@ -62,6 +70,8 @@ static t_bool	create_token(t_mini *shell, int j, int i)
 	char	*str;
 
 	shell->token[i].path_bin = NULL;
+	if ((shell->input[j] == '\"' && shell->input[j + 1] == '\"') || (shell->input[j] == '\'' && shell->input[j + 1] == '\''))
+		j += 2;
 	str = worddup(shell->input, j, wordlen(shell->input, j));
 	if (!str)
 		return (ft_error(strerror(errno)), ft_error("\n"));
@@ -73,7 +83,7 @@ static t_bool	create_token(t_mini *shell, int j, int i)
 	{
 		shell->token[i].path_bin = ft_strdup(str);
 		if (!shell->token[i].path_bin)
-			return (ft_error(strerror(errno)), ft_error("\n"));
+			return (ft_error(strerror(errno)));
 	}
 	shell->token[i].value = str;
 	return (TRUE);

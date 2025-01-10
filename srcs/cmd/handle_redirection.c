@@ -4,13 +4,16 @@ t_bool	handle_output(t_token *token, t_cmd *cmd, int i)
 {
 	cmd->output = ft_strdup(token[i + 1].value);
 	if (!cmd->output)
-		return (ft_error(strerror(errno)), ft_error("\n"));
+		return (ft_error(strerror(errno)));
 	if (token[i].value[1] == '>')
 		cmd->fd_out = open(cmd->output, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	else
 		cmd->fd_out = open(token[i + 1].value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (cmd->fd_out == -1)
-		return (ft_error(strerror(errno)), ft_error("\n"));
+	{
+		g_exit_status = errno;
+		fprintf(stderr, "bash: %s: No such file or directory\n", cmd->output);
+	}
 	return (TRUE);
 }
 
@@ -21,7 +24,10 @@ t_bool	handle_input(t_token *token, t_cmd *cmd, int i)
 		return (ft_error(strerror(errno)), ft_error("\n"));
 	cmd->fd_in = open(cmd->input, O_RDONLY);
 	if (cmd->fd_in == -1)
-		return (ft_error(strerror(errno)), ft_error("\n"));
+	{
+		g_exit_status = errno;
+		fprintf(stderr, "bash: %s: No such file or directory\n", cmd->input);
+	}
 	return (TRUE);
 }
 

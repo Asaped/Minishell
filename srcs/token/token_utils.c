@@ -33,11 +33,7 @@ static t_bool	check_operator(t_token *token, int i, int tlen)
 	{
 		if ((i == 0 && is_pipe(token[i])) || (i == tlen - 1 && token[i].type == OPERATOR) || (token[i].value[0] == '|' && token[i - 1].type == OPERATOR) ||
 			(token[i].type == OPERATOR && token[i].value[0] != '|' && token[i - 1].type == OPERATOR && token[i - 1].value[0] != '|'))
-		{
-			ft_error("bash: syntax error near unexpected token \'");
-			ft_error(token[i].value);
-			return (ft_error("\'\n"));
-		}
+			return (fprintf(stderr, "bash: syntax error near unexpected token `%s'\n", token[i].value), FALSE);
 	}
 	return (TRUE);
 }
