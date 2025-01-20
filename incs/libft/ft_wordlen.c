@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_wordlen.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: moturki <marvin@42lausanne.ch>             +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: moturki <marvin@42lausanne.ch>             +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2023/10/23 11:26:42 by moturki           #+#    #+#             */
 /*   Updated: 2023/10/23 11:27:24 by moturki          ###   ########.fr       */
 /*                                                                            */
@@ -21,23 +24,25 @@ int	wordlen(const char *s, int i)
 		return (skip_quote(s, i));
 	if (is_op(s[i]))
 		return (skip_op(s, i));
-	while (s[i + j] && !is_whitespace(s[i + j]) && !is_op(s[i + j]) && !is_quote(s[i + j]))
+	while (s[i + j] && !is_whitespace(s[i + j]) && !is_op(s[i + j])
+		&& !is_quote(s[i + j]))
 		j++;
 	return (j);
 }
+
 int	wordlen2(char *str, int *i)
 {
-    int count;
+	int	count;
 
-    count = 0;
-    while (str[i[0]])
-    {
-        if (is_whitespace(str[i[0]]) || str[i[0]] == '$' || is_op(str[i[0]]))
-            break;
-        count++;
+	count = 0;
+	while (str[i[0]])
+	{
+		if (is_whitespace(str[i[0]]) || str[i[0]] == '$' || is_op(str[i[0]]))
+			break ;
+		count++;
 		i[0]++;
-    }
-    return (count);
+	}
+	return (count);
 }
 
 int	pipelen(t_token *token, int tlen)
@@ -61,8 +66,10 @@ int	count_word(char *str, int i, int count)
 			i++;
 		if (!str[i])
 			break ;
-		if (str[i] && !is_whitespace(str[i]) && !is_op(str[i]) && !is_quote(str[i]))
-			while (str[i] && !is_whitespace(str[i]) && !is_op(str[i]) && !is_quote(str[i]))
+		if (str[i] && !is_whitespace(str[i]) && !is_op(str[i])
+			&& !is_quote(str[i]))
+			while (str[i] && !is_whitespace(str[i]) && !is_op(str[i])
+				&& !is_quote(str[i]))
 				i++;
 		else if (is_quote(str[i]))
 			i += skip_quote(str, i);

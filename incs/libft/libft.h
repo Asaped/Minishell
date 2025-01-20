@@ -25,13 +25,13 @@ typedef struct s_list
 
 int		ft_is_upper_case(char c);
 
-char    *lower_str(char *str);
+char	*lower_str(char *str);
 
 int		ft_tablen(char **tab);
 
 char	**ft_tabdup(char **src);
 
-int 	is_whitespace(char c);
+int		is_whitespace(char c);
 
 t_bool	check_pipe(char *str, int len);
 
@@ -49,7 +49,7 @@ int		is_file(char *str);
 
 int		wordlen(const char *s, int i);
 
-int 	wordlen2(char *str, int *i);
+int		wordlen2(char *str, int *i);
 
 int		pipelen(t_token *token, int tlen);
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   token.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/20 20:23:00 by nigateau          #+#    #+#             */
+/*   Updated: 2025/01/20 20:23:00 by nigateau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../incs/minishell.h"
 
 static t_bool	get_path_bin(char *str, char *cmd, t_token *token)
@@ -9,7 +21,7 @@ static t_bool	get_path_bin(char *str, char *cmd, t_token *token)
 		return (ft_error(strerror(errno)));
 	tmp = ft_strjoin3(str, cmd);
 	if (!tmp)
-			return (ft_error(strerror(errno)));
+		return (ft_error(strerror(errno)));
 	free(str);
 	if (access(tmp, F_OK) == 0 && access(tmp, X_OK) == 0)
 	{
@@ -42,10 +54,12 @@ static t_bool	find_cmd(t_mini *shell, char *path_bin, char *cmd, int j)
 		return (TRUE);
 	else if (cmd[0] == '/' && cmd[1] && access(cmd, F_OK) != -1)
 		shell->token[j].path_bin = ft_strdup(cmd);
-	else if (cmd[0] == '.' && cmd[1] == '/' && cmd[2] && access(cmd + 2, F_OK) != -1)
+	else if (cmd[0] == '.' && cmd[1] == '/' && cmd[2] && access(cmd + 2,
+			F_OK) != -1)
 		shell->token[j].path_bin = ft_strjoin3(shell->path, cmd + 1);
 	else if (access(cmd, F_OK) != -1)
-		shell->token[j].path_bin = ft_strjoin4(shell->path, ft_strjoin3("/", cmd));
+		shell->token[j].path_bin = ft_strjoin4(shell->path, ft_strjoin3("/",
+					cmd));
 	if (shell->token[j].path_bin != NULL)
 		return (TRUE);
 	return (FALSE);
@@ -59,7 +73,8 @@ static t_type	find_token_type(t_mini *shell, char *str, int i, char c)
 		return (CMD);
 	else if (c == '\'' || c == '\"')
 		return (STRING);
-	else if ((is_op(str[0]) && !is_op(str[1])) || (is_op(str[0]) && is_op(str[1]) && str[1] != '|'))
+	else if ((is_op(str[0]) && !is_op(str[1])) || (is_op(str[0])
+			&& is_op(str[1]) && str[1] != '|'))
 		return (OPERATOR);
 	else
 		return (UNKNOWN);
@@ -70,7 +85,8 @@ static t_bool	create_token(t_mini *shell, int j, int i)
 	char	*str;
 
 	shell->token[i].path_bin = NULL;
-	if ((shell->input[j] == '\"' && shell->input[j + 1] == '\"') || (shell->input[j] == '\'' && shell->input[j + 1] == '\''))
+	if ((shell->input[j] == '\"' && shell->input[j + 1] == '\"')
+		|| (shell->input[j] == '\'' && shell->input[j + 1] == '\''))
 		j += 2;
 	str = worddup(shell->input, j, wordlen(shell->input, j));
 	if (!str)
@@ -103,8 +119,10 @@ t_bool	set_token(t_mini *shell)
 		if (shell->input[j])
 			if (create_token(shell, j, i++) == FALSE)
 				return (FALSE);
-		if (shell->input[j] && !is_whitespace(shell->input[j]) && !is_op(shell->input[j]) && !is_quote(shell->input[j]))
-			while (shell->input[j] && !is_whitespace(shell->input[j]) && !is_op(shell->input[j]) && !is_quote(shell->input[j]))
+		if (shell->input[j] && !is_whitespace(shell->input[j])
+			&& !is_op(shell->input[j]) && !is_quote(shell->input[j]))
+			while (shell->input[j] && !is_whitespace(shell->input[j])
+				&& !is_op(shell->input[j]) && !is_quote(shell->input[j]))
 				j++;
 		else if (is_quote(shell->input[j]))
 			j += skip_quote(shell->input, j);

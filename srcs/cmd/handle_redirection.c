@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_redirection.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/20 20:51:53 by nigateau          #+#    #+#             */
+/*   Updated: 2025/01/20 20:51:53 by nigateau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../incs/minishell.h"
 
 t_bool	handle_output(t_token *token, t_cmd *cmd, int i)
@@ -8,7 +20,8 @@ t_bool	handle_output(t_token *token, t_cmd *cmd, int i)
 	if (token[i].value[1] == '>')
 		cmd->fd_out = open(cmd->output, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	else
-		cmd->fd_out = open(token[i + 1].value, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		cmd->fd_out = open(token[i + 1].value, O_CREAT | O_WRONLY | O_TRUNC,
+				0644);
 	if (cmd->fd_out == -1)
 	{
 		g_exit_status = errno;
@@ -33,10 +46,11 @@ t_bool	handle_input(t_token *token, t_cmd *cmd, int i)
 
 static char	*get_heredoc_name(void)
 {
-	static int	i = 0;
+	static int	i;
 	char		*name;
 	char		*tmp;
 
+	i = 0;
 	tmp = ft_itoa(i);
 	if (!tmp)
 		return (NULL);
@@ -45,7 +59,7 @@ static char	*get_heredoc_name(void)
 	return (name);
 }
 
-static t_bool set_heredoc(t_mini *shell, t_cmd *cmd)
+static t_bool	set_heredoc(t_mini *shell, t_cmd *cmd)
 {
 	char	*str;
 	int		fd;
@@ -58,7 +72,8 @@ static t_bool set_heredoc(t_mini *shell, t_cmd *cmd)
 		signal_handler_interactive();
 		str = readline("> ");
 		signal_handler_non_interactive();
-		if (str == NULL || !ft_strncmp(str, cmd->heredoc_key, ft_strlen(cmd->heredoc_key)))
+		if (str == NULL || !ft_strncmp(str, cmd->heredoc_key,
+				ft_strlen(cmd->heredoc_key)))
 			break ;
 		if (ft_strchr(str, '$'))
 		{

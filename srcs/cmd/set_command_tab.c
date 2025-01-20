@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   set_command_tab.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/20 20:52:43 by nigateau          #+#    #+#             */
+/*   Updated: 2025/01/20 20:52:43 by nigateau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../incs/minishell.h"
 
 static void	close_open_fd(t_cmd *cmd, int mode)
@@ -44,14 +56,14 @@ static t_bool	set_io(t_mini *shell, t_cmd *cmd, t_token *token, int i)
 		if (token[i].type == OPERATOR && token[i].value[0] == '>')
 		{
 			if (cmd->output != NULL)
-			close_open_fd(cmd, 1);
+				close_open_fd(cmd, 1);
 			if (handle_output(token, cmd, i) == FALSE)
 				return (FALSE);
 		}
 		else if (token[i].type == OPERATOR && token[i].value[0] == '<')
 		{
 			if (cmd->input != NULL)
-				 close_open_fd(cmd, 2);
+				close_open_fd(cmd, 2);
 			if (token[i].value[1] == '<')
 			{
 				if (handle_heredoc(shell, token, cmd, i) == FALSE)

@@ -26,7 +26,8 @@ int	skip_quote(const char *str, int i)
 
 int	skip_op(const char *str, int i)
 {
-	if ((str[i] == '>' && str[i + 1] == '>') || (str[i] == '<' && str[i + 1] == '<'))
+	if ((str[i] == '>' && str[i + 1] == '>')
+		|| (str[i] == '<' && str[i + 1] == '<'))
 		return (2);
 	return (1);
 }

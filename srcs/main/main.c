@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/20 20:32:21 by nigateau          #+#    #+#             */
+/*   Updated: 2025/01/20 20:32:21 by nigateau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../incs/minishell.h"
 
 /*static void	exec(t_mini *shell)
@@ -29,7 +41,7 @@
 	}
 }*/
 
-int g_exit_status = 0;
+int				g_exit_status = 0;
 
 /*static t_bool	redisplay_prompt(t_mini *shell)
 {
@@ -61,7 +73,7 @@ static t_bool	set_shell(t_mini *shell)
 {
 	if (is_unclosed_quote(shell->input) == TRUE)
 		return (ft_error("Syntax error : unclosed quote.\n"));
-	shell->tlen = count_word(shell->input, 0 , 0);
+	shell->tlen = count_word(shell->input, 0, 0);
 	if (shell->tlen < 1)
 		return (FALSE);
 	add_history(shell->input);
@@ -102,9 +114,10 @@ static void	minishell(t_mini *shell)
 	ft_free(shell, NULL, 1);
 }
 
-int 	main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
 	t_mini	shell;
+
 	(void)ac;
 	(void)av;
 	init_shell(&shell, 1, envp);

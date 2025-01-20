@@ -1,3 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
+/*   Created: 2025/01/20 20:28:53 by nigateau          #+#    #+#             */
+/*   Updated: 2025/01/20 20:28:53 by nigateau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../incs/minishell.h"
 
 static void	handle_sigint(int sig)
@@ -16,7 +31,7 @@ void	signal_handler_interactive(void)
 {
 	struct sigaction	sigint;
 	struct sigaction	sigquit;
-	
+
 	sigint.sa_handler = handle_sigint;
 	sigemptyset(&sigint.sa_mask);
 	sigint.sa_flags = 0;

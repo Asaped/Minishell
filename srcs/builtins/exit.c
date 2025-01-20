@@ -1,39 +1,51 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exit.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/20 21:00:35 by nigateau          #+#    #+#             */
+/*   Updated: 2025/01/20 21:19:41 by nigateau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../incs/minishell.h"
 
-static int    check_out_of_range(int neg, unsigned long long num, int *error)
+static int	check_out_of_range(int neg, unsigned long long num, int *error)
 {
-    if ((neg == 1 && num > LONG_MAX)
-        || (neg == -1 && num > -(unsigned long)LONG_MIN))
-        *error = 1;
-    return (*error);
+	if ((neg == 1 && num > LONG_MAX)
+		|| (neg == -1 && num > -(unsigned long)LONG_MIN))
+		*error = 1;
+	return (*error);
 }
 
 static unsigned long long	ft_ull_atoi(const char *str, int *error)
 {
-    unsigned long long    num;
-    int                    neg;
-    int                    i;
+	unsigned long long	num;
+	int					neg;
+	int					i;
 
-    num = 0;
-    neg = 1;
-    i = 0;
-    while (str[i] && is_whitespace(str[i]))
-        i++;
-    if (str[i] == '+')
-        i++;
-    else if (str[i] == '-')
-    {
-        neg *= -1;
-        i++;
-    }
-    while (str[i] && ft_isdigit(str[i]))
-    {
-        num = (num * 10) + (str[i] - '0');
-        if (check_out_of_range(neg, num, error))
-            break ;
-        i++;
-    }
-    return (num * neg);
+	num = 0;
+	neg = 1;
+	i = 0;
+	while (str[i] && is_whitespace(str[i]))
+		i++;
+	if (str[i] == '+')
+		i++;
+	else if (str[i] == '-')
+	{
+		neg *= -1;
+		i++;
+	}
+	while (str[i] && ft_isdigit(str[i]))
+	{
+		num = (num * 10) + (str[i] - '0');
+		if (check_out_of_range(neg, num, error))
+			break ;
+		i++;
+	}
+	return (num * neg);
 }
 
 static int	get_exit_code(char *error_code, int *error)
@@ -43,7 +55,7 @@ static int	get_exit_code(char *error_code, int *error)
 
 	i = 0;
 	if (!error_code)
-		return (0); //g_exit_code
+		return (0);
 	while (error_code[i] && is_whitespace(error_code[i]))
 		i++;
 	if (error_code[i] == '+' && error_code[i] == '-')
@@ -58,7 +70,7 @@ static int	get_exit_code(char *error_code, int *error)
 	return (code % 256);
 }
 
-t_bool ft_exit(t_mini *shell, t_cmd *cmd)
+t_bool	ft_exit(t_mini *shell, t_cmd *cmd)
 {
 	int	error;
 
@@ -73,7 +85,9 @@ t_bool ft_exit(t_mini *shell, t_cmd *cmd)
 	{
 		g_exit_status = get_exit_code(cmd->token[1], &error);
 		if (error == 1)
-			return (fprintf(stderr, "bash: exit: %s: numeric argument required\n", cmd->token[1]), TRUE);
+			return (fprintf(stderr,
+				"bash: exit:%s: numeric argument required\n",
+				cmd->token[1]), TRUE);
 	}
 	ft_free(shell, NULL, 1);
 	exit(g_exit_status);

@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   debug.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/20 20:49:16 by nigateau          #+#    #+#             */
+/*   Updated: 2025/01/20 20:49:16 by nigateau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../incs/minishell.h"
 
 void	print_cmd(t_mini *shell)
 {
 	int	i;
 	int	j;
-	
+
 	i = -1;
 	while (++i < shell->clen)
 	{
@@ -25,8 +37,9 @@ void	print_cmd(t_mini *shell)
 
 void	print_token(t_mini *shell)
 {
-	int		i = -1;
+	int	i;
 
+	i = -1;
 	printf("\n");
 	printf("INPUT = \"%s\"\n", shell->input);
 	printf("\n");
@@ -53,9 +66,11 @@ void	print_token(t_mini *shell)
 	}
 	printf("-----token-----\n");
 }
+
 void	print_env(char **env)
 {
 	int	i;
+
 	i = -1;
 	while (++i < ft_tablen(env))
 		printf("env[%d] = \'%s\'\n", i, env[i]);

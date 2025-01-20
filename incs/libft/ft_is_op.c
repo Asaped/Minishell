@@ -28,7 +28,8 @@ t_bool	is_pipe(t_token token)
 
 t_bool	is_heredoc(t_token token)
 {
-	if (token.type == OPERATOR && token.value[0] == '<' && token.value[1] == '<' && !token.value[2])
+	if (token.type == OPERATOR && token.value[0]
+		== '<' && token.value[1] == '<' && !token.value[2])
 		return (TRUE);
 	return (FALSE);
 }

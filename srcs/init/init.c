@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/20 20:34:19 by nigateau          #+#    #+#             */
+/*   Updated: 2025/01/20 20:34:19 by nigateau         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../incs/minishell.h"
 
 static void	increment_shlvl(t_mini *shell)
 {
-	char **tmp;
-	int	lvl;
-	int	pos;
+	char	**tmp;
+	int		lvl;
+	int		pos;
 
 	if ((pos = get_env_index(shell->env, "SHLVL")) == -1)
 		shell->env = set_env_var(shell->env, "SHLVL=", "2");
