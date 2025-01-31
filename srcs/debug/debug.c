@@ -40,13 +40,9 @@ void	print_token(t_mini *shell)
 	int	i;
 
 	i = -1;
-	printf("\n");
-	printf("INPUT = \"%s\"\n", shell->input);
-	printf("\n");
-	printf("PATH = \"%s\"\n", shell->path);
-	printf("\n");
-	printf("-----token-----\n");
-	printf("\n");
+	printf("\nINPUT = \"%s\"\n", shell->input);
+	printf("\nPATH = \"%s\"\n", shell->path);
+	printf("\n-----token-----\n\n");
 	while (++i < shell->tlen)
 	{
 		if (shell->token[i].type == BUILTIN)

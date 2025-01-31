@@ -12,7 +12,7 @@
 
 #include "../../incs/minishell.h"
 
-t_bool	ft_pwd(void)
+int	ft_pwd(void)
 {
 	char	path[4096];
 

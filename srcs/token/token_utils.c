@@ -15,7 +15,7 @@
 
 #include "../../incs/minishell.h"
 
-static t_bool	find_first_token(t_token *token, int i, int original_pos)
+static int	find_first_token(t_token *token, int i, int original_pos)
 {
 	while (i >= 0 && !is_pipe(token[i]))
 		i--;
@@ -43,7 +43,7 @@ static t_bool	find_first_token(t_token *token, int i, int original_pos)
 	return (FALSE);
 }
 
-static t_bool	check_operator(t_token *token, int i, int tlen)
+static int	check_operator(t_token *token, int i, int tlen)
 {
 	if (token[i].type == OPERATOR)
 	{
@@ -60,7 +60,7 @@ static t_bool	check_operator(t_token *token, int i, int tlen)
 	return (TRUE);
 }
 
-t_bool	second_pass(t_mini *shell)
+int	second_pass(t_mini *shell)
 {
 	int	i;
 
@@ -77,4 +77,25 @@ t_bool	second_pass(t_mini *shell)
 		}
 	}
 	return (TRUE);
+}
+
+int	get_path_bin(char *str, char *cmd, t_token *token)
+{
+	char	*tmp;
+
+	str = ft_strjoin2(str, '/');
+	if (!str)
+		return (ft_error(strerror(errno)));
+	tmp = ft_strjoin3(str, cmd);
+	if (!tmp)
+		return (ft_error(strerror(errno)));
+	free(str);
+	if (access(tmp, F_OK) == 0 && access(tmp, X_OK) == 0)
+	{
+		token->path_bin = tmp;
+		return (TRUE);
+	}
+	else
+		free(tmp);
+	return (FALSE);
 }

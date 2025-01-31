@@ -12,7 +12,7 @@
 
 #include "../../incs/minishell.h"
 
-t_bool	ft_env(char **env, t_cmd *cmd, int export_mode)
+int	ft_env(char **env, t_cmd *cmd, int export_mode)
 {
 	int	i;
 	int	len;

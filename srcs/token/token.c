@@ -12,28 +12,19 @@
 
 #include "../../incs/minishell.h"
 
-static t_bool	get_path_bin(char *str, char *cmd, t_token *token)
+static void	find_cmd2(t_mini *shell, char *cmd)
 {
-	char	*tmp;
-
-	str = ft_strjoin2(str, '/');
-	if (!str)
-		return (ft_error(strerror(errno)));
-	tmp = ft_strjoin3(str, cmd);
-	if (!tmp)
-		return (ft_error(strerror(errno)));
-	free(str);
-	if (access(tmp, F_OK) == 0 && access(tmp, X_OK) == 0)
-	{
-		token->path_bin = tmp;
-		return (TRUE);
-	}
-	else
-		free(tmp);
-	return (FALSE);
+	if (cmd[0] == '/' && cmd[1] && access(cmd, F_OK) != -1)
+		shell->token[j].path_bin = ft_strdup(cmd);
+	else if (cmd[0] == '.' && cmd[1] == '/' && cmd[2] && access(cmd + 2,
+			F_OK) != -1)
+		shell->token[j].path_bin = ft_strjoin3(shell->path, cmd + 1);
+	else if (access(cmd, F_OK) != -1)
+		shell->token[j].path_bin = ft_strjoin4(shell->path, ft_strjoin3("/",
+					cmd));
 }
 
-static t_bool	find_cmd(t_mini *shell, char *path_bin, char *cmd, int j)
+static int	find_cmd(t_mini *shell, char *path_bin, char *cmd, int j)
 {
 	char	**tab;
 	int		len;
@@ -52,14 +43,8 @@ static t_bool	find_cmd(t_mini *shell, char *path_bin, char *cmd, int j)
 		free(tab);
 	if (shell->token[j].path_bin != NULL)
 		return (TRUE);
-	else if (cmd[0] == '/' && cmd[1] && access(cmd, F_OK) != -1)
-		shell->token[j].path_bin = ft_strdup(cmd);
-	else if (cmd[0] == '.' && cmd[1] == '/' && cmd[2] && access(cmd + 2,
-			F_OK) != -1)
-		shell->token[j].path_bin = ft_strjoin3(shell->path, cmd + 1);
-	else if (access(cmd, F_OK) != -1)
-		shell->token[j].path_bin = ft_strjoin4(shell->path, ft_strjoin3("/",
-					cmd));
+	else
+		find_cmd2(shell, cmd);
 	if (shell->token[j].path_bin != NULL)
 		return (TRUE);
 	return (FALSE);
@@ -80,7 +65,7 @@ static t_type	find_token_type(t_mini *shell, char *str, int i, char c)
 		return (UNKNOWN);
 }
 
-static t_bool	create_token(t_mini *shell, int j, int i)
+static int	create_token(t_mini *shell, int j, int i)
 {
 	char	*str;
 
@@ -105,7 +90,7 @@ static t_bool	create_token(t_mini *shell, int j, int i)
 	return (TRUE);
 }
 
-t_bool	set_token(t_mini *shell)
+int	set_token(t_mini *shell)
 {
 	int	i;
 	int	j;

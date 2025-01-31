@@ -33,7 +33,7 @@ char	**ft_tabdup(char **src);
 
 int		is_whitespace(char c);
 
-t_bool	check_pipe(char *str, int len);
+int		check_pipe(char *str, int len);
 
 int		is_only_whitespace(char *str);
 
@@ -57,11 +57,11 @@ int		count_word(char *str, int i, int count);
 
 int		get_token_length(t_token *token, int i, int tlen);
 
-t_bool	is_pipe(t_token token);
+int		is_pipe(t_token token);
 
-t_bool	is_heredoc(t_token token);
+int		is_heredoc(t_token token);
 
-t_bool	is_unclosed_quote(char *str);
+int		is_unclosed_quote(char *str);
 
 char	*worddup(const char *s, int i, int n);
 

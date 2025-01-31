@@ -12,7 +12,7 @@
 
 #include "../../incs/minishell.h"
 
-t_bool	handle_output(t_token *token, t_cmd *cmd, int i)
+int	handle_output(t_token *token, t_cmd *cmd, int i)
 {
 	cmd->output = ft_strdup(token[i + 1].value);
 	if (!cmd->output)
@@ -30,7 +30,7 @@ t_bool	handle_output(t_token *token, t_cmd *cmd, int i)
 	return (TRUE);
 }
 
-t_bool	handle_input(t_token *token, t_cmd *cmd, int i)
+int	handle_input(t_token *token, t_cmd *cmd, int i)
 {
 	cmd->input = ft_strdup(token[i + 1].value);
 	if (!cmd->input)
@@ -59,7 +59,7 @@ static char	*get_heredoc_name(void)
 	return (name);
 }
 
-static t_bool	set_heredoc(t_mini *shell, t_cmd *cmd)
+static int	set_heredoc(t_mini *shell, t_cmd *cmd)
 {
 	char	*str;
 	int		fd;
@@ -72,26 +72,14 @@ static t_bool	set_heredoc(t_mini *shell, t_cmd *cmd)
 		signal_handler_interactive();
 		str = readline("> ");
 		signal_handler_non_interactive();
-		if (str == NULL || !ft_strncmp(str, cmd->heredoc_key,
-				ft_strlen(cmd->heredoc_key)))
-			break ;
-		if (ft_strchr(str, '$'))
-		{
-			str = expand_env(shell, str);
-			ft_putendl_fd(str, fd);
-		}
-		else
-		{
-			ft_putendl_fd(str, fd);
-			free(str);
-		}
+		set_heredoc2(shell, cmd, str, fd);
 	}
 	free(str);
 	close(fd);
 	return (TRUE);
 }
 
-t_bool	handle_heredoc(t_mini *shell, t_token *token, t_cmd *cmd, int i)
+int	handle_heredoc(t_mini *shell, t_token *token, t_cmd *cmd, int i)
 {
 	cmd->heredoc_key = ft_strdup(token[i + 1].value);
 	if (!cmd->heredoc_key)

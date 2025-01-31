@@ -18,7 +18,8 @@ static void	increment_shlvl(t_mini *shell)
 	int		lvl;
 	int		pos;
 
-	if ((pos = get_env_index(shell->env, "SHLVL")) == -1)
+	pos = get_env_index(shell->env, "SHLVL");
+	if (pos == -1)
 		shell->env = set_env_var(shell->env, "SHLVL=", "2");
 	else
 	{
@@ -31,7 +32,7 @@ static void	increment_shlvl(t_mini *shell)
 	}
 }
 
-t_bool	init_shell(t_mini *shell, int first_time, char **envp)
+int	init_shell(t_mini *shell, int first_time, char **envp)
 {
 	char	path[4096];
 

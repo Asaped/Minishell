@@ -12,7 +12,7 @@
 
 #include "../../incs/minishell.h"
 
-t_bool	is_n_option(char *str)
+int	is_n_option(char *str)
 {
 	int	i;
 
@@ -26,7 +26,7 @@ t_bool	is_n_option(char *str)
 	return (FALSE);
 }
 
-t_bool	ft_echo(t_cmd *cmd)
+int	ft_echo(t_cmd *cmd)
 {
 	int	i;
 	int	is_n;

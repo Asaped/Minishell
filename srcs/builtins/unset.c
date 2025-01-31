@@ -30,7 +30,7 @@ static char	**remove_env(char **env, int pos)
 	return (env);
 }
 
-t_bool	ft_unset(t_mini *shell, t_cmd *cmd)
+int	ft_unset(t_mini *shell, t_cmd *cmd)
 {
 	int	i;
 	int	pos;

@@ -39,6 +39,23 @@ void	update_exit_status(int status)
 		g_exit_status = 128 + WTERMSIG(status);
 }
 
+static void	execute_builtin2(t_cmd *cmd, int saved_stdout, int saved_stdin)
+{
+	if (pipe(cmd->fd_pipe) == -1)
+	{
+		perror("Error with pipe");
+		g_exit_status = errno;
+		restore_stdin_stdout(saved_stdin, saved_stdout);
+		exit(EXIT_FAILURE);
+	}
+	if (dup2(cmd->fd_pipe[1], STDOUT_FILENO) == -1)
+	{
+		perror("Error with dup2");
+		g_exit_status = errno;
+		exit(EXIT_FAILURE);
+	}
+}
+
 void	execute_builtin(t_cmd *cmd, t_mini *shell, int *prev_fd, int i)
 {
 	int	saved_stdout;
@@ -50,19 +67,7 @@ void	execute_builtin(t_cmd *cmd, t_mini *shell, int *prev_fd, int i)
 		setup_redirections(cmd);
 	if (i < shell->clen - 1)
 	{
-		if (pipe(cmd->fd_pipe) == -1)
-		{
-			perror("Error with pipe");
-			g_exit_status = errno;
-			restore_stdin_stdout(saved_stdin, saved_stdout);
-			exit(EXIT_FAILURE);
-		}
-		if (dup2(cmd->fd_pipe[1], STDOUT_FILENO) == -1)
-		{
-			perror("Error with dup2");
-			g_exit_status = errno;
-			exit(EXIT_FAILURE);
-		}
+		execute_builtin2(cmd, saved_stdout, saved_stdin)
 		close(cmd->fd_pipe[1]);
 		*prev_fd = cmd->fd_pipe[0];
 	}

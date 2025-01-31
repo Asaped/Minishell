@@ -74,7 +74,7 @@ static void	free_cmd(t_cmd *cmd, int clen)
 	free(cmd);
 }
 
-t_bool	ft_free(t_mini *shell, char *error, int flag)
+int	ft_free(t_mini *shell, char *error, int flag)
 {
 	if (shell->input != NULL)
 		free(shell->input);
@@ -91,7 +91,7 @@ t_bool	ft_free(t_mini *shell, char *error, int flag)
 	return (FALSE);
 }
 
-t_bool	ft_error(char *error)
+int	ft_error(char *error)
 {
 	ft_putendl_fd(error, STDERR_FILENO);
 	errno = 0;

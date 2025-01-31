@@ -38,32 +38,37 @@
 int		set_command_tab(t_mini *shell);
 
 // handle_redirection.c
-t_bool	handle_output(t_token *token, t_cmd *cmd, int i);
-t_bool	handle_input(t_token *token, t_cmd *cmd, int i);
-t_bool	handle_heredoc(t_mini *shell, t_token *token, t_cmd *cmd, int i);
+int		handle_output(t_token *token, t_cmd *cmd, int i);
+int		handle_input(t_token *token, t_cmd *cmd, int i);
+int		handle_heredoc(t_mini *shell, t_token *token, t_cmd *cmd, int i);
+
+// cmd_utils.c
+void	set_heredoc2(t_mini *shell, t_cmd *cmd, char *str, int fd);
+int		get_command2(t_cmd *cmd, t_token *token, int *i, int *j);
 
 //env.c
 char	*get_env_value(t_mini *shell, char *str, int malloc);
 
 //init.c
-t_bool	init_shell(t_mini *shell, int first_time, char **envp);
+int		init_shell(t_mini *shell, int first_time, char **envp);
 void	init_cmd(t_cmd *cmd);
 void	init_fds(t_cmd *cmd);
 
 //token_utils.c
-t_bool	second_pass(t_mini *shell);
+int		second_pass(t_mini *shell);
 
 //token.c
-t_bool	set_token(t_mini *shell);
+int		set_token(t_mini *shell);
+int		get_path_bin(char *str, char *cmd, t_token *token);
 
 //expand.c
 char	*expand_env(t_mini *shell, char *str);
 
 //free.c
-t_bool	ft_error(char *error);
+int		ft_error(char *error);
 void	free_tab(char **tab);
 void	free_token(t_token *token, int tlen);
-t_bool	ft_free(t_mini *shell, char *error, int flag);
+int		t_free(t_mini *shell, char *error, int flag);
 
 //signal.c
 void	signal_handler_interactive(void);
@@ -89,31 +94,31 @@ void	execute_builtin(t_cmd *cmd, t_mini *shell, int *prev_fd, int i);
 void	restore_stdin_stdout(int std_in, int std_out);
 
 //cd.c
-t_bool	ft_cd(t_mini *shell, t_cmd *cmd);
-t_bool	ft_is_dir(char *path);
+int		ft_cd(t_mini *shell, t_cmd *cmd);
+int		ft_is_dir(char *path);
 
 //echo.c
-t_bool	ft_echo(t_cmd *cmd);
+int		ft_echo(t_cmd *cmd);
 
 //env.c
-t_bool	ft_env(char **env, t_cmd *cmd, int export_mode);
+int		ft_env(char **env, t_cmd *cmd, int export_mode);
 
 //exit.c
-t_bool	ft_exit(t_mini *shell, t_cmd *cmd);
+int		ft_exit(t_mini *shell, t_cmd *cmd);
 
 //export.c
-t_bool	ft_export(t_mini *shell, t_cmd *cmd);
+int		ft_export(t_mini *shell, t_cmd *cmd);
 char	**set_env_var(char **env, char *key, char *value);
 char	**realloc_env(char **env, int len);
 int		get_env_index(char **env, char *key);
 char	**get_key_and_value(char *str);
-t_bool	is_valid_key(char *str);
+int		is_valid_key(char *str);
 
 // pwd.c
-t_bool	ft_pwd(void);
+int		ft_pwd(void);
 
 // unset.c
-t_bool	ft_unset(t_mini *shell, t_cmd *cmd);
+int		ft_unset(t_mini *shell, t_cmd *cmd);
 
 //error.c
 void	f_printf(int std, char *error_msg, char *token);

@@ -43,7 +43,7 @@
 
 int				g_exit_status = 0;
 
-/*static t_bool	redisplay_prompt(t_mini *shell)
+/*static int	redisplay_prompt(t_mini *shell)
 {
 	char	*input;
 
@@ -69,7 +69,7 @@ int				g_exit_status = 0;
 	return (TRUE);
 }*/
 
-static t_bool	set_shell(t_mini *shell)
+static int	set_shell(t_mini *shell)
 {
 	if (is_unclosed_quote(shell->input) == TRUE)
 		return (ft_error("Syntax error : unclosed quote.\n"));

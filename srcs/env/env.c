@@ -12,6 +12,68 @@
 
 #include "../../incs/minishell.h"
 
+int	get_env_index(char **env, char *key)
+{
+	int	i;
+	int	key_len;
+
+	i = 0;
+	key_len = ft_strlen(key);
+	while (env[i])
+	{
+		if (!ft_strncmp(env[i], key, key_len) && (env[i][key_len] == '='
+			|| !env[i][key_len]))
+			return (i);
+		i++;
+	}
+	return (-1);
+}
+
+char	**realloc_env(char **env, int len)
+{
+	int		i;
+	char	**res;
+
+	i = -1;
+	res = malloc(sizeof(char *) * (len + 1));
+	res[len] = NULL;
+	if (!res)
+		return (NULL);
+	while (env[++i] && i < len)
+	{
+		res[i] = ft_strdup(env[i]);
+		free(env[i]);
+	}
+	free(env);
+	return (res);
+}
+
+char	**set_env_var(char **env, char *key, char *value)
+{
+	int		i;
+	char	*new_value;
+
+	i = 0;
+	i = get_env_index(env, key);
+	if (!value)
+		value = "";
+	new_value = ft_strjoin3("=", value);
+	if (i != -1 && env[i])
+	{
+		free(env[i]);
+		env[i] = ft_strjoin3(key, new_value);
+	}
+	else
+	{
+		i = ft_tablen(env);
+		env = realloc_env(env, i + 1);
+		if (!env)
+			return (NULL);
+		env[i] = ft_strjoin3(key, new_value);
+	}
+	return (env);
+}
+
 char	*get_env_value(t_mini *shell, char *str, int malloc)
 {
 	int	i;

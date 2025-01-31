@@ -43,31 +43,21 @@ void	setup_redirections(t_cmd *cmd)
 	if (cmd->input)
 	{
 		if (cmd->fd_in == -1)
-		{
 			g_exit_status = errno;
-			exit(EXIT_FAILURE);
-		}
-		if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
-		{
-			perror("Error with dup2");
+		else if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
 			g_exit_status = errno;
+		if (cmd->fd_in == -1 || dup2(cmd->fd_in, STDIN_FILENO) == -1)
 			exit(EXIT_FAILURE);
-		}
 		close(cmd->fd_in);
 	}
 	if (cmd->output)
 	{
 		if (cmd->fd_out == -1)
-		{
 			g_exit_status = errno;
-			exit(EXIT_FAILURE);
-		}
-		if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
-		{
-			perror("Error with dup2");
+		else if (dup2(cmd->fd_out, STDOUT_FILENO) == -1)
 			g_exit_status = errno;
+		if (cmd->fd_out == -1 || dup2(cmd->fd_out, STDOUT_FILENO) == -1)
 			exit(EXIT_FAILURE);
-		}
 		close(cmd->fd_out);
 	}
 }
@@ -83,8 +73,7 @@ void	execute_command(t_cmd *cmd, char **env)
 	}
 	else if (!ft_strncmp(cmd->token[0], ".", 2))
 	{
-		fprintf(stderr, "bash: line 1: %s: filename argument required\n.: usage: . filename [arguments]\n",
-			cmd->token[0]);
+		fprintf(stderr, "bash: %s: filename argument needed\n", cmd->token[0]);
 		g_exit_status = 2;
 		exit(g_exit_status);
 	}
@@ -94,27 +83,7 @@ void	execute_command(t_cmd *cmd, char **env)
 		fprintf(stderr, "bash: %s: No such file or directory\n", cmd->token[0]);
 		exit(g_exit_status);
 	}
-	else if (!cmd->path_bin)
-	{
-		fprintf(stderr, "bash: %s: Command not found\n", cmd->token[0]);
-		g_exit_status = 127;
-		exit(g_exit_status);
-	}
-	else if (ft_strchr(cmd->token[0], '/') != NULL && cmd->path_bin)
-	{
-		if (ft_is_dir(cmd->path_bin) == 1)
-		{
-			g_exit_status = 126;
-			fprintf(stderr, "bash: %s: Is a directory\n", cmd->token[0]);
-			exit(g_exit_status);
-		}
-		else if (access(cmd->path_bin, X_OK) == -1)
-		{
-			g_exit_status = 126;
-			fprintf(stderr, "bash: %s: Permission denied\n", cmd->token[0]);
-			exit(g_exit_status);
-		}
-	}
+	execute_command2(cmd, env);
 	if (execve(cmd->path_bin, cmd->token, env) == -1)
 	{
 		perror(cmd->token[0]);
@@ -163,18 +132,7 @@ void	execute_pipeline(t_mini *shell)
 	while (i < shell->clen)
 	{
 		cmd = &shell->cmd[i];
-		if (cmd->token[0] && is_builtin(cmd->token[0]))
-		{
-			execute_builtin(cmd, shell, &prev_fd, i);
-			i++;
-			continue ;
-		}
-		if (i < shell->clen - 1 && pipe(cmd->fd_pipe) == -1)
-		{
-			perror("Error with pipe");
-			g_exit_status = errno;
-			exit(EXIT_FAILURE);
-		}
+		execute_pipeline2(shell, cmd);
 		fork_and_execute(shell, cmd, prev_fd, i == shell->clen - 1);
 		if (prev_fd != -1)
 			close(prev_fd);
@@ -188,10 +146,3 @@ void	execute_pipeline(t_mini *shell)
 	while (waitpid(-1, &status, 0) > 0)
 		update_exit_status(status);
 }
-/*void    check_dot(t_cmd *cmd)
-{
-    struct stat sb;
-
-    if (!ft_strncmp(cmd->token[0], ".", 2) )
-    return ;
-}*/

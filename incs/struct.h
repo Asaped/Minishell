@@ -13,9 +13,6 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
-# define WHITESPACE " \t\n\r\f\v"
-# define t_bool int
-
 /* ERROR CODES */
 # define ERROR 				-1
 # define SUCCESS 			0

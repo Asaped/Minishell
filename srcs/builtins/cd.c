@@ -27,7 +27,7 @@ int	ft_is_dir(char *path)
 		return (-1);
 }
 
-static t_bool	change_dir(t_mini *shell, char *path)
+static int	change_dir(t_mini *shell, char *path)
 {
 	char	tab[4096];
 
@@ -51,7 +51,7 @@ static t_bool	change_dir(t_mini *shell, char *path)
 	return (FALSE);
 }
 
-t_bool	ft_cd(t_mini *shell, t_cmd *cmd)
+int	ft_cd(t_mini *shell, t_cmd *cmd)
 {
 	char	*path;
 

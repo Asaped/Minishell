@@ -12,6 +12,27 @@
 
 #include "../../incs/minishell.h"
 
+static void	close_open_fd2(t_cmd *cmd)
+{
+	if (cmd->heredoc_key != NULL)
+	{
+		free(cmd->heredoc_key);
+		cmd->heredoc_key = NULL;
+		if (cmd->input != NULL)
+			unlink(cmd->input);
+	}
+	if (cmd->input != NULL)
+	{
+		free(cmd->input);
+		cmd->input = NULL;
+	}
+	if (cmd->fd_in != -1)
+	{
+		close(cmd->fd_in);
+		cmd->fd_in = -1;
+	}
+}
+
 static void	close_open_fd(t_cmd *cmd, int mode)
 {
 	if (mode == 1)
@@ -28,28 +49,10 @@ static void	close_open_fd(t_cmd *cmd, int mode)
 		}
 	}
 	else if (mode == 2)
-	{
-		if (cmd->heredoc_key != NULL)
-		{
-			free(cmd->heredoc_key);
-			cmd->heredoc_key = NULL;
-			if (cmd->input != NULL)
-				unlink(cmd->input);
-		}
-		if (cmd->input != NULL)
-		{
-			free(cmd->input);
-			cmd->input = NULL;
-		}
-		if (cmd->fd_in != -1)
-		{
-			close(cmd->fd_in);
-			cmd->fd_in = -1;
-		}
-	}
+		close_open_fd2(cmd);
 }
 
-static t_bool	set_io(t_mini *shell, t_cmd *cmd, t_token *token, int i)
+static int	set_io(t_mini *shell, t_cmd *cmd, t_token *token, int i)
 {
 	while (++i < shell->tlen && !is_pipe(token[i]))
 	{
@@ -77,7 +80,7 @@ static t_bool	set_io(t_mini *shell, t_cmd *cmd, t_token *token, int i)
 	return (TRUE);
 }
 
-static t_bool	get_command(t_mini *shell, t_cmd *cmd, t_token *token, int *j)
+static int	get_command(t_mini *shell, t_cmd *cmd, t_token *token, int *j)
 {
 	int		i;
 
@@ -91,16 +94,9 @@ static t_bool	get_command(t_mini *shell, t_cmd *cmd, t_token *token, int *j)
 		return (ft_error(strerror(errno)), ft_error("\n"));
 	cmd->token[cmd->tlen] = NULL;
 	if (token[j[0]].type == OPERATOR && token[j[0]].value[0] != '|')
-			j[0] += 2;
+		j[0] += 2;
 	while (i < cmd->tlen)
-	{
-		if (token[j[0]].path_bin != NULL && cmd->path_bin == NULL)
-			cmd->path_bin = token[j[0]].path_bin;
-		if (token[j[0]].type != OPERATOR)
-			cmd->token[i++] = token[j[0]++].value;
-		if (token[j[0]].type == OPERATOR && token[j[0]].value[0] != '|')
-			j[0] += 2;
-	}
+		get_command2(cmd, token, i, j);
 	cmd->token[i] = NULL;
 	if (is_pipe(token[j[0]]))
 		j[0]++;
