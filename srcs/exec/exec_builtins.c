@@ -67,7 +67,7 @@ void	execute_builtin(t_cmd *cmd, t_mini *shell, int *prev_fd, int i)
 		setup_redirections(cmd);
 	if (i < shell->clen - 1)
 	{
-		execute_builtin2(cmd, saved_stdout, saved_stdin)
+		execute_builtin2(cmd, saved_stdout, saved_stdin);
 		close(cmd->fd_pipe[1]);
 		*prev_fd = cmd->fd_pipe[0];
 	}

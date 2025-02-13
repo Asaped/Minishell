@@ -89,7 +89,7 @@ char	*get_env_value(t_mini *shell, char *str, int malloc)
 			len = ft_strlen(str);
 			if (malloc == 1)
 				free(str);
-			return (shell->env[i] + len + 1);
+			return (ft_strdup(shell->env[i] + len + 1));
 		}
 		i++;
 	}

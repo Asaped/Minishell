@@ -37,7 +37,7 @@ int	wordlen2(char *str, int *i)
 	count = 0;
 	while (str[i[0]])
 	{
-		if (is_whitespace(str[i[0]]) || str[i[0]] == '$' || is_op(str[i[0]]))
+		if (!ft_isalpha(str[i[0]]))
 			break ;
 		count++;
 		i[0]++;

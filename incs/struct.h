@@ -13,6 +13,8 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
+typedef int	t_bool;
+
 /* ERROR CODES */
 # define ERROR 				-1
 # define SUCCESS 			0

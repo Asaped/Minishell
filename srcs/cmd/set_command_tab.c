@@ -96,7 +96,7 @@ static int	get_command(t_mini *shell, t_cmd *cmd, t_token *token, int *j)
 	if (token[j[0]].type == OPERATOR && token[j[0]].value[0] != '|')
 		j[0] += 2;
 	while (i < cmd->tlen)
-		get_command2(cmd, token, i, j);
+		get_command2(cmd, token, &i, j);
 	cmd->token[i] = NULL;
 	if (is_pipe(token[j[0]]))
 		j[0]++;

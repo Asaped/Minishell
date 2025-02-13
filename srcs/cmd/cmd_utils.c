@@ -12,11 +12,11 @@
 
 #include "../../incs/minishell.h"
 
-void	set_heredoc2(t_mini *shell, t_cmd *cmd, char *str, int fd)
+int	set_heredoc2(t_mini *shell, t_cmd *cmd, char *str, int fd)
 {
 	if (str == NULL || !ft_strncmp(str, cmd->heredoc_key,
 			ft_strlen(cmd->heredoc_key)))
-		break ;
+		return (0);
 	if (ft_strchr(str, '$'))
 	{
 		str = expand_env(shell, str);
@@ -27,9 +27,10 @@ void	set_heredoc2(t_mini *shell, t_cmd *cmd, char *str, int fd)
 		ft_putendl_fd(str, fd);
 		free(str);
 	}
+	return (1);
 }
 
-int	get_command2(t_cmd *cmd, t_token *token, int *i, int *j)
+void	get_command2(t_cmd *cmd, t_token *token, int *i, int *j)
 {
 	if (token[j[0]].path_bin != NULL && cmd->path_bin == NULL)
 		cmd->path_bin = token[j[0]].path_bin;

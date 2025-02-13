@@ -12,7 +12,7 @@
 
 #include "../../incs/minishell.h"
 
-void	execute_command2(t_cmd *cmd, char **env)
+void	execute_command2(t_cmd *cmd)
 {
 	if (!cmd->path_bin)
 	{
@@ -37,17 +37,18 @@ void	execute_command2(t_cmd *cmd, char **env)
 	}
 }
 
-void	execute_pipeline2(t_mini *shell, t_cmd *cmd)
+int	execute_pipeline2(t_mini *shell, t_cmd *cmd, int prev_fd, int *i)
 {
 	if (cmd->token[0] && is_builtin(cmd->token[0]))
 	{
-		execute_builtin(cmd, shell, &prev_fd, i++);
-		continue ;
+		execute_builtin(cmd, shell, &prev_fd, i[0]++);
+		return (0);
 	}
-	if (i < shell->clen - 1 && pipe(cmd->fd_pipe) == -1)
+	if (i[0] < shell->clen - 1 && pipe(cmd->fd_pipe) == -1)
 	{
 		perror("Error with pipe");
 		g_exit_status = errno;
 		exit(EXIT_FAILURE);
 	}
+	return (1);
 }

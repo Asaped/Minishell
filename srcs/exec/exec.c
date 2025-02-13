@@ -83,7 +83,7 @@ void	execute_command(t_cmd *cmd, char **env)
 		fprintf(stderr, "bash: %s: No such file or directory\n", cmd->token[0]);
 		exit(g_exit_status);
 	}
-	execute_command2(cmd, env);
+	execute_command2(cmd);
 	if (execve(cmd->path_bin, cmd->token, env) == -1)
 	{
 		perror(cmd->token[0]);
@@ -132,7 +132,8 @@ void	execute_pipeline(t_mini *shell)
 	while (i < shell->clen)
 	{
 		cmd = &shell->cmd[i];
-		execute_pipeline2(shell, cmd);
+		if (!execute_pipeline2(shell, cmd, prev_fd, &i))
+			continue ;
 		fork_and_execute(shell, cmd, prev_fd, i == shell->clen - 1);
 		if (prev_fd != -1)
 			close(prev_fd);

@@ -16,6 +16,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stdio.h>
 # include "gnl/get_next_line.h"
 # include "libft/libft.h"
 # include "readline/history.h"
@@ -26,7 +27,6 @@
 # include <limits.h>
 # include <signal.h>
 # include <stdbool.h>
-# include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
 # include <sys/stat.h>
@@ -43,8 +43,8 @@ int		handle_input(t_token *token, t_cmd *cmd, int i);
 int		handle_heredoc(t_mini *shell, t_token *token, t_cmd *cmd, int i);
 
 // cmd_utils.c
-void	set_heredoc2(t_mini *shell, t_cmd *cmd, char *str, int fd);
-int		get_command2(t_cmd *cmd, t_token *token, int *i, int *j);
+int		set_heredoc2(t_mini *shell, t_cmd *cmd, char *str, int fd);
+void	get_command2(t_cmd *cmd, t_token *token, int *i, int *j);
 
 //env.c
 char	*get_env_value(t_mini *shell, char *str, int malloc);
@@ -68,7 +68,7 @@ char	*expand_env(t_mini *shell, char *str);
 int		ft_error(char *error);
 void	free_tab(char **tab);
 void	free_token(t_token *token, int tlen);
-int		t_free(t_mini *shell, char *error, int flag);
+int		ft_free(t_mini *shell, char *error, int flag);
 
 //signal.c
 void	signal_handler_interactive(void);
@@ -80,9 +80,11 @@ void	print_cmd(t_mini *shell);
 
 //exec.c
 void	execute_pipeline(t_mini *shell);
+int		execute_pipeline2(t_mini *shell, t_cmd *cmd, int prev_fd, int *i);
 void	fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd,
 			int is_last_cmd);
 void	execute_command(t_cmd *cmd, char **env);
+void	execute_command2(t_cmd *cmd);
 void	setup_redirections(t_cmd *cmd);
 void	setup_pipes(t_cmd *cmd, int prev_fd, int is_last_cmd);
 void	check_dot_and_file(t_cmd *cmd);

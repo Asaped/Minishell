@@ -67,12 +67,14 @@ static int	set_heredoc(t_mini *shell, t_cmd *cmd)
 	fd = open(cmd->input, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
 		return (ft_error(strerror(errno)), ft_error("\n"));
+	rl_done = 0;
 	while (1)
 	{
 		signal_handler_interactive();
 		str = readline("> ");
 		signal_handler_non_interactive();
-		set_heredoc2(shell, cmd, str, fd);
+		if (!set_heredoc2(shell, cmd, str, fd))
+			break ;
 	}
 	free(str);
 	close(fd);

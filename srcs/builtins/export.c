@@ -25,8 +25,6 @@ int	is_valid_key(char *str)
 			return (FALSE);
 		i++;
 	}
-	if (str[i] != '=')
-		return (FALSE);
 	return (TRUE);
 }
 
