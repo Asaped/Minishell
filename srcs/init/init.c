@@ -29,6 +29,7 @@ static void	increment_shlvl(t_mini *shell)
 		free(tmp[1]);
 		tmp[1] = ft_itoa(lvl);
 		shell->env = set_env_var(shell->env, tmp[0], tmp[1]);
+		free_tab(tmp);
 	}
 }
 

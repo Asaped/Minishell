@@ -2,8 +2,8 @@ NAME    = minishell
 CC      = gcc
 RM      = rm -f
 CFLAGS  = -Wall -Wextra -Werror -g
-#RDIR    = /usr/local/opt/readline
-RDIR	= /home/linuxbrew/.linuxbrew/opt/readline
+RDIR    = /usr/local/opt/readline
+#RDIR	= /home/linuxbrew/.linuxbrew/opt/readline
 CFLAGS += -I$(RDIR)/include
 LDFLAGS = -L$(RDIR)/lib -lreadline -lhistory -lncurses
 
@@ -37,6 +37,7 @@ SRCS    = \
           srcs/builtins/exit.c \
           srcs/builtins/pwd.c \
           srcs/builtins/export.c \
+          srcs/builtins/export_no_arg.c \
           srcs/builtins/unset.c
 
 OBJS    = $(SRCS:$(SRCDIR)%.c=$(OBJDIR)%.o)

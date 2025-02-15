@@ -2,11 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+        
+/*                                                    +:+ +:+
 	+:+     */
-/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+      
+/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+
 	+#+        */
-/*                                                +#+#+#+#+#+  
+/*                                                +#+#+#+#+#+
 	+#+           */
 /*   Created: 2025/01/20 21:08:03 by nigateau          #+#    #+#             */
 /*   Updated: 2025/01/20 21:08:03 by nigateau         ###   ########.fr       */
@@ -80,7 +80,7 @@ void	print_cmd(t_mini *shell);
 
 //exec.c
 void	execute_pipeline(t_mini *shell);
-int		execute_pipeline2(t_mini *shell, t_cmd *cmd, int prev_fd, int *i);
+int		execute_pipeline2(t_mini *shell, t_cmd *cmd, int *prev_fd, int *i);
 void	fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd,
 			int is_last_cmd);
 void	execute_command(t_cmd *cmd, char **env);
@@ -115,6 +115,13 @@ char	**realloc_env(char **env, int len);
 int		get_env_index(char **env, char *key);
 char	**get_key_and_value(char *str);
 int		is_valid_key(char *str);
+
+//export_no_arg.c
+int count_env(char **env);
+char **copy_env(char **env, int count);
+void bubble_sort_env(char **env, int count);
+void print_env_var(char *var);
+void print_sorted_env(char **env);
 
 // pwd.c
 int		ft_pwd(void);

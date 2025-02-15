@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nigateau <nigateau@student.42.lausanne>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 15:57:37 by nigateau          #+#    #+#             */
-/*   Updated: 2025/01/20 20:45:03 by nigateau         ###   ########.fr       */
+/*   Updated: 2025/02/15 19:34:41 by nigateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,10 @@ void	execute_builtin(t_cmd *cmd, t_mini *shell, int *prev_fd, int i)
 
 void	restore_stdin_stdout(int std_in, int std_out)
 {
-	dup2(std_out, STDOUT_FILENO);
-	dup2(std_in, STDIN_FILENO);
+	if(dup2(std_out, STDOUT_FILENO) == -1)
+		perror("error restoring stdout");
+	if	(dup2(std_in, STDOUT_FILENO) == -1)
+		perror("error restoring stdin");
 	close(std_out);
 	close(std_in);
 	return ;

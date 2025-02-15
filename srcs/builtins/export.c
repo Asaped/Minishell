@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nigateau <nigateau@student.42.lausanne>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 21:03:47 by nigateau          #+#    #+#             */
-/*   Updated: 2025/01/20 21:03:49 by nigateau         ###   ########.fr       */
+/*   Updated: 2025/02/15 20:04:21 by nigateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ft_export(t_mini *shell, t_cmd *cmd)
 
 	if (cmd->tlen == 1)
 	{
-		return (ft_env(shell->env, cmd, 1));
+		return (print_sorted_env(shell->env), 1);
 	}
 	i = 0;
 	while (++i < cmd->tlen)

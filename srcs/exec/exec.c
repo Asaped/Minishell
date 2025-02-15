@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nigateau <nigateau@student.42.lausanne>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:45:17 by nigateau          #+#    #+#             */
-/*   Updated: 2025/01/20 20:44:41 by nigateau         ###   ########.fr       */
+/*   Updated: 2025/02/15 19:33:20 by nigateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,10 @@ void	setup_redirections(t_cmd *cmd)
 		else if (dup2(cmd->fd_in, STDIN_FILENO) == -1)
 			g_exit_status = errno;
 		if (cmd->fd_in == -1 || dup2(cmd->fd_in, STDIN_FILENO) == -1)
+		{
+			close(cmd->fd_in);
 			exit(EXIT_FAILURE);
+		}
 		close(cmd->fd_in);
 	}
 	if (cmd->output)
@@ -107,6 +110,8 @@ void	fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd,
 	{
 		setup_pipes(cmd, prev_fd, is_last_cmd);
 		setup_redirections(cmd);
+		if(is_builtin(cmd->token[0]))
+			exit(exec_builtin(cmd, shell));
 		execute_command(cmd, shell->env);
 	}
 	else
@@ -132,7 +137,7 @@ void	execute_pipeline(t_mini *shell)
 	while (i < shell->clen)
 	{
 		cmd = &shell->cmd[i];
-		if (!execute_pipeline2(shell, cmd, prev_fd, &i))
+		if (!execute_pipeline2(shell, cmd, &prev_fd, &i))
 			continue ;
 		fork_and_execute(shell, cmd, prev_fd, i == shell->clen - 1);
 		if (prev_fd != -1)
