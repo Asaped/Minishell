@@ -6,7 +6,7 @@
 /*   By: nigateau <nigateau@student.42.lausanne>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 17:45:17 by nigateau          #+#    #+#             */
-/*   Updated: 2025/02/15 19:33:20 by nigateau         ###   ########.fr       */
+/*   Updated: 2025/02/16 18:42:30 by nigateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,23 +70,23 @@ void	execute_command(t_cmd *cmd, char **env)
 {
 	if (!ft_strncmp(cmd->token[0], "..", 3))
 	{
-		fprintf(stderr, "bash: line 1: %s: Command not found\n", cmd->token[0]);
+		f_printf(STDERR_FILENO, "bash: line 1: ", cmd->token[0], ": Command not found");
 		g_exit_status = 127;
 		exit(g_exit_status);
 	}
 	else if (!ft_strncmp(cmd->token[0], ".", 2))
 	{
-		fprintf(stderr, "bash: %s: filename argument needed\n", cmd->token[0]);
+		f_printf(STDERR_FILENO, "bash: ", cmd->token[0], ": filename argument needed");
 		g_exit_status = 2;
 		exit(g_exit_status);
 	}
 	else if (ft_strchr(cmd->token[0], '/') != NULL && !cmd->path_bin)
 	{
 		g_exit_status = 127;
-		fprintf(stderr, "bash: %s: No such file or directory\n", cmd->token[0]);
+		f_printf(STDERR_FILENO, "bash: ", cmd->token[0], ": No such file or directory");
 		exit(g_exit_status);
 	}
-	execute_command2(cmd);
+	check_command(cmd);
 	if (execve(cmd->path_bin, cmd->token, env) == -1)
 	{
 		perror(cmd->token[0]);
@@ -137,7 +137,7 @@ void	execute_pipeline(t_mini *shell)
 	while (i < shell->clen)
 	{
 		cmd = &shell->cmd[i];
-		if (!execute_pipeline2(shell, cmd, &prev_fd, &i))
+		if (!check_builtin(shell, cmd, &prev_fd, &i))
 			continue ;
 		fork_and_execute(shell, cmd, prev_fd, i == shell->clen - 1);
 		if (prev_fd != -1)

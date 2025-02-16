@@ -6,7 +6,7 @@
 /*   By: nigateau <nigateau@student.42.lausanne>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 19:52:43 by nigateau          #+#    #+#             */
-/*   Updated: 2025/02/15 19:53:13 by nigateau         ###   ########.fr       */
+/*   Updated: 2025/02/16 16:21:56 by nigateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,5 +88,5 @@ void print_sorted_env(char **env)
     while (++i < count)
         print_env_var(sorted_env[i]);
 
-    free(sorted_env);
+    free_tab(sorted_env);
 }

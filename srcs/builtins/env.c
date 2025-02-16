@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nigateau <nigateau@student.42.lausanne>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 20:57:11 by nigateau          #+#    #+#             */
-/*   Updated: 2025/01/20 20:57:16 by nigateau         ###   ########.fr       */
+/*   Updated: 2025/02/16 18:43:33 by nigateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ int	ft_env(char **env, t_cmd *cmd, int export_mode)
 	i = -1;
 	len = ft_tablen(env);
 	if (cmd->tlen > 1)
-	{
-		return (ft_error("env: "), ft_error(cmd->token[1]),
-			ft_error(":No such file or directory"), TRUE);
-	}
+		return (f_printf(STDERR_FILENO, "env: ", cmd->token[1], ":No such file or directory\n"), TRUE);
 	if (len <= 0)
 	{
 		return (ft_error("env: environment not set\n"), TRUE);

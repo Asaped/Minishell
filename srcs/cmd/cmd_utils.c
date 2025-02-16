@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_redirection.c                               :+:      :+:    :+:   */
+/*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nigateau <nigateau@student.42.lausanne>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 20:51:53 by nigateau          #+#    #+#             */
-/*   Updated: 2025/01/20 20:51:53 by nigateau         ###   ########.fr       */
+/*   Updated: 2025/02/16 16:39:46 by nigateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int	set_heredoc2(t_mini *shell, t_cmd *cmd, char *str, int fd)
 	else
 	{
 		ft_putendl_fd(str, fd);
-		free(str);
 	}
 	return (1);
 }

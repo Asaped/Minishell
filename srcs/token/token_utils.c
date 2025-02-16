@@ -2,11 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+        
+/*                                                    +:+ +:+
 	+:+     */
-/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+      
+/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+
 	+#+        */
-/*                                                +#+#+#+#+#+  
+/*                                                +#+#+#+#+#+
 	+#+           */
 /*   Created: 2025/01/20 20:16:24 by nigateau          #+#    #+#             */
 /*   Updated: 2025/01/20 20:16:24 by nigateau         ###   ########.fr       */
@@ -53,9 +53,9 @@ static int	check_operator(t_token *token, int i, int tlen)
 			|| (token[i].type == OPERATOR && token[i].value[0] != '|'
 				&& token[i - 1].type == OPERATOR && token[i - 1].value[0]
 				!= '|'))
-			return (fprintf(stderr,
-					"bash: syntax error near unexpected token `%s'\n",
-					token[i].value), FALSE);
+			return (f_printf(STDERR_FILENO,
+			"bash: syntax error near unexpected token `",
+			token[i].value, "'"), FALSE);
 	}
 	return (TRUE);
 }
@@ -82,11 +82,12 @@ int	second_pass(t_mini *shell)
 int	get_path_bin(char *str, char *cmd, t_token *token)
 {
 	char	*tmp;
+	char	*tmp2;
 
-	str = ft_strjoin2(str, '/');
+	tmp2 = ft_strjoin3(str, "/");
 	if (!str)
 		return (ft_error(strerror(errno)));
-	tmp = ft_strjoin5(str, cmd);
+	tmp = ft_strjoin5(tmp2, cmd);
 	if (!tmp)
 		return (ft_error(strerror(errno)));
 	if (access(tmp, F_OK) == 0 && access(tmp, X_OK) == 0)

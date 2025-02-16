@@ -6,7 +6,7 @@
 /*   By: nigateau <nigateau@student.42.lausanne>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 21:03:47 by nigateau          #+#    #+#             */
-/*   Updated: 2025/02/15 20:04:21 by nigateau         ###   ########.fr       */
+/*   Updated: 2025/02/16 18:44:14 by nigateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,8 @@ int	ft_export(t_mini *shell, t_cmd *cmd)
 	while (++i < cmd->tlen)
 	{
 		if (!is_valid_key(cmd->token[i]))
-			return (fprintf(stderr,
-					"bash: export: `%s': not a valid identifier\n",
-					cmd->token[i]), TRUE);
+			return (f_printf(STDERR_FILENO, "bash: export: `", cmd->token[i],
+			"': not a valid identifier"), TRUE);
 		if (cmd->token[i])
 		{
 			tmp = get_key_and_value(cmd->token[i]);

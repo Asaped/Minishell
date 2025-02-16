@@ -40,7 +40,7 @@ static int	find_cmd(t_mini *shell, char *path_bin, char *cmd, int j)
 	while (ft_strchr(cmd, '/') == NULL && ++i < len)
 		get_path_bin(tab[i], cmd, &shell->token[j]);
 	if (tab)
-		free(tab);
+		free_tab(tab);
 	if (shell->token[j].path_bin != NULL)
 		return (TRUE);
 	else
