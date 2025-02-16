@@ -6,7 +6,7 @@
 /*   By: nigateau <nigateau@student.42.lausanne>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 21:00:35 by nigateau          #+#    #+#             */
-/*   Updated: 2025/02/16 18:43:37 by nigateau         ###   ########.fr       */
+/*   Updated: 2025/02/16 18:49:31 by nigateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,13 @@ int	ft_exit(t_mini *shell, t_cmd *cmd)
 	if (cmd->tlen == 1)
 		g_exit_status = 0;
 	else if (cmd->tlen > 2)
-		return (ft_error("bash: exit: too many arguments\n"), TRUE);
+		return (ft_error("bash: exit: too many arguments"), TRUE);
 	else
 	{
 		g_exit_status = get_exit_code(cmd->token[1], &error);
 		if (error == 1)
 			return (f_printf(STDERR_FILENO,"bash: exit:", cmd->token[1],
-			": numeric argument required\n"), TRUE);
+			": numeric argument required"), TRUE);
 	}
 	ft_free(shell, NULL, 1);
 	exit(g_exit_status);

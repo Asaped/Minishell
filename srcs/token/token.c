@@ -76,7 +76,7 @@ static int	create_token(t_mini *shell, int j, int i)
 		j += 2;
 	str = worddup(shell->input, j, wordlen(shell->input, j));
 	if (!str)
-		return (ft_error(strerror(errno)), ft_error("\n"));
+		return (ft_error(strerror(errno)));
 	if (shell->input[j] != '\'' && !is_heredoc(shell->token[i - 1]))
 		str = expand_env(shell, str);
 	shell->token[i].len = ft_strlen(str);

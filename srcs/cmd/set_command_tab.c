@@ -91,7 +91,7 @@ static int	get_command(t_mini *shell, t_cmd *cmd, t_token *token, int *j)
 	cmd->tlen = get_token_length(token, j[0] - 1, shell->tlen);
 	cmd->token = malloc(sizeof(char *) * (cmd->tlen + 1));
 	if (!cmd->token)
-		return (ft_error(strerror(errno)), ft_error("\n"));
+		return (ft_error(strerror(errno)));
 	cmd->token[cmd->tlen] = NULL;
 	if (token[j[0]].type == OPERATOR && token[j[0]].value[0] != '|')
 		j[0] += 2;
@@ -113,7 +113,7 @@ int	set_command_tab(t_mini *shell)
 	shell->clen = pipelen(shell->token, shell->tlen) + 1;
 	shell->cmd = malloc(sizeof(t_cmd) * (shell->clen + 1));
 	if (!shell->cmd)
-		return (ft_error(strerror(errno)), ft_error("\n"));
+		return (ft_error(strerror(errno)));
 	while (++i < shell->clen)
 	{
 		if (get_command(shell, &shell->cmd[i], shell->token, &j) == FALSE)

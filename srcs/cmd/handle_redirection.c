@@ -35,12 +35,12 @@ int	handle_input(t_token *token, t_cmd *cmd, int i)
 {
 	cmd->input = ft_strdup(token[i + 1].value);
 	if (!cmd->input)
-		return (ft_error(strerror(errno)), ft_error("\n"));
+		return (ft_error(strerror(errno)));
 	cmd->fd_in = open(cmd->input, O_RDONLY);
 	if (cmd->fd_in == -1)
 	{
 		g_exit_status = errno;
-		f_printf(STDERR_FILENO, "bash: ", cmd->input, ": No such file or directory\n");
+		f_printf(STDERR_FILENO, "bash: ", cmd->input, ": No such file or directory");
 	}
 	return (TRUE);
 }
@@ -67,7 +67,7 @@ static int	set_heredoc(t_mini *shell, t_cmd *cmd)
 
 	fd = open(cmd->input, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd == -1)
-		return (ft_error(strerror(errno)), ft_error("\n"));
+		return (ft_error(strerror(errno)));
 	while (1)
 	{
 		signal_handler_interactive();
@@ -88,10 +88,10 @@ int	handle_heredoc(t_mini *shell, t_token *token, t_cmd *cmd, int i)
 {
 	cmd->heredoc_key = ft_strdup(token[i + 1].value);
 	if (!cmd->heredoc_key)
-		return (ft_error(strerror(errno)), ft_error("\n"));
+		return (ft_error(strerror(errno)));
 	cmd->input = get_heredoc_name();
 	if (!cmd->input)
-		return (ft_error(strerror(errno)), ft_error("\n"));
+		return (ft_error(strerror(errno)));
 	if (set_heredoc(shell, cmd) == TRUE)
 		cmd->fd_in = open(cmd->input, O_RDONLY);
 	else

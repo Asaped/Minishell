@@ -6,7 +6,7 @@
 /*   By: nigateau <nigateau@student.42.lausanne>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 20:55:05 by nigateau          #+#    #+#             */
-/*   Updated: 2025/02/16 18:43:25 by nigateau         ###   ########.fr       */
+/*   Updated: 2025/02/16 19:06:57 by nigateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static int	change_dir(t_mini *shell, char *path)
 	char	tab[4096];
 
 	if (chdir(path) == -1)
-		return (ft_error(strerror(errno)), ft_error("\n"), TRUE);
+		return (ft_error(strerror(errno)), TRUE);
 	if (shell->path)
 	{
 		free(shell->path);
@@ -72,9 +72,9 @@ int	ft_cd(t_mini *shell, t_cmd *cmd)
 		return (change_dir(shell, path));
 	else if (ft_is_dir(path) == -1)
 		return (f_printf(STDERR_FILENO, "bash: cd: ", path,
-			 "No such file or directory\n"), TRUE);
+			 ": No such file or directory"), TRUE);
 	else
 		return (f_printf(STDERR_FILENO, "bash: cd: ", path ,
-			": Not a directory\n"), TRUE);
+			": Not a directory"), TRUE);
 }
 

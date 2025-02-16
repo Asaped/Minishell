@@ -17,14 +17,14 @@ int				g_exit_status = 0;
 static int	set_shell(t_mini *shell)
 {
 	if (is_unclosed_quote(shell->input) == TRUE)
-		return (ft_error("Syntax error : unclosed quote.\n"));
+		return (ft_error("Syntax error : unclosed quote."));
 	shell->tlen = count_word(shell->input, 0, 0);
 	if (shell->tlen < 1)
 		return (FALSE);
 	add_history(shell->input);
 	shell->token = malloc(sizeof(t_token) * (shell->tlen));
 	if (!shell->token)
-		return (ft_error(strerror(errno)), ft_error("\n"));
+		return (ft_error(strerror(errno)));
 	if (set_token(shell) == FALSE || set_command_tab(shell) == FALSE)
 		return (FALSE);
 	return (TRUE);
