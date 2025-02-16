@@ -20,7 +20,9 @@ static void	increment_shlvl(t_mini *shell)
 
 	pos = get_env_index(shell->env, "SHLVL");
 	if (pos == -1)
+	{
 		shell->env = set_env_var(shell->env, "SHLVL=", "2");
+	}
 	else
 	{
 		tmp = get_key_and_value(shell->env[pos]);

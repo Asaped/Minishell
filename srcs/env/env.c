@@ -40,11 +40,8 @@ char	**realloc_env(char **env, int len)
 	if (!res)
 		return (NULL);
 	while (env[++i] && i < len)
-	{
 		res[i] = ft_strdup(env[i]);
-		free(env[i]);
-	}
-	free(env);
+	free_tab(env);
 	return (res);
 }
 
@@ -61,7 +58,7 @@ char	**set_env_var(char **env, char *key, char *value)
 	if (i != -1 && env[i])
 	{
 		free(env[i]);
-		env[i] = ft_strjoin3(key, new_value);
+		env[i] = ft_strjoin4(key, new_value);
 	}
 	else
 	{
@@ -69,7 +66,7 @@ char	**set_env_var(char **env, char *key, char *value)
 		env = realloc_env(env, i + 1);
 		if (!env)
 			return (NULL);
-		env[i] = ft_strjoin3(key, new_value);
+		env[i] = ft_strjoin4(key, new_value);
 	}
 	return (env);
 }
@@ -89,7 +86,7 @@ char	*get_env_value(t_mini *shell, char *str, int malloc)
 			len = ft_strlen(str);
 			if (malloc == 1)
 				free(str);
-			return (ft_strdup(shell->env[i] + len + 1));
+			return (shell->env[i] + len + 1);
 		}
 		i++;
 	}

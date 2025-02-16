@@ -86,10 +86,9 @@ int	get_path_bin(char *str, char *cmd, t_token *token)
 	str = ft_strjoin2(str, '/');
 	if (!str)
 		return (ft_error(strerror(errno)));
-	tmp = ft_strjoin3(str, cmd);
+	tmp = ft_strjoin5(str, cmd);
 	if (!tmp)
 		return (ft_error(strerror(errno)));
-	free(str);
 	if (access(tmp, F_OK) == 0 && access(tmp, X_OK) == 0)
 	{
 		token->path_bin = tmp;
