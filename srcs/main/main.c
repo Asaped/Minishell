@@ -49,6 +49,8 @@ static void	minishell(t_mini *shell)
 			ft_free(shell, NULL, 0);
 		else
 		{
+			print_cmd(shell);
+			print_token(shell);
 			execute_pipeline(shell);
 			ft_free(shell, NULL, 0);
 		}

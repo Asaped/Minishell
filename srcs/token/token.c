@@ -66,7 +66,7 @@ static t_type	find_token_type(t_mini *shell, char *str, int i, char c)
 		return (UNKNOWN);
 }
 
-static void	handle_path(t_mini *shell, char *str)
+static char	*handle_path(t_mini *shell, char *str)
 {
 	char	*path;
 	char	*tmp;
@@ -80,13 +80,13 @@ static void	handle_path(t_mini *shell, char *str)
 			tmp = ft_strdup(str + 1);
 		free(str);
 		str = ft_strjoin4(path, tmp);
-		return ;
 	}
 	else if (!ft_strncmp(str, "--\0", 3) || !ft_strncmp(str, "-\0", 2) || !ft_strncmp(str, "~\0", 2))
 	{
 		free(str);
-		str = path;
+		str = ft_strdup(path);
 	}
+	return (str);
 }
 
 static int	create_token(t_mini *shell, int j, int i)
@@ -110,9 +110,7 @@ static int	create_token(t_mini *shell, int j, int i)
 		if (!shell->token[i].path_bin)
 			return (ft_error(strerror(errno)));
 	}
-	if (!ft_strncmp(shell->input + j, "-", 1) || !ft_strncmp(shell->input + j, "~", 1))
-		handle_path(shell, str);
-	shell->token[i].value = str;
+	shell->token[i].value = handle_path(shell, str);
 	return (TRUE);
 }
 
