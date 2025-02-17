@@ -66,6 +66,7 @@ typedef struct s_mini
 	char	*input;
 	char	**env;
 	char	*path;
+	char	tab[1];
 }				t_mini;
 
 #endif

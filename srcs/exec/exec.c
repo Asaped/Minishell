@@ -87,6 +87,7 @@ void	execute_command(t_cmd *cmd, char **env)
 		exit(g_exit_status);
 	}
 	check_command(cmd);
+	
 	if (execve(cmd->path_bin, cmd->token, env) == -1)
 	{
 		perror(cmd->token[0]);
@@ -99,6 +100,15 @@ void	execute_command(t_cmd *cmd, char **env)
 void	fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd,
 		int is_last_cmd)
 {
+	struct sigaction ignore;
+	struct sigaction restore;
+	ignore.sa_handler = SIG_IGN;
+	sigemptyset(&ignore.sa_mask);
+	ignore.sa_flags = 0;
+
+	sigaction(SIGINT, &ignore, NULL);
+
+
 	shell->pid = fork();
 	if (shell->pid == -1)
 	{
@@ -108,6 +118,11 @@ void	fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd,
 	}
 	if (shell->pid == 0)
 	{
+		restore.sa_handler = SIG_DFL;
+		sigemptyset(&restore.sa_mask);
+		restore.sa_flags = 0;
+		sigaction(SIGINT, &restore, NULL);
+
 		setup_pipes(cmd, prev_fd, is_last_cmd);
 		setup_redirections(cmd);
 		if(is_builtin(cmd->token[0]))
@@ -120,6 +135,9 @@ void	fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd,
 			close(prev_fd);
 		if (!is_last_cmd)
 			close(cmd->fd_pipe[1]);
+		
+		waitpid(shell->pid, NULL, 0);
+		sigaction(SIGINT, &restore, NULL);
 	}
 }
 

@@ -21,7 +21,7 @@ static void	increment_shlvl(t_mini *shell)
 	pos = get_env_index(shell->env, "SHLVL");
 	if (pos == -1)
 	{
-		shell->env = set_env_var(shell->env, "SHLVL=", "2");
+		shell->env = set_env_var(shell->env, "SHLVL", "2");
 	}
 	else
 	{
@@ -49,7 +49,9 @@ int	init_shell(t_mini *shell, int first_time, char **envp)
 			return (ft_free(shell, strerror(errno), 1));
 		shell->path = ft_strdup(shell->path);
 		if (!shell->path)
-			return (ft_free(shell, strerror(errno), 1));
+			return (ft_free(shell, strerror(errno), 1));	
+		if (get_env_value(shell, "PWD", 0) == NULL)
+			shell->env = set_env_var(shell->env, "PWD", shell->path);
 		increment_shlvl(shell);
 	}
 	shell->input = NULL;
@@ -57,6 +59,7 @@ int	init_shell(t_mini *shell, int first_time, char **envp)
 	shell->cmd = NULL;
 	shell->clen = 0;
 	shell->tlen = 0;
+	shell->pid = -1;
 	return (TRUE);
 }
 

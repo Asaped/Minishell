@@ -70,9 +70,9 @@ static int	set_heredoc(t_mini *shell, t_cmd *cmd)
 		return (ft_error(strerror(errno)));
 	while (1)
 	{
-		signal_handler_interactive();
+		//signal_handler_interactive(shell);
 		str = readline("> ");
-		signal_handler_non_interactive();
+		//signal_handler_non_interactive(shell);
 		if (!set_heredoc2(shell, cmd, str, fd))
 		{
 			free(str);
