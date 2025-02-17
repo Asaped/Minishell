@@ -58,12 +58,10 @@ int	ft_cd(t_mini *shell, t_cmd *cmd)
 	path = NULL;
 	if (cmd->tlen >= 3)
 		return (ft_error("bash: cd: too many arguments"), TRUE);
-	if (cmd->tlen <= 1 || !ft_strncmp(cmd->token[1], "-\0", 2)
-		|| !ft_strncmp(cmd->token[1], "~\0", 2) || !ft_strncmp(cmd->token[1],
-			"--\0", 3))
+	if (cmd->tlen == 1)
 	{
 		path = get_env_value(shell, "HOME", 0);
-		if (!path)
+		if (!path || path[0] == '\0' || is_whitespace(path[0]))
 			return (ft_error("bash: cd: HOME not set"), TRUE);
 	}
 	else if (cmd->tlen == 2)
