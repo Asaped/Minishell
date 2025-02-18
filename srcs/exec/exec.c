@@ -102,13 +102,11 @@ void	fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd,
 {
 	struct sigaction ignore;
 	struct sigaction restore;
+	
 	ignore.sa_handler = SIG_IGN;
 	sigemptyset(&ignore.sa_mask);
 	ignore.sa_flags = 0;
-
 	sigaction(SIGINT, &ignore, NULL);
-
-
 	shell->pid = fork();
 	if (shell->pid == -1)
 	{
@@ -122,7 +120,6 @@ void	fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd,
 		sigemptyset(&restore.sa_mask);
 		restore.sa_flags = 0;
 		sigaction(SIGINT, &restore, NULL);
-
 		setup_pipes(cmd, prev_fd, is_last_cmd);
 		setup_redirections(cmd);
 		if(is_builtin(cmd->token[0]))
