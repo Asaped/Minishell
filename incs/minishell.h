@@ -88,8 +88,11 @@ void	f_printf(int std, char *s1, char *s2, char *s3);
 
 //signal.c
 void	signal_handler_interactive(void);
+void	handle_interactive(int sig);
 void	signal_handler_interactive_heredoc(void);
+void	handle_interactive_heredoc(int sig);
 void	signal_handler_non_interactive(void);
+void	handle_non_interactive(int sig);
 
 ////////////////////////////////////DEBUG//////////////////////////////////////////////////////
 

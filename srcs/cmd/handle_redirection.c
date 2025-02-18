@@ -60,6 +60,29 @@ static char	*get_heredoc_name(void)
 	return (name);
 }
 
+static char	*ft_readline(void)
+{
+	char	*line;
+
+	line = readline("> ");
+	if (g_exit_status == SIGINT)
+	{
+		g_exit_status = SIGINT + 128;
+		return (NULL);
+	}
+	if (g_exit_status == SIGQUIT)
+	{
+		g_exit_status = SIGQUIT + 128;
+		return (NULL);
+	}
+	return (line);
+}
+
+static int	do_nothing(void)
+{
+	return (0);
+}
+
 static int	set_heredoc(t_mini *shell, t_cmd *cmd)
 {
 	char	*str;
@@ -69,15 +92,12 @@ static int	set_heredoc(t_mini *shell, t_cmd *cmd)
 	if (fd == -1)
 		return (ft_error(strerror(errno)));
 	signal_handler_interactive_heredoc();
+	rl_event_hook = do_nothing;
 	while (1)
 	{
-		str = readline("> ");
-		if (g_exit_status == SIGINT)
-		{
-			g_exit_status = SIGINT + 128;
-			free(str);
+		str = ft_readline();
+		if (str == NULL)
 			break;
-		}
 		if (!set_heredoc2(shell, cmd, str, fd))
 		{
 			free(str);
