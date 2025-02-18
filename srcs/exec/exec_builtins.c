@@ -33,6 +33,7 @@ int	exec_builtin(t_cmd *cmd, t_mini *shell)
 
 void	update_exit_status(int status)
 {
+	printf("fdubsiudsiuf\n");
 	if (WIFEXITED(status))
 		g_exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))

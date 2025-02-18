@@ -102,7 +102,9 @@ void	fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd,
 {
 	struct sigaction ignore;
 	struct sigaction restore;
+	int		status;
 	
+	status = 0;
 	ignore.sa_handler = SIG_IGN;
 	sigemptyset(&ignore.sa_mask);
 	ignore.sa_flags = 0;
@@ -132,8 +134,9 @@ void	fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd,
 			close(prev_fd);
 		if (!is_last_cmd)
 			close(cmd->fd_pipe[1]);
-		
-		waitpid(shell->pid, NULL, 0);
+		while (waitpid(-1, &status, 0) > 0)
+			update_exit_status(status);
+		//waitpid(shell->pid, NULL, 0);
 		sigaction(SIGINT, &restore, NULL);
 	}
 }
