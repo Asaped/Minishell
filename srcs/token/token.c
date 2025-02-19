@@ -77,9 +77,6 @@ static int	create_token(t_mini *shell, int j, int i)
 	char	*str;
 
 	shell->token[i].path_bin = NULL;
-	if ((shell->input[j] == '\"' && shell->input[j + 1] == '\"')
-		|| (shell->input[j] == '\'' && shell->input[j + 1] == '\''))
-		j += 2;
 	str = worddup(shell->input, j, wordlen(shell->input, j));
 	if (!str)
 		return (ft_error(strerror(errno)));

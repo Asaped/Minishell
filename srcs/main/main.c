@@ -14,14 +14,38 @@
 
 int				g_exit_status = 0;
 
+static char	*remove_empty_quote(char *str)
+{
+	int		len;
+	int		i;
+	int		j;
+	char	result[4098];
+
+	len = ft_strlen(str);
+	i = 0;
+	j = 0;
+	ft_bzero(result, 4098);
+	while (i < len)
+	{
+		while (i + 2 < len && ((is_quote(str[i]) == 1 && is_quote(str[i + 1]))
+				== 1 || (is_quote(str[i]) == 2 && is_quote(str[i + 1]) == 2)))
+			i += 2;
+		result[j++] = str[i++];
+	}
+	free(str);
+	str = ft_strdup(result);
+	return (str);
+}
+
 static int	set_shell(t_mini *shell)
 {
 	if (is_unclosed_quote(shell->input) == TRUE)
 		return (ft_error("Syntax error : unclosed quote."));
+	add_history(shell->input);
+	shell->input = remove_empty_quote(shell->input);
 	shell->tlen = count_word(shell->input, 0, 0);
 	if (shell->tlen < 1)
 		return (FALSE);
-	add_history(shell->input);
 	shell->token = malloc(sizeof(t_token) * (shell->tlen));
 	if (!shell->token)
 		return (ft_error(strerror(errno)));
