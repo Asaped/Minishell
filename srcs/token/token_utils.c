@@ -54,8 +54,8 @@ static int	check_operator(t_token *token, int i, int tlen)
 				&& token[i - 1].type == OPERATOR && token[i - 1].value[0]
 				!= '|'))
 			return (f_printf(STDERR_FILENO,
-			"bash: syntax error near unexpected token `",
-			token[i].value, "'"), FALSE);
+					"bash: syntax error near unexpected token `",
+					token[i].value, "'"), FALSE);
 	}
 	return (TRUE);
 }
@@ -98,4 +98,16 @@ int	get_path_bin(char *str, char *cmd, t_token *token)
 	else
 		free(tmp);
 	return (FALSE);
+}
+
+void	find_cmd2(t_mini *shell, char *cmd, int j)
+{
+	if (cmd[0] == '/' && cmd[1] && access(cmd, F_OK) != -1)
+		shell->token[j].path_bin = ft_strdup(cmd);
+	else if (cmd[0] == '.' && cmd[1] == '/' && cmd[2] && access(cmd + 2,
+			F_OK) != -1)
+		shell->token[j].path_bin = ft_strjoin3(shell->path, cmd + 1);
+	else if (access(cmd, F_OK) != -1)
+		shell->token[j].path_bin = ft_strjoin4(shell->path, ft_strjoin3("/",
+					cmd));
 }

@@ -38,3 +38,23 @@ void	get_command2(t_cmd *cmd, t_token *token, int *i, int *j)
 	if (token[j[0]].type == OPERATOR && token[j[0]].value[0] != '|')
 		j[0] += 2;
 }
+
+int	do_nothing(void)
+{
+	return (0);
+}
+
+int	handle_input(t_token *token, t_cmd *cmd, int i)
+{
+	cmd->input = ft_strdup(token[i + 1].value);
+	if (!cmd->input)
+		return (ft_error(strerror(errno)));
+	cmd->fd_in = open(cmd->input, O_RDONLY);
+	if (cmd->fd_in == -1)
+	{
+		g_exit_status = errno;
+		f_printf(STDERR_FILENO, "bash: ", cmd->input,
+			": No such file or directory");
+	}
+	return (TRUE);
+}

@@ -44,7 +44,7 @@ static int	change_dir(t_mini *shell, char *path)
 	shell->path = ft_strdup(shell->path);
 	if (!shell->path)
 		return (f_printf(STDERR_FILENO, "bash: cd: ", strerror(errno),
-			": No such file or directory"), TRUE);
+				": No such file or directory"), TRUE);
 	shell->env = set_env_var(shell->env, "OLDPWD", get_env_value(shell, "PWD",
 				0));
 	shell->env = set_env_var(shell->env, "PWD", shell->path);
@@ -58,7 +58,9 @@ int	ft_cd(t_mini *shell, t_cmd *cmd)
 	path = NULL;
 	if (cmd->tlen >= 3)
 		return (ft_error("bash: cd: too many arguments"), TRUE);
-	if (cmd->tlen == 1)
+	if (cmd->tlen == 1 || (cmd->tlen == 2 && !ft_strncmp(cmd->token[1], "--\0",
+				3) || !ft_strncmp(cmd->token[1], "-\0", 2)
+			|| !ft_strncmp(cmd->token[1], "~\0", 2)))
 	{
 		path = get_env_value(shell, "HOME", 0);
 		if (!path || path[0] == '\0' || is_whitespace(path[0]))
@@ -70,9 +72,8 @@ int	ft_cd(t_mini *shell, t_cmd *cmd)
 		return (change_dir(shell, path));
 	else if (ft_is_dir(path) == -1)
 		return (f_printf(STDERR_FILENO, "bash: cd: ", path,
-			 ": No such file or directory"), TRUE);
+				": No such file or directory"), TRUE);
 	else
-		return (f_printf(STDERR_FILENO, "bash: cd: ", path ,
-			": Not a directory"), TRUE);
+		return (f_printf(STDERR_FILENO, "bash: cd: ", path,
+				": Not a directory"), TRUE);
 }
-

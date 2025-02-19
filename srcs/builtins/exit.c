@@ -85,8 +85,8 @@ int	ft_exit(t_mini *shell, t_cmd *cmd)
 	{
 		g_exit_status = get_exit_code(cmd->token[1], &error);
 		if (error == 1)
-			return (f_printf(STDERR_FILENO,"bash: exit:", cmd->token[1],
-			": numeric argument required"), TRUE);
+			return (f_printf(STDERR_FILENO, "bash: exit:", cmd->token[1],
+					": numeric argument required"), TRUE);
 	}
 	ft_free(shell, NULL, 1);
 	exit(g_exit_status);

@@ -2,27 +2,18 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+
+	+:+     */
+/*   By: nigateau <nigateau@student.42.fr>          +#+  +:+
+	+#+        */
+/*                                                +#+#+#+#+#+
+	+#+           */
 /*   Created: 2025/01/20 20:23:00 by nigateau          #+#    #+#             */
 /*   Updated: 2025/01/20 20:23:00 by nigateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/minishell.h"
-
-static void	find_cmd2(t_mini *shell, char *cmd, int j)
-{
-	if (cmd[0] == '/' && cmd[1] && access(cmd, F_OK) != -1)
-		shell->token[j].path_bin = ft_strdup(cmd);
-	else if (cmd[0] == '.' && cmd[1] == '/' && cmd[2] && access(cmd + 2,
-			F_OK) != -1)
-		shell->token[j].path_bin = ft_strjoin3(shell->path, cmd + 1);
-	else if (access(cmd, F_OK) != -1)
-		shell->token[j].path_bin = ft_strjoin4(shell->path, ft_strjoin3("/",
-					cmd));
-}
 
 static int	find_cmd(t_mini *shell, char *path_bin, char *cmd, int j)
 {
@@ -54,8 +45,8 @@ static t_type	find_token_type(t_mini *shell, char *str, int i, char c)
 {
 	if (is_builtin(str))
 		return (BUILTIN);
-	else if ((!access(str, F_OK) && !access(str, X_OK))
-		|| find_cmd(shell, get_env_value(shell, "PATH", 0), str, i))
+	else if ((!access(str, F_OK) && !access(str, X_OK)) || find_cmd(shell,
+			get_env_value(shell, "PATH", 0), str, i))
 		return (CMD);
 	else if (c == '\'' || c == '\"')
 		return (STRING);
@@ -72,19 +63,11 @@ static char	*handle_path(t_mini *shell, char *str)
 	char	*tmp;
 
 	path = get_env_value(shell, "HOME", 0);
-	if (!ft_strncmp(str, "~/", 2) || !ft_strncmp(str, "-/", 2) || !ft_strncmp(str, "--/", 3))
+	if (!ft_strncmp(str, "~/", 2))
 	{
-		if (!ft_strncmp(str, "--/", 3))
-			tmp = ft_strdup(str + 2);
-		else
-			tmp = ft_strdup(str + 1);
+		tmp = ft_strdup(str + 1);
 		free(str);
 		str = ft_strjoin4(path, tmp);
-	}
-	else if (!ft_strncmp(str, "--\0", 3) || !ft_strncmp(str, "-\0", 2) || !ft_strncmp(str, "~\0", 2))
-	{
-		free(str);
-		str = ft_strdup(path);
 	}
 	return (str);
 }

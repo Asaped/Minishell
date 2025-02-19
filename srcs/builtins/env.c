@@ -20,7 +20,8 @@ int	ft_env(char **env, t_cmd *cmd, int export_mode)
 	i = -1;
 	len = ft_tablen(env);
 	if (cmd->tlen > 1)
-		return (f_printf(STDERR_FILENO, "env: ", cmd->token[1], ":No such file or directory"), TRUE);
+		return (f_printf(STDERR_FILENO, "env: ", cmd->token[1],
+				":No such file or directory"), TRUE);
 	if (len <= 0)
 	{
 		return (ft_error("env: environment not set"), TRUE);

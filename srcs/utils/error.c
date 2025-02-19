@@ -23,7 +23,7 @@ void	f_printf(int std, char *s1, char *s2, char *s3)
 		i++;
 	}
 	i = 0;
-	while(s2[i])
+	while (s2[i])
 	{
 		write(std, &s2[i], 1);
 		i++;

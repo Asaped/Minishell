@@ -49,7 +49,7 @@ int	init_shell(t_mini *shell, int first_time, char **envp)
 			return (ft_free(shell, strerror(errno), 1));
 		shell->path = ft_strdup(shell->path);
 		if (!shell->path)
-			return (ft_free(shell, strerror(errno), 1));	
+			return (ft_free(shell, strerror(errno), 1));
 		if (get_env_value(shell, "PWD", 0) == NULL)
 			shell->env = set_env_var(shell->env, "PWD", shell->path);
 		increment_shlvl(shell);

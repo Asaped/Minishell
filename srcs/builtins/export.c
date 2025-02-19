@@ -63,7 +63,7 @@ int	ft_export(t_mini *shell, t_cmd *cmd)
 	{
 		if (!is_valid_key(cmd->token[i]))
 			return (f_printf(STDERR_FILENO, "bash: export: `", cmd->token[i],
-			"': not a valid identifier"), TRUE);
+					"': not a valid identifier"), TRUE);
 		if (cmd->token[i])
 		{
 			tmp = get_key_and_value(cmd->token[i]);

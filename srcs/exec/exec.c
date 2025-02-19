@@ -12,7 +12,6 @@
 
 #include "../../incs/minishell.h"
 
-// Gestion des pipes pour une commande donnée
 void	setup_pipes(t_cmd *cmd, int prev_fd, int is_last_cmd)
 {
 	if (prev_fd != -1)
@@ -65,29 +64,10 @@ void	setup_redirections(t_cmd *cmd)
 	}
 }
 
-// Exécution d'une commande
 void	execute_command(t_cmd *cmd, char **env)
 {
-	if (!ft_strncmp(cmd->token[0], "..", 3))
-	{
-		f_printf(STDERR_FILENO, "bash: line 1: ", cmd->token[0], ": Command not found");
-		g_exit_status = 127;
-		exit(g_exit_status);
-	}
-	else if (!ft_strncmp(cmd->token[0], ".", 2))
-	{
-		f_printf(STDERR_FILENO, "bash: ", cmd->token[0], ": filename argument needed");
-		g_exit_status = 2;
-		exit(g_exit_status);
-	}
-	else if (ft_strchr(cmd->token[0], '/') != NULL && !cmd->path_bin)
-	{
-		g_exit_status = 127;
-		f_printf(STDERR_FILENO, "bash: ", cmd->token[0], ": No such file or directory");
-		exit(g_exit_status);
-	}
 	check_command(cmd);
-	
+	check_command2(cmd);
 	if (execve(cmd->path_bin, cmd->token, env) == -1)
 	{
 		perror(cmd->token[0]);
@@ -96,15 +76,11 @@ void	execute_command(t_cmd *cmd, char **env)
 	exit(g_exit_status);
 }
 
-// Fork et exécution d'une commande
 void	fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd,
 		int is_last_cmd)
 {
-	struct sigaction ignore;
-	struct sigaction restore;
-	int		status;
-	
-	status = 0;
+	struct sigaction	ignore;
+
 	ignore.sa_handler = SIG_IGN;
 	sigemptyset(&ignore.sa_mask);
 	ignore.sa_flags = 0;
@@ -117,56 +93,27 @@ void	fork_and_execute(t_mini *shell, t_cmd *cmd, int prev_fd,
 		exit(EXIT_FAILURE);
 	}
 	if (shell->pid == 0)
-	{
-		restore.sa_handler = SIG_DFL;
-		sigemptyset(&restore.sa_mask);
-		restore.sa_flags = 0;
-		sigaction(SIGINT, &restore, NULL);
-		setup_pipes(cmd, prev_fd, is_last_cmd);
-		setup_redirections(cmd);
-		if(is_builtin(cmd->token[0]))
-			exit(exec_builtin(cmd, shell));
-		execute_command(cmd, shell->env);
-	}
+		handle_child(shell, cmd, prev_fd, is_last_cmd);
 	else
-	{
-		if (prev_fd != -1)
-			close(prev_fd);
-		if (!is_last_cmd)
-			close(cmd->fd_pipe[1]);
-		while (waitpid(-1, &status, 0) > 0)
-			update_exit_status(status);
-		//waitpid(shell->pid, NULL, 0);
-		sigaction(SIGINT, &restore, NULL);
-	}
+		handle_parent(cmd, prev_fd, is_last_cmd);
 }
 
-// Pipeline principal
 void	execute_pipeline(t_mini *shell)
 {
 	int		i;
 	int		prev_fd;
-	int		status;
 	t_cmd	*cmd;
 
 	i = 0;
 	prev_fd = -1;
-	status = 0;
 	while (i < shell->clen)
 	{
 		cmd = &shell->cmd[i];
 		if (!check_builtin(shell, cmd, &prev_fd, &i))
 			continue ;
 		fork_and_execute(shell, cmd, prev_fd, i == shell->clen - 1);
-		if (prev_fd != -1)
-			close(prev_fd);
 		if (i < shell->clen - 1)
-		{
-			close(cmd->fd_pipe[1]);
 			prev_fd = cmd->fd_pipe[0];
-		}
 		i++;
 	}
-	while (waitpid(-1, &status, 0) > 0)
-		update_exit_status(status);
 }

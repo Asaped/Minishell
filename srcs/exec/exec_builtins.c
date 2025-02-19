@@ -33,7 +33,6 @@ int	exec_builtin(t_cmd *cmd, t_mini *shell)
 
 void	update_exit_status(int status)
 {
-	printf("fdubsiudsiuf\n");
 	if (WIFEXITED(status))
 		g_exit_status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
@@ -78,9 +77,9 @@ void	execute_builtin(t_cmd *cmd, t_mini *shell, int *prev_fd, int i)
 
 void	restore_stdin_stdout(int std_in, int std_out)
 {
-	if(dup2(std_out, STDOUT_FILENO) == -1)
+	if (dup2(std_out, STDOUT_FILENO) == -1)
 		perror("error restoring stdout");
-	if	(dup2(std_in, STDOUT_FILENO) == -1)
+	if (dup2(std_in, STDOUT_FILENO) == -1)
 		perror("error restoring stdin");
 	close(std_out);
 	close(std_in);
