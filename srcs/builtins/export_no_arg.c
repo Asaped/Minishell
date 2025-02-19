@@ -33,7 +33,7 @@ char	**copy_env(char **env, int count)
 		return (NULL);
 	while (i < count)
 	{
-		sorted_env[i] = env[i];
+		sorted_env[i] = ft_strdup(env[i]);
 		i++;
 	}
 	sorted_env[count] = NULL;
